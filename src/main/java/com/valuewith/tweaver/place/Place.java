@@ -62,7 +62,7 @@ public class Place extends Period {
      * Place Order(여행 장소 순서)
      **/
     @NotNull
-    private Integer order;
+    private Integer orders;
 
     /**
      * Place Distance(여행 장소 사이 거리)
