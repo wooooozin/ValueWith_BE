@@ -10,9 +10,7 @@ version = '0.0.1-SNAPSHOT'
 java {
 	sourceCompatibility = '11'
 }
-ext {
-	set('springCloudVersion', "2021.0.4")
-}
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
@@ -29,23 +27,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-	// Openfeign for Email
-	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
-	// Springfox for swagger
-	implementation 'io.springfox:springfox-swagger2:2.9.2'
-	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
-
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
-
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
 }
 
 tasks.named('test') {
