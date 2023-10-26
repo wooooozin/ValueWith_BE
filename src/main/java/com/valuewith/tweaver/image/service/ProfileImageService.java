@@ -13,7 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 @RequiredArgsConstructor
-public class ProfileImageService {
+public class ProfileImageService implements ImageService {
 
     @Value("${cloudfront.distribution.domain}")
     private String cloudFrontDomain;
@@ -28,7 +28,8 @@ public class ProfileImageService {
      * 저장할 수 있습니다. 예: user.setProfileUrl(profileService.uploadProfileImage(file))
      * CustomException을 적용할 예정입니다.
      */
-    public String uploadProfileImage(MultipartFile file) {
+    @Override
+    public String uploadImageAndGetUrl(MultipartFile file) {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("추가된 파일이 없습니다.");
         }
@@ -59,7 +60,8 @@ public class ProfileImageService {
     /**
      * profileUrl 중복 방지를 위해 고유한 파일 이름을 생성해 리턴합니다.
      */
-    private String generateFileName(MultipartFile file) {
+    @Override
+    public String generateFileName(MultipartFile file) {
         return String.format(
             "profile/%s-%s",
             UUID.randomUUID().toString(),
