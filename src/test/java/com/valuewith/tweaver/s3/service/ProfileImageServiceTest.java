@@ -1,5 +1,7 @@
 package com.valuewith.tweaver.s3.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -43,5 +45,29 @@ class ProfileImageServiceTest {
         assertTrue(result.startsWith("https://"));
         assertTrue(result.contains(cloudFrontDomain));
         assertTrue(result.endsWith(file.getOriginalFilename().replace(" ", "_")));
+    }
+    
+    @Test
+    void uploadProfileImageFailureInvalidFile() {
+        MockMultipartFile file = new MockMultipartFile(
+            "image", "test.txt", "text/plain", "text_content".getBytes()
+        );
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            profileImageService.uploadProfileImage(file);
+        });
+        assertEquals("올바르지 않은 이미지 파일입니다. PNG, JPG, JPEG 형식만 가능합니다.", exception.getMessage());
+    }
+
+    @Test
+    void uploadProfileImageFailureEmptyFile() {
+        MockMultipartFile file = new MockMultipartFile(
+            "image", "", "image/jpeg", "".getBytes()
+        );
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            profileImageService.uploadProfileImage(file);
+        });
+        assertEquals("추가된 파일이 없습니다.", exception.getMessage());
     }
 }
