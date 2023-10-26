@@ -1,12 +1,12 @@
-package com.valuewith.tweaver.member;
+package com.valuewith.tweaver.member.entity;
 
 import com.valuewith.tweaver.auditing.Period;
-import com.valuewith.tweaver.chat.ChatRoom;
+import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.constants.ApprovedStatus;
 import com.valuewith.tweaver.constants.MemberRole;
-import com.valuewith.tweaver.group.Group;
-import com.valuewith.tweaver.message.Message;
-import com.valuewith.tweaver.user.User;
+import com.valuewith.tweaver.group.entity.Group;
+import com.valuewith.tweaver.message.entity.Message;
+import com.valuewith.tweaver.user.entity.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

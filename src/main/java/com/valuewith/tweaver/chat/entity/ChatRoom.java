@@ -1,19 +1,21 @@
-package com.valuewith.tweaver.chat;
+package com.valuewith.tweaver.chat.entity;
 
 import com.valuewith.tweaver.auditing.Period;
-import com.valuewith.tweaver.group.Group;
-import com.valuewith.tweaver.member.Member;
+import com.valuewith.tweaver.group.entity.Group;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.SQLDelete;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "TBL_CHAT_ROOM")

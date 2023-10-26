@@ -1,16 +1,12 @@
-package com.valuewith.tweaver.user;
+package com.valuewith.tweaver.user.entity;
 
-import com.valuewith.tweaver.alert.Alert;
 import com.valuewith.tweaver.auditing.Period;
-import com.valuewith.tweaver.member.Member;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "TBL_USER")
