@@ -1,7 +1,7 @@
-package com.valuewith.tweaver.alert;
+package com.valuewith.tweaver.alert.entity;
 
 import com.valuewith.tweaver.auditing.Period;
-import com.valuewith.tweaver.user.User;
+import com.valuewith.tweaver.user.entity.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
