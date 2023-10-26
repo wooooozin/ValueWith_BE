@@ -4,6 +4,8 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,13 +61,15 @@ public class ProfileImageService implements ImageService {
 
     /**
      * profileUrl 중복 방지를 위해 고유한 파일 이름을 생성해 리턴합니다.
+     * 파일명이 한글 또는 기타 언어로 되어있을수 있어 encoding 방식으로 변경.
      */
     @Override
     public String generateFileName(MultipartFile file) {
+        String originalFileName = file.getOriginalFilename().replace(" ", "_");
+        String encodedFilename;
+        encodedFilename = URLEncoder.encode(originalFileName, StandardCharsets.UTF_8);
         return String.format(
-            "profile/%s-%s",
-            UUID.randomUUID().toString(),
-            file.getOriginalFilename().replace(" ", "_")
+            "profile/%s-%s", UUID.randomUUID().toString(), encodedFilename
         );
     }
 
