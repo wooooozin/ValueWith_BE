@@ -41,7 +41,7 @@ class ProfileImageServiceTest {
         when(amazonS3.putObject(any(PutObjectRequest.class)))
             .thenReturn(null);
 
-        String result = profileImageService.uploadProfileImage(file);
+        String result = profileImageService.uploadImageAndGetUrl(file);
         assertTrue(result.startsWith("https://"));
         assertTrue(result.contains(cloudFrontDomain));
         assertTrue(result.endsWith(file.getOriginalFilename().replace(" ", "_")));
@@ -54,7 +54,7 @@ class ProfileImageServiceTest {
         );
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            profileImageService.uploadProfileImage(file);
+            profileImageService.uploadImageAndGetUrl(file);
         });
         assertEquals("올바르지 않은 이미지 파일입니다. PNG, JPG, JPEG 형식만 가능합니다.", exception.getMessage());
     }
@@ -66,7 +66,7 @@ class ProfileImageServiceTest {
         );
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            profileImageService.uploadProfileImage(file);
+            profileImageService.uploadImageAndGetUrl(file);
         });
         assertEquals("추가된 파일이 없습니다.", exception.getMessage());
     }
