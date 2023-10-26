@@ -5,6 +5,7 @@ import com.valuewith.tweaver.constants.GroupStatus;
 import com.valuewith.tweaver.member.dto.MemberDto;
 import com.valuewith.tweaver.place.dto.PlaceDto;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class GroupDto {
   private LocalDate dueDate;
   private String snapshotUrl;
   private GroupStatus status;
+  private LocalDateTime updateDateTime;
   private List<MemberDto> members = new ArrayList<>();
   private List<PlaceDto> places = new ArrayList<>();
 }
