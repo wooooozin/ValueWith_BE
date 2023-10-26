@@ -1,15 +1,13 @@
 package com.valuewith.tweaver.group.controller;
 
-import com.valuewith.tweaver.chat.ChatRoom;
+import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.chat.service.ChatRoomService;
-import com.valuewith.tweaver.group.Group;
 import com.valuewith.tweaver.group.dto.GroupDto;
+import com.valuewith.tweaver.group.entity.Group;
 import com.valuewith.tweaver.group.service.GroupService;
-import com.valuewith.tweaver.member.dto.MemberDto;
 import com.valuewith.tweaver.member.service.MemberService;
 import com.valuewith.tweaver.place.service.PlaceService;
-import com.valuewith.tweaver.user.User;
-import com.valuewith.tweaver.user.dto.UserDto;
+import com.valuewith.tweaver.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("groups/*")
 public class GroupController {
+
   private final GroupService groupService;
   private final PlaceService placeService;
   private final ChatRoomService chatRoomService;

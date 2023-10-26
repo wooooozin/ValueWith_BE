@@ -1,8 +1,8 @@
 package com.valuewith.tweaver.place.service;
 
-import com.valuewith.tweaver.group.Group;
-import com.valuewith.tweaver.place.Place;
+import com.valuewith.tweaver.group.entity.Group;
 import com.valuewith.tweaver.place.dto.PlaceDto;
+import com.valuewith.tweaver.place.entity.Place;
 import com.valuewith.tweaver.place.repository.PlaceRepository;
 import java.util.ArrayList;
 import java.util.List;

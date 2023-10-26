@@ -2,7 +2,6 @@ package com.valuewith.tweaver.member.dto;
 
 import com.valuewith.tweaver.constants.ApprovedStatus;
 import com.valuewith.tweaver.constants.MemberRole;
-import com.valuewith.tweaver.message.Message;
 import com.valuewith.tweaver.message.dto.MessageDto;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

@@ -1,13 +1,9 @@
 package com.valuewith.tweaver.user.dto;
 
-import com.valuewith.tweaver.alert.Alert;
 import com.valuewith.tweaver.alert.dto.AlertDto;
 import com.valuewith.tweaver.member.dto.MemberDto;
-import com.valuewith.tweaver.place.dto.PlaceDto;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Column;
-import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;

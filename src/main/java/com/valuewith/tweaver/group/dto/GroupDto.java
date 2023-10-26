@@ -1,6 +1,5 @@
 package com.valuewith.tweaver.group.dto;
 
-import com.valuewith.tweaver.chat.ChatRoom;
 import com.valuewith.tweaver.constants.GroupStatus;
 import com.valuewith.tweaver.member.dto.MemberDto;
 import com.valuewith.tweaver.place.dto.PlaceDto;

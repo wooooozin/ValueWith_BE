@@ -1,8 +1,8 @@
 package com.valuewith.tweaver.chat.service;
 
-import com.valuewith.tweaver.chat.ChatRoom;
+import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.chat.repository.ChatRoomRepository;
-import com.valuewith.tweaver.group.Group;
+import com.valuewith.tweaver.group.entity.Group;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

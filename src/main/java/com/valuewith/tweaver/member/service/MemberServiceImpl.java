@@ -1,12 +1,12 @@
 package com.valuewith.tweaver.member.service;
 
-import com.valuewith.tweaver.chat.ChatRoom;
+import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.constants.ApprovedStatus;
 import com.valuewith.tweaver.constants.MemberRole;
-import com.valuewith.tweaver.group.Group;
-import com.valuewith.tweaver.member.Member;
+import com.valuewith.tweaver.group.entity.Group;
+import com.valuewith.tweaver.member.entity.Member;
 import com.valuewith.tweaver.member.repository.MemberRepository;
-import com.valuewith.tweaver.user.User;
+import com.valuewith.tweaver.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

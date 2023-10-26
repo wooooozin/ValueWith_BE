@@ -1,8 +1,8 @@
 package com.valuewith.tweaver.group.service;
 
 import com.valuewith.tweaver.constants.GroupStatus;
-import com.valuewith.tweaver.group.Group;
 import com.valuewith.tweaver.group.dto.GroupDto;
+import com.valuewith.tweaver.group.entity.Group;
 import com.valuewith.tweaver.group.repository.GroupRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
