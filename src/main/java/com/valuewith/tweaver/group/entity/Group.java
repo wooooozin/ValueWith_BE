@@ -1,18 +1,22 @@
-package com.valuewith.tweaver.group;
+package com.valuewith.tweaver.group.entity;
 
 import com.valuewith.tweaver.auditing.Period;
-import com.valuewith.tweaver.chat.ChatRoom;
 import com.valuewith.tweaver.constants.GroupStatus;
+import java.time.LocalDate;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.SQLDelete;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "TBL_GROUP")
@@ -77,12 +81,5 @@ public class Group extends Period {
     @NotNull
     @Enumerated(EnumType.STRING)
     private GroupStatus status;
-
-    /**
-     * ChatRoom Entity 와 연관 관계 (1 : 1)
-     **/
-    @OneToOne
-    @JoinColumn(name = "chat_room_id")
-    private ChatRoom chatRoom;
 
 }
