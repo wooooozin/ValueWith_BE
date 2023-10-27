@@ -32,13 +32,13 @@ public class DefaultImage {
    * Image Name(이미지 명)
    **/
   @NotNull
-  private String ImageName;
+  private String imageName;
 
   /**
    * Default Image Url(기본 이미지 URL)
    **/
   @NotNull
-  private String DefaultImageUrl;
+  private String defaultImageUrl;
 
   /**
    * Created date time(생성 날짜)
