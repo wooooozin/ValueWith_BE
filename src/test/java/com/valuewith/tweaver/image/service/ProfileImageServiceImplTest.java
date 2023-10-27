@@ -16,10 +16,10 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 
-class ProfileImageServiceTest {
+class ProfileImageServiceImplTest {
 
     @InjectMocks
-    private ProfileImageService profileImageService;
+    private ProfileImageServiceImpl profileImageService;
 
     @Mock
     private AmazonS3 amazonS3;

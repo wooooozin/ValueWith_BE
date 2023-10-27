@@ -15,7 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 @RequiredArgsConstructor
-public class ProfileImageService implements ImageService {
+public class ProfileImageServiceImpl implements ImageService {
 
     @Value("${cloudfront.distribution.domain}")
     private String cloudFrontDomain;
@@ -72,5 +72,18 @@ public class ProfileImageService implements ImageService {
             "profile/%s-%s", UUID.randomUUID().toString(), encodedFilename
         );
     }
+
+    /**
+     * 프로필 새 이미지를 S3에 업로드한 후 S3에 이미지가 있는지 확인,
+     * 업로드 성공 -> 기존 이미지 S3 삭제
+     * 업로드 실패 -> 기존 이미지 그대로 유지
+     */
+    @Override
+    public String updateImageWithFallback(MultipartFile newFile, String currentUrl) {
+        String newImageUrl = uploadImageAndGetUrl(newFile);
+
+        return null;
+    }
+
 
 }
