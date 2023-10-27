@@ -79,11 +79,14 @@ public class ProfileImageServiceImpl implements ImageService {
      * 업로드 실패 -> 기존 이미지 그대로 유지
      */
     @Override
-    public String updateImageWithFallback(MultipartFile newFile, String currentUrl) {
+    public String modifiedImageWithFallback(MultipartFile newFile, String currentUrl) {
         String newImageUrl = uploadImageAndGetUrl(newFile);
-
-        return null;
+        if (newImageUrl != null && !newImageUrl.isBlank()) {
+            String currentKey = currentUrl.replace("http://" + cloudFrontDomain + "/", "");
+            amazonS3.deleteObject(bucketName, currentKey);
+            return newImageUrl;
+        } else {
+            return currentUrl;
+        }
     }
-
-
 }
