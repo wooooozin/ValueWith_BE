@@ -70,10 +70,10 @@ public class Group extends Period {
     private LocalDate dueDate;
 
     /**
-     * Group Snapshot Url(여행 지도 스냅샷)
+     * Group Thumbnail Url(여행 지도 썸네일)
      **/
     @NotNull
-    private String snapshotUrl;
+    private String thumbnailUrl;
 
     /**
      * Group Status(그룹 상태)
