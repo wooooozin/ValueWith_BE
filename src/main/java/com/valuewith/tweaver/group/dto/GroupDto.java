@@ -22,7 +22,7 @@ public class GroupDto {
   private String tripArea;
   private LocalDate tripDate;
   private LocalDate dueDate;
-  private String snapshotUrl;
+  private String thumbnailUrl;
   private GroupStatus status;
   private LocalDateTime updateDateTime;
   private List<MemberDto> members = new ArrayList<>();
