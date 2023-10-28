@@ -8,6 +8,7 @@ import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.message.entity.Message;
 import com.valuewith.tweaver.user.entity.User;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -47,6 +48,7 @@ public class GroupUser extends BaseEntity {
   private LocalDateTime approvedDateTime;
 
   @OneToMany(mappedBy = "member")
+  @Builder.Default
   private List<Message> messages = new ArrayList<>();
 
   @ManyToOne(fetch = FetchType.LAZY)
