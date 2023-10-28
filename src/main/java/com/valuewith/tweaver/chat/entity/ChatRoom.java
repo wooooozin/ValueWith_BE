@@ -1,7 +1,7 @@
 package com.valuewith.tweaver.chat.entity;
 
-import com.valuewith.tweaver.auditing.Period;
-import com.valuewith.tweaver.group.entity.Group;
+import com.valuewith.tweaver.auditing.BaseEntity;
+import com.valuewith.tweaver.group.entity.TripGroup;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,28 +18,21 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.SQLDelete;
 
 @Entity
-@Table(name = "TBL_CHAT_ROOM")
+@Table(name = "CHAT_ROOM")
 @Getter
 @ToString
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE TBL_CHAT_ROOM SET IS_DELETED = 1 WHERE CHAT_ROOM_ID = ?")
-public class ChatRoom extends Period {
-    /**
-     * ChatRoom PK(고유 번호)
-     **/
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long chatRoomId;
+@SQLDelete(sql = "UPDATE CHAT_ROOM SET IS_DELETED = 1 WHERE CHAT_ROOM_ID = ?")
+public class ChatRoom extends BaseEntity {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long chatRoomId;
 
-    @NotNull
-    private String title;
+  @NotNull
+  private String title;
 
-    /**
-     * Group Entity 와 연관 관계 (1 : 1)
-     **/
-    @OneToOne
-    @JoinColumn(name = "group_id")
-    private Group group;
-
+  @OneToOne
+  @JoinColumn(name = "group_id")
+  private TripGroup tripGroup;
 }

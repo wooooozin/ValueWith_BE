@@ -2,7 +2,7 @@ package com.valuewith.tweaver.chat.service;
 
 import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.chat.repository.ChatRoomRepository;
-import com.valuewith.tweaver.group.entity.Group;
+import com.valuewith.tweaver.group.entity.TripGroup;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,10 +16,10 @@ public class ChatRoomServiceImpl implements ChatRoomService{
   private final ChatRoomRepository chatRoomRepository;
 
   @Override
-  public ChatRoom setChatRoom(Group group) {
+  public ChatRoom setChatRoom(TripGroup tripGroup) {
     ChatRoom chatRoom = ChatRoom.builder()
-        .title(group.getName())
-        .group(group)
+        .title(tripGroup.getName())
+        .tripGroup(tripGroup)
         .build();
     return chatRoomRepository.save(chatRoom);
   }

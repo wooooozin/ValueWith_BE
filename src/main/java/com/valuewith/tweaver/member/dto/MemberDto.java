@@ -1,7 +1,7 @@
 package com.valuewith.tweaver.member.dto;
 
 import com.valuewith.tweaver.constants.ApprovedStatus;
-import com.valuewith.tweaver.constants.MemberRole;
+import com.valuewith.tweaver.constants.UserRole;
 import com.valuewith.tweaver.message.dto.MessageDto;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class MemberDto {
   private Long userId;
   private Long groupId;
   private Long chatRoomId;
-  private MemberRole memberRole;
+  private UserRole userRole;
   private Boolean isBanned;
   private ApprovedStatus approvedStatus;
   private LocalDateTime approvedDateTime;

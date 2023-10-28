@@ -7,9 +7,9 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum GroupStatus {
-    OPEN("모집중"),
-    CLOSE("마감");
+public enum UserRole {
+  LEADER("그룹장"),
+  MEMBER("그룹원");
 
-    private final String description;
+  private final String description;
 }

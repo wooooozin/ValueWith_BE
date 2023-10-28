@@ -3,7 +3,7 @@ package com.valuewith.tweaver.group.controller;
 import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.chat.service.ChatRoomService;
 import com.valuewith.tweaver.group.dto.GroupDto;
-import com.valuewith.tweaver.group.entity.Group;
+import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.group.service.GroupService;
 import com.valuewith.tweaver.member.service.MemberService;
 import com.valuewith.tweaver.place.service.PlaceService;
@@ -29,11 +29,11 @@ public class GroupController {
   @PostMapping
   public ResponseEntity<?> writeGroup(GroupDto groupDto) {
     // 1.그룹 등록
-    Group group = groupService.writeGroup(groupDto);
+    TripGroup tripGroup = groupService.writeGroup(groupDto);
     // 2.여행 등록
-    placeService.writePlace(group, groupDto.getPlaces());
+    placeService.writePlace(tripGroup, groupDto.getPlaces());
     // 3.채팅 등록
-    ChatRoom chatRoom = chatRoomService.setChatRoom(group);
+    ChatRoom chatRoom = chatRoomService.setChatRoom(tripGroup);
     // 4.멤버 등록(인증된 user값으로 등록) -> 일단 수기로 작성
     // TODO: spring security 인증작업이 끝나면 해당 기능 사용해서 현재 사용자정보 가져오기
     User user = User.builder()
@@ -46,7 +46,7 @@ public class GroupController {
         .profileUrl("http://images...")
         .isSocial(true)
         .build();
-    memberService.setMember(group, user, chatRoom);
+    memberService.setMember(tripGroup, user, chatRoom);
     return ResponseEntity.ok("ok");
   }
 }
