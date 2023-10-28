@@ -2,11 +2,11 @@ package com.valuewith.tweaver.member.service;
 
 import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.constants.ApprovedStatus;
-import com.valuewith.tweaver.constants.UserRole;
+import com.valuewith.tweaver.constants.MemberRole;
 import com.valuewith.tweaver.group.entity.TripGroup;
-import com.valuewith.tweaver.member.entity.GroupUser;
+import com.valuewith.tweaver.member.entity.GroupMember;
 import com.valuewith.tweaver.member.repository.MemberRepository;
-import com.valuewith.tweaver.user.entity.User;
+import com.valuewith.tweaver.user.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,17 +20,17 @@ public class MemberServiceImpl implements MemberService{
   private final MemberRepository memberRepository;
 
   @Override
-  public void setMember(TripGroup tripGroup, User user, ChatRoom chatRoom) {
-    GroupUser groupUser = GroupUser.builder()
-        .userRole(UserRole.LEADER)
+  public void setMember(TripGroup tripGroup, Member member, ChatRoom chatRoom) {
+    GroupMember groupMember = GroupMember.builder()
+        .memberRole(MemberRole.LEADER)
         .tripGroup(tripGroup)
-        .user(user)
+        .member(member)
         .chatRoom(chatRoom)
-        .userRole(UserRole.LEADER)
+        .memberRole(MemberRole.LEADER)
         .isBanned(false)
         .approvedStatus(ApprovedStatus.APPROVED)
         .build();
 
-      memberRepository.save(groupUser);
+      memberRepository.save(groupMember);
   }
 }

@@ -46,6 +46,6 @@ public class Place extends BaseEntity {
   private Double distance;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "group_id")
+  @JoinColumn(name = "trip_group_id")
   private TripGroup tripGroup;
 }

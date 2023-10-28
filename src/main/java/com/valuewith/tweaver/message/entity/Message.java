@@ -1,7 +1,7 @@
 package com.valuewith.tweaver.message.entity;
 
 import com.valuewith.tweaver.auditing.BaseEntity;
-import com.valuewith.tweaver.member.entity.GroupUser;
+import com.valuewith.tweaver.member.entity.GroupMember;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +28,6 @@ public class Message extends BaseEntity {
   private String content;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "member_id")
-  private GroupUser groupUser;
+  @JoinColumn(name = "group_member_id")
+  private GroupMember groupMember;
 }

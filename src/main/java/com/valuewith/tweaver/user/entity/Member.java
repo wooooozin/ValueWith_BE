@@ -9,16 +9,16 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "MEMBER")
 @Getter
 @ToString
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE USER SET IS_DELETED = 1 WHERE USER_ID = ?")
-public class User extends BaseEntity {
+@SQLDelete(sql = "UPDATE MEMBER SET IS_DELETED = 1 WHERE MEMBER_ID = ?")
+public class Member extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long userId;
+  private Long memberId;
 
   @NotNull
   @Column(unique = true)

@@ -1,7 +1,7 @@
 package com.valuewith.tweaver.alert.entity;
 
 import com.valuewith.tweaver.auditing.BaseEntity;
-import com.valuewith.tweaver.user.entity.User;
+import com.valuewith.tweaver.user.entity.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +30,6 @@ public class Alert extends BaseEntity {
   private Long groupId;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
-  private User user;
+  @JoinColumn(name = "member_id")
+  private Member member;
 }

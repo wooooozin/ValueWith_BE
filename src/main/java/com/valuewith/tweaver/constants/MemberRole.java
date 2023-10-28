@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public enum UserRole {
+public enum MemberRole {
   LEADER("그룹장"),
   MEMBER("그룹원");
 

@@ -3,10 +3,10 @@ package com.valuewith.tweaver.member.entity;
 import com.valuewith.tweaver.auditing.BaseEntity;
 import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.constants.ApprovedStatus;
-import com.valuewith.tweaver.constants.UserRole;
+import com.valuewith.tweaver.constants.MemberRole;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.message.entity.Message;
-import com.valuewith.tweaver.user.entity.User;
+import com.valuewith.tweaver.user.entity.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,20 +22,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "GROUP_USER")
+@Table(name = "GROUP_MEMBER")
 @Getter
 @ToString
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE GROUP_USER SET IS_DELETED = 1 WHERE MEMBER_ID = ?")
-public class GroupUser extends BaseEntity {
+@SQLDelete(sql = "UPDATE GROUP_MEMBER SET IS_DELETED = 1 WHERE GROUP_MEMBER_ID = ?")
+public class GroupMember extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long memberId;
+  private Long groupMemberId;
 
   @NotNull
   @Enumerated(EnumType.STRING)
-  private UserRole userRole;
+  private MemberRole memberRole;
 
   @NotNull
   private Boolean isBanned;
@@ -47,16 +47,16 @@ public class GroupUser extends BaseEntity {
   @NotNull
   private LocalDateTime approvedDateTime;
 
-  @OneToMany(mappedBy = "member")
+  @OneToMany(mappedBy = "groupMember")
   @Builder.Default
   private List<Message> messages = new ArrayList<>();
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
-  private User user;
+  @JoinColumn(name = "member_id")
+  private Member member;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "group_id")
+  @JoinColumn(name = "trip_group_id")
   private TripGroup tripGroup;
 
   @ManyToOne(fetch = FetchType.LAZY)

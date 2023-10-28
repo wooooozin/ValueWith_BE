@@ -33,6 +33,6 @@ public class ChatRoom extends BaseEntity {
   private String title;
 
   @OneToOne
-  @JoinColumn(name = "group_id")
+  @JoinColumn(name = "trip_group_id")
   private TripGroup tripGroup;
 }

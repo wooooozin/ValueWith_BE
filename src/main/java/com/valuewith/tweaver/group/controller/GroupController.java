@@ -7,7 +7,7 @@ import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.group.service.GroupService;
 import com.valuewith.tweaver.member.service.MemberService;
 import com.valuewith.tweaver.place.service.PlaceService;
-import com.valuewith.tweaver.user.entity.User;
+import com.valuewith.tweaver.user.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -36,8 +36,8 @@ public class GroupController {
     ChatRoom chatRoom = chatRoomService.setChatRoom(tripGroup);
     // 4.멤버 등록(인증된 user값으로 등록) -> 일단 수기로 작성
     // TODO: spring security 인증작업이 끝나면 해당 기능 사용해서 현재 사용자정보 가져오기
-    User user = User.builder()
-        .userId(1L)
+    Member member = Member.builder()
+        .memberId(1L)
         .email("dodunge@gmail.com")
         .password("1234")
         .nickName("수정")
@@ -46,7 +46,7 @@ public class GroupController {
         .profileUrl("http://images...")
         .isSocial(true)
         .build();
-    memberService.setMember(tripGroup, user, chatRoom);
+    memberService.setMember(tripGroup, member, chatRoom);
     return ResponseEntity.ok("ok");
   }
 }
