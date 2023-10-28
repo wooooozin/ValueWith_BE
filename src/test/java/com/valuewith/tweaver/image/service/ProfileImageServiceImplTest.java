@@ -19,7 +19,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 class ProfileImageServiceImplTest {
 
     @InjectMocks
-    private ProfileImageServiceImpl profileImageService;
+    private ImageService profileImageService;
 
     @Mock
     private AmazonS3 amazonS3;
