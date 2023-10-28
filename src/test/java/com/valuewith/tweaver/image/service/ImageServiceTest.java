@@ -20,7 +20,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 class ImageServiceTest {
 
     @InjectMocks
-    private ImageService profileImageService;
+    private ImageService imageService;
 
     @Mock
     private AmazonS3 amazonS3;
@@ -30,7 +30,7 @@ class ImageServiceTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        ReflectionTestUtils.setField(profileImageService, "cloudFrontDomain", cloudFrontDomain);
+        ReflectionTestUtils.setField(imageService, "cloudFrontDomain", cloudFrontDomain);
     }
 
     @Test
@@ -42,7 +42,7 @@ class ImageServiceTest {
         when(amazonS3.putObject(any(PutObjectRequest.class)))
             .thenReturn(null);
 
-        String result = profileImageService.uploadImageAndGetUrl(file, ImageType.PROFILE);
+        String result = imageService.uploadImageAndGetUrl(file, ImageType.PROFILE);
         assertTrue(result.startsWith("https://"));
         assertTrue(result.contains(cloudFrontDomain));
         assertTrue(result.endsWith(file.getOriginalFilename().replace(" ", "_")));
@@ -55,7 +55,7 @@ class ImageServiceTest {
         );
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            profileImageService.uploadImageAndGetUrl(file, ImageType.PROFILE);
+            imageService.uploadImageAndGetUrl(file, ImageType.PROFILE);
         });
         assertEquals("올바르지 않은 이미지 파일입니다. PNG, JPG, JPEG 형식만 가능합니다.", exception.getMessage());
     }
@@ -67,8 +67,29 @@ class ImageServiceTest {
         );
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            profileImageService.uploadImageAndGetUrl(file, ImageType.PROFILE);
+            imageService.uploadImageAndGetUrl(file, ImageType.PROFILE);
         });
         assertEquals("추가된 파일이 없습니다.", exception.getMessage());
+    }
+
+    @Test
+    void modifiedImageWithFallbackSuccess() {
+        MockMultipartFile newFile = new MockMultipartFile(
+            "image", "new-test.jpeg", "image/jpeg", "new_image_content".getBytes()
+        );
+
+        String currentUrl = "https://test-cloud-domain/profile/old-test.jpeg";
+        ImageType imageType = ImageType.PROFILE;
+
+        when(imageService.uploadImageAndGetUrl(
+            newFile,
+            imageType)
+        ).thenReturn(null);
+
+        String result = imageService.modifiedImageWithFallback(newFile, currentUrl, imageType);
+
+        assertTrue(result.startsWith("https://"));
+        assertTrue(result.contains(cloudFrontDomain));
+        assertTrue(result.endsWith("new-test.jpeg"));
     }
 }

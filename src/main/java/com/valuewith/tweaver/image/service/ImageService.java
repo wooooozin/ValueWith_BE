@@ -80,8 +80,10 @@ public class ImageService {
 
     /**
      * 프로필 새 이미지를 S3에 업로드한 후 S3에 이미지가 있는지 확인,
+     * 업로드 이미지와 동일하게 엔티티 유형에 따른 ImageType 매개변수로 전달해주시면 됩니다
+     * 그래야 같은 폴더안에 이미지를 찾아 삭제할 수 있습니다.
      * 업로드 성공 -> 기존 이미지 S3 삭제
-     * 업로드 실패 -> 기존 이미지 그대로 유지
+     * 업로드 실패 -> 기존 이미지 그대로 유지 및 기존 url 다시 저장
      */
     public String modifiedImageWithFallback(MultipartFile newFile, String currentUrl, ImageType imageType) {
         String newImageUrl = uploadImageAndGetUrl(newFile, imageType);
