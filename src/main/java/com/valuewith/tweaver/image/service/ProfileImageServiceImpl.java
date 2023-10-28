@@ -82,7 +82,9 @@ public class ProfileImageServiceImpl implements ImageService {
     public String modifiedImageWithFallback(MultipartFile newFile, String currentUrl) {
         String newImageUrl = uploadImageAndGetUrl(newFile);
         if (newImageUrl != null && !newImageUrl.isBlank()) {
-            String currentKey = currentUrl.replace("http://" + cloudFrontDomain + "/", "");
+            String currentKey = currentUrl
+                .replace("https://" + cloudFrontDomain + "/", "")
+                .replace("%2F", "/");
             amazonS3.deleteObject(bucketName, currentKey);
             return newImageUrl;
         } else {
