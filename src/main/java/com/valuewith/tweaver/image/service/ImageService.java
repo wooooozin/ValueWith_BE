@@ -3,6 +3,7 @@ package com.valuewith.tweaver.image.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.valuewith.tweaver.constants.ImageType;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -26,11 +27,17 @@ public class ImageService {
     private final AmazonS3 amazonS3;
 
     /**
-     * 매개변수로 받는 MultipartFile을 S3에 업로드한 후 CloudFront URL을 리턴합니다. 반환된 URL은 USER Entity의 profileUrl에
-     * 저장할 수 있습니다. 예: user.setProfileUrl(profileService.uploadProfileImage(file))
+     * 매개변수로 받는 MultipartFile을 S3에 업로드한 후 CloudFront URL을 리턴합니다.
+     * 반환된 URL은 ImageType에 맞는 엔티티에 저장되도록 매개변수를 넣어주시면 됩니다.
+     * 그럼 S3 버켓에서 폴더 별로 분류되어 저장됩니다.
+     *     PROFILE("profile/")
+     *     THUMBNAIL("thumbnail/")
+     *     LOCATION("location/")
+     * 예: user.setProfileUrl(imageService.uploadImageAndGetUrl(file,ImageType.PROFILE))
+     * 예: location.setThumbnailUrl(imageService.uploadImageAndGetUrl(file, ImageType.LOCATION))
      * CustomException을 적용할 예정입니다.
      */
-    public String uploadImageAndGetUrl(MultipartFile file) {
+    public String uploadImageAndGetUrl(MultipartFile file, ImageType imageType) {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("추가된 파일이 없습니다.");
         }
@@ -43,7 +50,7 @@ public class ImageService {
 
         String fileName;
         try {
-            fileName = generateFileName(file);
+            fileName = generateFileName(file, imageType);
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentLength(file.getSize());
             amazonS3.putObject(
@@ -62,12 +69,12 @@ public class ImageService {
      * profileUrl 중복 방지를 위해 고유한 파일 이름을 생성해 리턴합니다.
      * 파일명이 한글 또는 기타 언어로 되어있을수 있어 encoding 방식으로 변경.
      */
-    public String generateFileName(MultipartFile file) {
+    public String generateFileName(MultipartFile file, ImageType imageType) {
         String originalFileName = file.getOriginalFilename().replace(" ", "_");
         String encodedFilename;
         encodedFilename = URLEncoder.encode(originalFileName, StandardCharsets.UTF_8);
         return String.format(
-            "profile/%s-%s", UUID.randomUUID().toString(), encodedFilename
+            "%s%s-%s", imageType.getPath(), UUID.randomUUID().toString(), encodedFilename
         );
     }
 
@@ -76,8 +83,8 @@ public class ImageService {
      * 업로드 성공 -> 기존 이미지 S3 삭제
      * 업로드 실패 -> 기존 이미지 그대로 유지
      */
-    public String modifiedImageWithFallback(MultipartFile newFile, String currentUrl) {
-        String newImageUrl = uploadImageAndGetUrl(newFile);
+    public String modifiedImageWithFallback(MultipartFile newFile, String currentUrl, ImageType imageType) {
+        String newImageUrl = uploadImageAndGetUrl(newFile, imageType);
         if (newImageUrl != null && !newImageUrl.isBlank()) {
             String currentKey = currentUrl
                 .replace("https://" + cloudFrontDomain + "/", "")
