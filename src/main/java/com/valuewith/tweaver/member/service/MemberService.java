@@ -1,9 +1,9 @@
 package com.valuewith.tweaver.member.service;
 
 import com.valuewith.tweaver.chat.entity.ChatRoom;
-import com.valuewith.tweaver.group.entity.Group;
-import com.valuewith.tweaver.user.entity.User;
+import com.valuewith.tweaver.group.entity.TripGroup;
+import com.valuewith.tweaver.user.entity.Member;
 
 public interface MemberService {
-  void setMember(Group group, User user, ChatRoom chatRoom);
+  void setMember(TripGroup tripGroup, Member member, ChatRoom chatRoom);
 }

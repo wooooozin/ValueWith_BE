@@ -8,15 +8,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum MemberRole {
+  LEADER("그룹장"),
+  MEMBER("그룹원");
 
-    /**
-     * LEADER : LEADER(그룹장)
-     * MEMBER : MEMBER(그룹원)
-     **/
-    LEADER("LEADER", "그룹장"),
-    MEMBER("MEMBER", "그룹원");
-
-    private final String code;
-    private final String name;
-
+  private final String description;
 }

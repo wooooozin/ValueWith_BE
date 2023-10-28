@@ -25,7 +25,7 @@ public class ProfileImageService {
 
     /**
      * 매개변수로 받는 MultipartFile을 S3에 업로드한 후 CloudFront URL을 리턴합니다. 반환된 URL은 USER Entity의 profileUrl에
-     * 저장할 수 있습니다. 예: user.setProfileUrl(profileService.uploadProfileImage(file))
+     * 저장할 수 있습니다. 예: member.setProfileUrl(profileService.uploadProfileImage(file))
      * CustomException을 적용할 예정입니다.
      */
     public String uploadProfileImage(MultipartFile file) {

@@ -1,6 +1,6 @@
 package com.valuewith.tweaver.place.service;
 
-import com.valuewith.tweaver.group.entity.Group;
+import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.place.dto.PlaceDto;
 import com.valuewith.tweaver.place.entity.Place;
 import com.valuewith.tweaver.place.repository.PlaceRepository;
@@ -17,7 +17,7 @@ public class PlaceServiceImpl implements PlaceService{
   private final PlaceRepository placeRepository;
 
   @Override
-  public void writePlace(Group group, List<PlaceDto> placeDtos) {
+  public void writePlace(TripGroup tripGroup, List<PlaceDto> placeDtos) {
     List<Place> places = new ArrayList<>();
     places.stream().map(place -> places.add(Place.builder()
         .name(place.getName())
@@ -27,7 +27,7 @@ public class PlaceServiceImpl implements PlaceService{
         .placeCode(place.getPlaceCode())
         .orders(place.getOrders())
         .distance(place.getDistance())
-        .group(group)
+        .tripGroup(tripGroup)
         .build()));
     placeRepository.saveAll(places);
   }

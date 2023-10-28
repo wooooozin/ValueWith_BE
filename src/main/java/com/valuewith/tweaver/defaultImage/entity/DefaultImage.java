@@ -15,35 +15,22 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 
 @Entity
-@Table(name = "TBL_DEFAULT_IMAGE")
+@Table(name = "DEFAULT_IMAGE")
 @Getter
 @ToString
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DefaultImage {
-  /**
-   * Default Image PK(고유 번호)
-   **/
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long defaultImageId;
 
-  /**
-   * Image Name(이미지 명)
-   **/
   @NotNull
   private String imageName;
 
-  /**
-   * Default Image Url(기본 이미지 URL)
-   **/
   @NotNull
   private String defaultImageUrl;
 
-  /**
-   * Created date time(생성 날짜)
-   **/
   @CreatedDate
   private LocalDateTime createdDateTime;
-
 }

@@ -8,15 +8,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum GroupStatus {
+    OPEN("모집중"),
+    CLOSE("마감");
 
-    /**
-     * OPEN: 모집중
-     * CLOSE: 마감
-     */
-    OPEN("OPEN", "모집중"),
-    CLOSE("CLOSE", "마감");
-
-    private final String code;
-    private final String name;
-
+    private final String description;
 }
