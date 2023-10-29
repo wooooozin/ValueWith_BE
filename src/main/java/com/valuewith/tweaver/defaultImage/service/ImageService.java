@@ -5,13 +5,17 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.valuewith.tweaver.constants.ErrorCode;
 import com.valuewith.tweaver.constants.ImageType;
+import com.valuewith.tweaver.defaultImage.entity.DefaultImage;
 import com.valuewith.tweaver.defaultImage.exception.InvalidFileMediaTypeException;
+import com.valuewith.tweaver.defaultImage.exception.LocationNameEmptyException;
 import com.valuewith.tweaver.defaultImage.exception.NoFileProvidedException;
 import com.valuewith.tweaver.defaultImage.exception.S3ImageNotFoundException;
 import com.valuewith.tweaver.defaultImage.exception.UrlEmptyException;
+import com.valuewith.tweaver.defaultImage.repository.DefaultImageRepository;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +37,8 @@ public class ImageService {
     private String bucketName;
 
     private final AmazonS3 amazonS3;
+
+    private final DefaultImageRepository defaultImageRepository;
 
     @PostConstruct
     private void postConstruct() {
@@ -135,5 +141,20 @@ public class ImageService {
         return url
             .replace("https://" + cloudFrontDomain + "/", "")
             .replace("%2F", "/");
+    }
+
+    public String randomLocationImageUploadAndGetUrl(MultipartFile file, ImageType imageType, String locationName) {
+        if (locationName == null || locationName.isBlank()) {
+            throw new LocationNameEmptyException(ErrorCode.LOCATION_NAME_NOT_FOUNT);
+        }
+        String imageUrl = uploadImageAndGetUrl(file, imageType);
+        DefaultImage defaultImage = DefaultImage.builder()
+            .imageName(locationName)
+            .defaultImageUrl(imageUrl)
+            .createdDateTime(LocalDateTime.now())
+            .build();
+
+        defaultImageRepository.save(defaultImage);
+        return imageUrl;
     }
 }
