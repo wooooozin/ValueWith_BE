@@ -1,4 +1,4 @@
-package com.valuewith.tweaver.image.service;
+package com.valuewith.tweaver.defaultImage.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;

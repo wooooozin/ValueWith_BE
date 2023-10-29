@@ -1,7 +1,7 @@
-package com.valuewith.tweaver.image.controller;
+package com.valuewith.tweaver.defaultImage.controller;
 
 import com.valuewith.tweaver.constants.ImageType;
-import com.valuewith.tweaver.image.service.ImageService;
+import com.valuewith.tweaver.defaultImage.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
