@@ -18,7 +18,7 @@ public class PlaceService {
 
   private final PlaceRepository placeRepository;
 
-  public void writePlace(TripGroup tripGroup, List<PlaceDto> placeDtos) {
+  public void createPlace(TripGroup tripGroup, List<PlaceDto> placeDtos) {
     List<Place> places = placeDtos.stream().map(
             place -> Place.builder()
                 .name(place.getName())

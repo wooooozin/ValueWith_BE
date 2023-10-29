@@ -3,7 +3,7 @@ package com.valuewith.tweaver.group.service;
 import com.valuewith.tweaver.constants.GroupStatus;
 import com.valuewith.tweaver.defaultImage.entity.DefaultImage;
 import com.valuewith.tweaver.defaultImage.repository.DefaultImageRepository;
-import com.valuewith.tweaver.group.dto.TripGroupDto;
+import com.valuewith.tweaver.group.dto.TripGroupRequestDto;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.group.repository.GroupRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,27 +20,26 @@ public class TripGroupService {
   private final GroupRepository groupRepository;
   private final DefaultImageRepository defaultImageRepository;
 
-  public TripGroup writeGroup(TripGroupDto tripGroupDto) {
+  public TripGroup createTripGroup(TripGroupRequestDto tripGroupRequestDto) {
     // 사용자로 부터 사진 등록을 받지 못한 경우
-    if(tripGroupDto.getThumbnailUrl() == null) {
+    if(tripGroupRequestDto.getThumbnailUrl() == null) {
       // 입력받은 지역으로 default_image에 있는 사진중에 랜덤 한장 뽑아서 저장
-      tripGroupDto.setThumbnailUrl(getThumbnailUrl(tripGroupDto.getTripArea()));
+      tripGroupRequestDto.setThumbnailUrl(getThumbnailUrl(tripGroupRequestDto.getTripArea()));
     }
 
     TripGroup tripGroup = TripGroup.builder()
-        .name(tripGroupDto.getName())
-        .content(tripGroupDto.getContent())
-        .maxUserNumber(tripGroupDto.getMaxUserNumber())
-        .tripArea(tripGroupDto.getTripArea())
-        .tripDate(tripGroupDto.getTripDate())
-        .dueDate(tripGroupDto.getDueDate() == null ? tripGroupDto.getTripDate().minusDays(1)
-            : tripGroupDto.getDueDate())
-        .thumbnailUrl(tripGroupDto.getThumbnailUrl())
+        .name(tripGroupRequestDto.getName())
+        .content(tripGroupRequestDto.getContent())
+        .maxUserNumber(tripGroupRequestDto.getMaxUserNumber())
+        .tripArea(tripGroupRequestDto.getTripArea())
+        .tripDate(tripGroupRequestDto.getTripDate())
+        .dueDate(tripGroupRequestDto.getDueDate() == null ? tripGroupRequestDto.getTripDate().minusDays(1)
+            : tripGroupRequestDto.getDueDate())
+        .thumbnailUrl(tripGroupRequestDto.getThumbnailUrl())
         .status(GroupStatus.OPEN)
         .build();
-    groupRepository.save(tripGroup);
 
-    return tripGroup;
+    return groupRepository.save(tripGroup);
   }
 
   public String getThumbnailUrl(String tripArea) {

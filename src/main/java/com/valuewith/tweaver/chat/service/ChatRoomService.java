@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ChatRoomService {
   private final ChatRoomRepository chatRoomRepository;
 
-  public ChatRoom setChatRoom(TripGroup tripGroup) {
+  public ChatRoom createChatRoom(TripGroup tripGroup) {
     ChatRoom chatRoom = ChatRoom.builder()
         .title(tripGroup.getName())
         .tripGroup(tripGroup)

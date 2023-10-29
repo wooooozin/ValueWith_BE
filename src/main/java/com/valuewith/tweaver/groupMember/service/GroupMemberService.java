@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class GroupMemberService {
   private final MemberRepository memberRepository;
 
-  public void setMember(TripGroup tripGroup, Member member, ChatRoom chatRoom) {
+  public void createGroupMember(TripGroup tripGroup, Member member, ChatRoom chatRoom) {
     GroupMember groupMember = GroupMember.builder()
         .memberRole(MemberRole.LEADER)
         .tripGroup(tripGroup)
