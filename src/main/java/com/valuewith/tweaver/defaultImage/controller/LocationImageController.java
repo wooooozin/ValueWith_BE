@@ -1,6 +1,7 @@
 package com.valuewith.tweaver.defaultImage.controller;
 
 import com.valuewith.tweaver.constants.ImageType;
+import com.valuewith.tweaver.defaultImage.dto.DefaultImageResponseDto;
 import com.valuewith.tweaver.defaultImage.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,5 +36,14 @@ public class LocationImageController {
         String url = imageService.modifiedImageWithFallback(newFile, currentUrl, ImageType.LOCATION);
         return ResponseEntity.ok(url);
     }
-    
+
+    @PostMapping("/upload")
+    public ResponseEntity<DefaultImageResponseDto> createLocationImage(
+        @RequestParam("file") MultipartFile file,
+        @RequestParam("name") String locationName
+    ) {
+        String imageUrl = imageService.randomLocationImageUploadAndGetUrl(file, ImageType.LOCATION, locationName);
+        DefaultImageResponseDto responseDto = DefaultImageResponseDto.from(locationName, imageUrl);
+        return ResponseEntity.ok(responseDto);
+    }
 }
