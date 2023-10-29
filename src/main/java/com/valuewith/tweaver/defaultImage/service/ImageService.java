@@ -42,12 +42,14 @@ public class ImageService {
     }
 
     /**
-     * 매개변수로 받는 MultipartFile을 S3에 업로드한 후 CloudFront URL을 리턴합니다. 반환된 URL은 ImageType에 맞는 엔티티에 저장되도록
-     * 매개변수를 넣어주시면 됩니다. 그럼 S3 버켓에서 폴더 별로 분류되어 저장됩니다. PROFILE("profile/") THUMBNAIL("thumbnail/")
-     * LOCATION("location/") 예:
-     * user.setProfileUrl(imageService.uploadImageAndGetUrl(file,ImageType.PROFILE)) 예:
-     * location.setThumbnailUrl(imageService.uploadImageAndGetUrl(file, ImageType.THUMBNAIL))
-     * CustomException을 적용할 예정입니다.
+     * 매개변수로 받는 MultipartFile을 S3에 업로드한 후 CloudFront URL을 리턴합니다.
+     * 반환된 URL은 ImageType에 맞는 엔티티에 저장되도록 매개변수를 넣어주시면 됩니다.
+     * 그럼 S3 버켓에서 폴더 별로 분류되어 저장됩니다.
+     *  PROFILE("profile/")
+     *  THUMBNAIL("thumbnail/")
+     *  LOCATION("location/")
+     *  예: user.setProfileUrl(imageService.uploadImageAndGetUrl(file,ImageType.PROFILE))
+     *  예: location.setThumbnailUrl(imageService.uploadImageAndGetUrl(file, ImageType.THUMBNAIL))
      */
     public String uploadImageAndGetUrl(MultipartFile file, ImageType imageType) {
         if (file.isEmpty()) {
