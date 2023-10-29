@@ -2,9 +2,11 @@ package com.valuewith.tweaver.group.controller;
 
 import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.chat.service.ChatRoomService;
+import com.valuewith.tweaver.constants.ImageType;
+import com.valuewith.tweaver.defaultImage.service.ImageService;
 import com.valuewith.tweaver.group.dto.TripGroupDto;
 import com.valuewith.tweaver.group.entity.TripGroup;
-import com.valuewith.tweaver.group.service.GroupService;
+import com.valuewith.tweaver.group.service.TripGroupService;
 import com.valuewith.tweaver.groupMember.service.GroupMemberService;
 import com.valuewith.tweaver.place.service.PlaceService;
 import com.valuewith.tweaver.menber.entity.Member;
@@ -13,23 +15,31 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("groups/*")
 public class GroupController {
-
-  private final GroupService groupService;
+  private final ImageService imageService;
+  private final TripGroupService tripGroupService;
   private final PlaceService placeService;
   private final ChatRoomService chatRoomService;
   private final GroupMemberService groupMemberService;
 
   @PostMapping
-  public ResponseEntity<?> writeGroup(TripGroupDto tripGroupDto) {
+  public ResponseEntity<?> writeGroup(
+      @RequestPart(value = "tripGroupDto") TripGroupDto tripGroupDto,
+      @RequestPart(value = "file") MultipartFile file) {
+    // 0.사진 업로드
+    if(!file.isEmpty()) {
+      tripGroupDto.setThumbnailUrl(imageService.uploadImageAndGetUrl(file, ImageType.THUMBNAIL));
+    }
     // 1.그룹 등록
-    TripGroup tripGroup = groupService.writeGroup(tripGroupDto);
+    TripGroup tripGroup = tripGroupService.writeGroup(tripGroupDto);
     // 2.여행 등록
     placeService.writePlace(tripGroup, tripGroupDto.getPlaces());
     // 3.채팅 등록

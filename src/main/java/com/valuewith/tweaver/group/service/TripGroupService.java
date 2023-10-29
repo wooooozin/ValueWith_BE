@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
-public class GroupService {
+public class TripGroupService {
 
   private final GroupRepository groupRepository;
   private final DefaultImageRepository defaultImageRepository;
