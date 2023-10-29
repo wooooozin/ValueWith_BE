@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.valuewith.tweaver.constants.ImageType;
+import com.valuewith.tweaver.defaultImage.service.ImageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
