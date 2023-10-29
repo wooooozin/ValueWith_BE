@@ -19,7 +19,7 @@ public class LocationImageController {
 
     private final ImageService imageService;
 
-    @PostMapping("/upload")
+    @PostMapping("/test-upload")
     public ResponseEntity<String> uploadLocationImage(
         @RequestParam("file") MultipartFile file
     ) {
@@ -27,7 +27,7 @@ public class LocationImageController {
         return ResponseEntity.ok(url);
     }
 
-    @PostMapping("/update")
+    @PostMapping("/test-update")
     public ResponseEntity<String> modifyLocationImage(
         @RequestParam("file") MultipartFile newFile,
         @RequestParam("url") String currentUrl
