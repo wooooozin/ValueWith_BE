@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 public class PlaceDto {
   private Long placeId;
-  private Long groupId;
+  private Long tripGroupId;
   private String name;
   private Double x;
   private Double y;

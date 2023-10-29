@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 public class MessageDto {
   private Long messageId;
-  private Long memberId;
+  private Long groupMemberId;
   private String content;
 }

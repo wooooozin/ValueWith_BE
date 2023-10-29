@@ -1,4 +1,4 @@
-package com.valuewith.tweaver.member.entity;
+package com.valuewith.tweaver.groupMember.entity;
 
 import com.valuewith.tweaver.auditing.BaseEntity;
 import com.valuewith.tweaver.chat.entity.ChatRoom;
@@ -6,7 +6,7 @@ import com.valuewith.tweaver.constants.ApprovedStatus;
 import com.valuewith.tweaver.constants.MemberRole;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.message.entity.Message;
-import com.valuewith.tweaver.user.entity.Member;
+import com.valuewith.tweaver.menber.entity.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

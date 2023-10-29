@@ -2,12 +2,12 @@ package com.valuewith.tweaver.group.controller;
 
 import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.chat.service.ChatRoomService;
-import com.valuewith.tweaver.group.dto.GroupDto;
+import com.valuewith.tweaver.group.dto.TripGroupDto;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.group.service.GroupService;
-import com.valuewith.tweaver.member.service.MemberService;
+import com.valuewith.tweaver.groupMember.service.GroupMemberService;
 import com.valuewith.tweaver.place.service.PlaceService;
-import com.valuewith.tweaver.user.entity.Member;
+import com.valuewith.tweaver.menber.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -24,14 +24,14 @@ public class GroupController {
   private final GroupService groupService;
   private final PlaceService placeService;
   private final ChatRoomService chatRoomService;
-  private final MemberService memberService;
+  private final GroupMemberService groupMemberService;
 
   @PostMapping
-  public ResponseEntity<?> writeGroup(GroupDto groupDto) {
+  public ResponseEntity<?> writeGroup(TripGroupDto tripGroupDto) {
     // 1.그룹 등록
-    TripGroup tripGroup = groupService.writeGroup(groupDto);
+    TripGroup tripGroup = groupService.writeGroup(tripGroupDto);
     // 2.여행 등록
-    placeService.writePlace(tripGroup, groupDto.getPlaces());
+    placeService.writePlace(tripGroup, tripGroupDto.getPlaces());
     // 3.채팅 등록
     ChatRoom chatRoom = chatRoomService.setChatRoom(tripGroup);
     // 4.멤버 등록(인증된 user값으로 등록) -> 일단 수기로 작성
@@ -46,7 +46,7 @@ public class GroupController {
         .profileUrl("http://images...")
         .isSocial(true)
         .build();
-    memberService.setMember(tripGroup, member, chatRoom);
+    groupMemberService.setMember(tripGroup, member, chatRoom);
     return ResponseEntity.ok("ok");
   }
 }

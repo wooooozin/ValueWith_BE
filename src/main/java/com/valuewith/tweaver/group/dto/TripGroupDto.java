@@ -1,7 +1,7 @@
 package com.valuewith.tweaver.group.dto;
 
 import com.valuewith.tweaver.constants.GroupStatus;
-import com.valuewith.tweaver.member.dto.MemberDto;
+import com.valuewith.tweaver.groupMember.dto.GroupMemberDto;
 import com.valuewith.tweaver.place.dto.PlaceDto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Data
 @NoArgsConstructor
-public class GroupDto {
-  private Long groupId;
+public class TripGroupDto {
+  private Long tripGroupId;
   private String name;
   private String content;
   private Integer maxUserNumber;
@@ -25,6 +25,6 @@ public class GroupDto {
   private String thumbnailUrl;
   private GroupStatus status;
   private LocalDateTime updateDateTime;
-  private List<MemberDto> members = new ArrayList<>();
+  private List<GroupMemberDto> groupMembers = new ArrayList<>();
   private List<PlaceDto> places = new ArrayList<>();
 }
