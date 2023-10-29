@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/random-location")
+@RequestMapping("/images")
 public class LocationImageController {
 
     private final ImageService imageService;
@@ -35,4 +35,5 @@ public class LocationImageController {
         String url = imageService.modifiedImageWithFallback(newFile, currentUrl, ImageType.LOCATION);
         return ResponseEntity.ok(url);
     }
+    
 }
