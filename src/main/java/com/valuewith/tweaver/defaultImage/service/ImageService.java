@@ -143,13 +143,13 @@ public class ImageService {
             .replace("%2F", "/");
     }
 
-    public String randomLocationImageUploadAndGetUrl(MultipartFile file, ImageType imageType, String locationName) {
-        if (locationName == null || locationName.isBlank()) {
+    public String randomLocationImageUploadAndGetUrl(MultipartFile file, ImageType imageType, String name) {
+        if (name == null || name.isBlank()) {
             throw new LocationNameEmptyException(ErrorCode.LOCATION_NAME_NOT_FOUNT);
         }
         String imageUrl = uploadImageAndGetUrl(file, imageType);
         DefaultImage defaultImage = DefaultImage.builder()
-            .imageName(locationName)
+            .imageName(name)
             .defaultImageUrl(imageUrl)
             .createdDateTime(LocalDateTime.now())
             .build();
