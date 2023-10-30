@@ -34,12 +34,8 @@ public class GroupController {
   public ResponseEntity<?> createGroup(
       @RequestPart(value = "tripGroupRequestDto") TripGroupRequestDto tripGroupRequestDto,
       @RequestPart(value = "file") MultipartFile file) {
-    // 0.사진 업로드
-    if(!file.isEmpty()) {
-      tripGroupRequestDto.setThumbnailUrl(imageService.uploadImageAndGetUrl(file, ImageType.THUMBNAIL));
-    }
     // 1.그룹 등록
-    TripGroup tripGroup = tripGroupService.createTripGroup(tripGroupRequestDto);
+    TripGroup tripGroup = tripGroupService.createTripGroup(tripGroupRequestDto, file);
     // 2.여행 등록
     placeService.createPlace(tripGroup, tripGroupRequestDto.getPlaces());
     // 3.채팅 등록
