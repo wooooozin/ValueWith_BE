@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AuthDto {
 
-  // TODO:인증, 로그인
+  // TODO: 로그인
 
   @Data
   @NoArgsConstructor
@@ -34,4 +34,16 @@ public class AuthDto {
     }
   }
 
+  @Data
+  @NoArgsConstructor
+  public static class VerificationForm {
+    private String email;
+    private String code;
+  }
+
+  @Data
+  @NoArgsConstructor
+  public static class EmailInput {
+    private String email;
+  }
 }
