@@ -1,7 +1,7 @@
 package com.valuewith.tweaver.message.entity;
 
 import com.valuewith.tweaver.auditing.BaseEntity;
-import com.valuewith.tweaver.member.entity.GroupMember;
+import com.valuewith.tweaver.groupMember.entity.GroupMember;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

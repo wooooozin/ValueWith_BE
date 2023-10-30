@@ -1,4 +1,4 @@
-package com.valuewith.tweaver.member.dto;
+package com.valuewith.tweaver.groupMember.dto;
 
 import com.valuewith.tweaver.constants.ApprovedStatus;
 import com.valuewith.tweaver.constants.MemberRole;
@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 @Component
 @Data
 @NoArgsConstructor
-public class MemberDto {
+public class GroupMemberDto {
+  private Long groupMemberId;
   private Long memberId;
-  private Long userId;
-  private Long groupId;
+  private Long tripGroupId;
   private Long chatRoomId;
   private MemberRole memberRole;
   private Boolean isBanned;

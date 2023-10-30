@@ -1,4 +1,4 @@
-package com.valuewith.tweaver.user.entity;
+package com.valuewith.tweaver.menber.entity;
 
 import com.valuewith.tweaver.auditing.BaseEntity;
 import lombok.*;

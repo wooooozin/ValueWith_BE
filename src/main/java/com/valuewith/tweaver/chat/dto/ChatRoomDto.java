@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 public class ChatRoomDto {
   private Long chatRoomId;
-  private Long groupId;
+  private Long tripGroupId;
   private String title;
   private List<MessageDto> messages = new ArrayList<>();
 }

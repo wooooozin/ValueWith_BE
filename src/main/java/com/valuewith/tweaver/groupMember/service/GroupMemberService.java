@@ -1,12 +1,13 @@
-package com.valuewith.tweaver.member.service;
+package com.valuewith.tweaver.groupMember.service;
 
 import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.constants.ApprovedStatus;
 import com.valuewith.tweaver.constants.MemberRole;
 import com.valuewith.tweaver.group.entity.TripGroup;
-import com.valuewith.tweaver.member.entity.GroupMember;
-import com.valuewith.tweaver.member.repository.MemberRepository;
-import com.valuewith.tweaver.user.entity.Member;
+import com.valuewith.tweaver.groupMember.entity.GroupMember;
+import com.valuewith.tweaver.groupMember.repository.GroupMemberRepository;
+import com.valuewith.tweaver.menber.entity.Member;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,11 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
-public class MemberServiceImpl implements MemberService{
-  private final MemberRepository memberRepository;
+public class GroupMemberService {
+  private final GroupMemberRepository groupMemberRepository;
 
-  @Override
-  public void setMember(TripGroup tripGroup, Member member, ChatRoom chatRoom) {
+  public void createGroupMember(TripGroup tripGroup, Member member, ChatRoom chatRoom) {
     GroupMember groupMember = GroupMember.builder()
         .memberRole(MemberRole.LEADER)
         .tripGroup(tripGroup)
@@ -29,8 +29,9 @@ public class MemberServiceImpl implements MemberService{
         .memberRole(MemberRole.LEADER)
         .isBanned(false)
         .approvedStatus(ApprovedStatus.APPROVED)
+        .approvedDateTime(LocalDateTime.now())
         .build();
 
-      memberRepository.save(groupMember);
+      groupMemberRepository.save(groupMember);
   }
 }
