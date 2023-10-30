@@ -1,6 +1,7 @@
 package com.valuewith.tweaver.exception;
 
 import com.valuewith.tweaver.defaultImage.exception.InvalidFileMediaTypeException;
+import com.valuewith.tweaver.defaultImage.exception.LocationNameEmptyException;
 import com.valuewith.tweaver.defaultImage.exception.NoFileProvidedException;
 import com.valuewith.tweaver.defaultImage.exception.S3ImageNotFoundException;
 import com.valuewith.tweaver.defaultImage.exception.UrlEmptyException;
@@ -45,5 +46,12 @@ public class GlobalExceptionHandler {
             .status(e.getHttpStatus())
             .body(responseDto);
     }
-    
+
+    @ExceptionHandler(LocationNameEmptyException.class)
+    public ResponseEntity<ErrorResponseDto> handleLocationNameEmptyException(LocationNameEmptyException e) {
+        ErrorResponseDto responseDto = ErrorResponseDto.from(e.getErrorCode());
+        return ResponseEntity
+            .status(e.getHttpStatus())
+            .body(responseDto);
+    }
 }
