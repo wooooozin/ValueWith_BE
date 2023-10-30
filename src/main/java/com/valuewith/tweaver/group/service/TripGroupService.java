@@ -5,7 +5,7 @@ import com.valuewith.tweaver.defaultImage.entity.DefaultImage;
 import com.valuewith.tweaver.defaultImage.repository.DefaultImageRepository;
 import com.valuewith.tweaver.group.dto.TripGroupRequestDto;
 import com.valuewith.tweaver.group.entity.TripGroup;
-import com.valuewith.tweaver.group.repository.GroupRepository;
+import com.valuewith.tweaver.group.repository.TripGroupRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class TripGroupService {
 
-  private final GroupRepository groupRepository;
+  private final TripGroupRepository tripGroupRepository;
   private final DefaultImageRepository defaultImageRepository;
 
   public TripGroup createTripGroup(TripGroupRequestDto tripGroupRequestDto) {
@@ -39,7 +39,7 @@ public class TripGroupService {
         .status(GroupStatus.OPEN)
         .build();
 
-    return groupRepository.save(tripGroup);
+    return tripGroupRepository.save(tripGroup);
   }
 
   public String getThumbnailUrl(String tripArea) {

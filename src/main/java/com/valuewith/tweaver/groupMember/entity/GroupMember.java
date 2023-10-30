@@ -44,7 +44,6 @@ public class GroupMember extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private ApprovedStatus approvedStatus;
 
-  @NotNull
   private LocalDateTime approvedDateTime;
 
   @OneToMany(mappedBy = "groupMember")

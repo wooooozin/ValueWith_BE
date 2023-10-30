@@ -42,7 +42,6 @@ public class Place extends BaseEntity {
   @NotNull
   private Integer orders;
 
-  @NotNull
   private Double distance;
 
   @ManyToOne(fetch = FetchType.LAZY)

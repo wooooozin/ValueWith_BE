@@ -8,8 +8,8 @@ import com.valuewith.tweaver.group.dto.TripGroupRequestDto;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.group.service.TripGroupService;
 import com.valuewith.tweaver.groupMember.service.GroupMemberService;
-import com.valuewith.tweaver.place.service.PlaceService;
 import com.valuewith.tweaver.menber.entity.Member;
+import com.valuewith.tweaver.place.service.PlaceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("groups/*")
+@RequestMapping("/groups/*")
 public class GroupController {
   private final ImageService imageService;
   private final TripGroupService tripGroupService;
@@ -31,8 +31,8 @@ public class GroupController {
   private final GroupMemberService groupMemberService;
 
   @PostMapping
-  public ResponseEntity<?> writeGroup(
-      @RequestPart(value = "tripGroupDto") TripGroupRequestDto tripGroupRequestDto,
+  public ResponseEntity<?> createGroup(
+      @RequestPart(value = "tripGroupRequestDto") TripGroupRequestDto tripGroupRequestDto,
       @RequestPart(value = "file") MultipartFile file) {
     // 0.사진 업로드
     if(!file.isEmpty()) {
