@@ -17,7 +17,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,13 +38,6 @@ public class ImageService {
     private final AmazonS3 amazonS3;
 
     private final DefaultImageRepository defaultImageRepository;
-
-    @PostConstruct
-    private void postConstruct() {
-        log.info("AWS S3 bucket name: {}", bucketName);
-        log.info("AWS Region from AmazonS3 client: {}", amazonS3.getRegionName());
-        log.info("CloudFront domain: {}", cloudFrontDomain);
-    }
 
     /**
      * 매개변수로 받는 MultipartFile을 S3에 업로드한 후 CloudFront URL을 리턴합니다.
