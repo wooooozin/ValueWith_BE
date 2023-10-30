@@ -49,7 +49,7 @@ public class LocationImageController {
         @RequestParam("file") MultipartFile file,
         @RequestParam("name") String locationName
     ) {
-        String imageUrl = imageService.randomLocationImageUploadAndGetUrl(file, ImageType.LOCATION, locationName);
+        String imageUrl = imageService.randomDefaultImageUploadAndGetUrl(file, ImageType.LOCATION, locationName);
         DefaultImageResponseDto responseDto = DefaultImageResponseDto.from(locationName, imageUrl);
         return ResponseEntity.ok(responseDto);
     }
@@ -64,7 +64,7 @@ public class LocationImageController {
         @RequestParam("file") MultipartFile file,
         @RequestParam("name") String memberName
     ) {
-        String imageUrl = imageService.randomLocationImageUploadAndGetUrl(file, ImageType.MEMBER, memberName);
+        String imageUrl = imageService.randomDefaultImageUploadAndGetUrl(file, ImageType.MEMBER, memberName);
         DefaultImageResponseDto responseDto = DefaultImageResponseDto.from(memberName, imageUrl);
         return ResponseEntity.ok(responseDto);
     }

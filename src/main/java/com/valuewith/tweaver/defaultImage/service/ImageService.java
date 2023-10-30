@@ -143,7 +143,7 @@ public class ImageService {
             .replace("%2F", "/");
     }
 
-    public String randomLocationImageUploadAndGetUrl(MultipartFile file, ImageType imageType, String name) {
+    public String randomDefaultImageUploadAndGetUrl(MultipartFile file, ImageType imageType, String name) {
         if (name == null || name.isBlank()) {
             throw new LocationNameEmptyException(ErrorCode.LOCATION_NAME_NOT_FOUNT);
         }
