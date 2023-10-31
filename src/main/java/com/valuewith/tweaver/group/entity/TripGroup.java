@@ -2,6 +2,7 @@ package com.valuewith.tweaver.group.entity;
 
 import com.valuewith.tweaver.auditing.BaseEntity;
 import com.valuewith.tweaver.constants.GroupStatus;
+import com.valuewith.tweaver.group.dto.TripGroupRequestDto;
 import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -57,4 +58,28 @@ public class TripGroup extends BaseEntity {
     @NotNull
     @Enumerated(EnumType.STRING)
     private GroupStatus status;
+
+    public void updateTripGroup(TripGroupRequestDto tripGroupRequestDto) {
+        this.name = tripGroupRequestDto.getName();
+        this.content = tripGroupRequestDto.getContent();
+        this.maxMemberNumber = tripGroupRequestDto.getMaxMemberNumber();
+        this.tripArea = tripGroupRequestDto.getTripArea();
+        this.tripDate = tripGroupRequestDto.getTripDate();
+        this.dueDate = tripGroupRequestDto.getDueDate() == null
+            ? tripGroupRequestDto.getTripDate().minusDays(1)
+            : tripGroupRequestDto.getDueDate();
+        this.thumbnailUrl = tripGroupRequestDto.getThumbnailUrl() == null
+            ? this.thumbnailUrl
+            : tripGroupRequestDto.getThumbnailUrl();
+        this.status = setGroupStatus();
+    }
+
+    public GroupStatus setGroupStatus() {
+        if (this.currentMemberNumber.equals(this.maxMemberNumber)) {
+            return GroupStatus.CLOSE;
+        } else if(this.dueDate.compareTo(this.tripDate) < 0 || LocalDate.now().compareTo(this.dueDate) <= 0) {
+            return GroupStatus.OPEN;
+        }
+        return this.status;
+    }
 }
