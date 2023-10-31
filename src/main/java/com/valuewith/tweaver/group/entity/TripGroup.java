@@ -37,10 +37,10 @@ public class TripGroup extends BaseEntity {
     private String content;
 
     @NotNull
-    private Integer maxUserNumber;
+    private Integer maxMemberNumber;
 
     @NotNull
-    private Integer currentUserNumber;
+    private Integer currentMemberNumber;
 
     @NotNull
     private String tripArea;
