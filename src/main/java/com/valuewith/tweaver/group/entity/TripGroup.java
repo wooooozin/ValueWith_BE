@@ -40,6 +40,9 @@ public class TripGroup extends BaseEntity {
     private Integer maxUserNumber;
 
     @NotNull
+    private Integer currentUserNumber;
+
+    @NotNull
     private String tripArea;
 
     @NotNull
