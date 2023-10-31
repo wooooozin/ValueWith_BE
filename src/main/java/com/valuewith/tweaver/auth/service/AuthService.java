@@ -24,7 +24,7 @@ public class AuthService {
   private final ImageService imageService;
 
   @Transactional
-  public Member signUp(AuthDto.SignUpForm form, MultipartFile file) {
+  public String signUp(AuthDto.SignUpForm form, MultipartFile file) {
     String profileUrl = "";
     if (file != null && !file.isEmpty()) {
       // 사진을 받아온 경우 이미지 등록
@@ -33,11 +33,10 @@ public class AuthService {
       // TODO: 사진을 받지 못한 경우 기본사진 등록
       profileUrl = "https://";
     }
-
     // 비밀번호 암호화
     form.setPassword(this.passwordEncoder.encode(form.getPassword()));
-
-    return userRepository.save(form.toEntity(profileUrl));
+    userRepository.save(form.toEntity(profileUrl));
+    return "회원가입 완료";
   }
 
   public void sendEmailVerification(AuthDto.EmailInput input) {

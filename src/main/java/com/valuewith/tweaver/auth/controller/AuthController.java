@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping(value = "/auth", produces = "application/text; charset=utf8")
 public class AuthController {
 
   private final AuthService authService;
@@ -26,7 +26,7 @@ public class AuthController {
   // TODO: 회원가입(등록), 이메일 인증
 
   @PostMapping(value = "/signup")
-  public ResponseEntity<Member> signUp(SignUpForm request, MultipartFile file) {
+  public ResponseEntity<String> signUp(SignUpForm request, MultipartFile file) {
     return ResponseEntity.ok(authService.signUp(request, file));
   }
 
