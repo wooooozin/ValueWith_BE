@@ -55,7 +55,7 @@ public class TripGroupService {
   public TripGroup modifiedTripGroup(TripGroupRequestDto tripGroupRequestDto, MultipartFile file) {
 
     if (file != null && !file.isEmpty()) {
-      String imageUrl = imageService.uploadImageAndGetUrl(file, ImageType.THUMBNAIL);
+      String imageUrl = imageService.modifiedImageWithFallback(file, tripGroupRequestDto.getThumbnailUrl(), ImageType.THUMBNAIL);
       tripGroupRequestDto.setThumbnailUrl(imageUrl);
     }
 
