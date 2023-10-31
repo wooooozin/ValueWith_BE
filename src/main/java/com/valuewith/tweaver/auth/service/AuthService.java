@@ -10,6 +10,7 @@ import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -22,18 +23,21 @@ public class AuthService {
   private final RedisUtilService redisUtilService;
   private final ImageService imageService;
 
+  @Transactional
   public Member signUp(AuthDto.SignUpForm form, MultipartFile file) {
-    if (file.isEmpty()) {
-      // TODO: 사용자로 부터 사진 등록을 받지 못한 경우 기본 이미지 등록
-      form.setProfileUrl("https://");
+    String profileUrl = "";
+    if (file != null && !file.isEmpty()) {
+      // 사진을 받아온 경우 이미지 등록
+      profileUrl = imageService.uploadImageAndGetUrl(file, ImageType.MEMBER);
+    } else {
+      // TODO: 사진을 받지 못한 경우 기본사진 등록
+      profileUrl = "https://";
     }
-    String profileUrl = imageService.uploadImageAndGetUrl(file, ImageType.MEMBER);
-    form.setProfileUrl(profileUrl);
 
     // 비밀번호 암호화
     form.setPassword(this.passwordEncoder.encode(form.getPassword()));
 
-    return userRepository.save(form.toEntity());
+    return userRepository.save(form.toEntity(profileUrl));
   }
 
   public void sendEmailVerification(AuthDto.EmailInput input) {

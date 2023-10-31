@@ -3,11 +3,16 @@ package com.valuewith.tweaver.auth.controller;
 import com.valuewith.tweaver.auth.dto.AuthDto.*;
 import com.valuewith.tweaver.auth.service.AuthService;
 import com.valuewith.tweaver.user.entity.Member;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,8 +25,8 @@ public class AuthController {
 
   // TODO: 회원가입(등록), 이메일 인증
 
-  @PostMapping("/signup")
-  public ResponseEntity<Member> signUp(@RequestBody SignUpForm request, MultipartFile file) {
+  @PostMapping(value = "/signup")
+  public ResponseEntity<Member> signUp(SignUpForm request, MultipartFile file) {
     return ResponseEntity.ok(authService.signUp(request, file));
   }
 
