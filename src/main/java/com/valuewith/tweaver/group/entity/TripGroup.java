@@ -81,10 +81,10 @@ public class TripGroup extends BaseEntity {
      */
     public GroupStatus setGroupStatus() {
         if (this.currentMemberNumber.equals(this.maxMemberNumber)
-            && LocalDate.now().compareTo(this.dueDate) > 0) {
+            || LocalDate.now().isAfter(this.dueDate)) {
             return GroupStatus.CLOSE;
         } else if(!this.currentMemberNumber.equals(this.maxMemberNumber)
-            && LocalDate.now().compareTo(this.dueDate) <= 0){
+            && !LocalDate.now().isAfter(this.dueDate)){
             return GroupStatus.OPEN;
         }
         return this.status;
