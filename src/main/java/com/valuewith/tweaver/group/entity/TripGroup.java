@@ -76,21 +76,17 @@ public class TripGroup extends BaseEntity {
 
     /**
      * 그룹의 최대 인원 변경으로 인한 그룹 상태변경
-     * 1.최대 인원이 현재 인원과 같은 경우 -> 마감상태로 변경
-     * 2.최대 인원이 현재 인원보다 큰 경우 -> 모집상태로 변경
+     * 1.최대 인원이 현재 인원과 같고, 마감 날짜가 현재 날짜보다 빠르다면 -> 마감상태로 변경
+     * 2.최대 인원이 현재 인원보다 크고, 마감 날짜가 현재 날짜와 같거나 늦다면 -> 모집상태로 변경
      */
     public GroupStatus setGroupStatus() {
-        GroupStatus resultStatus;
-        if (this.currentMemberNumber.equals(this.maxMemberNumber)) {
-            resultStatus = GroupStatus.CLOSE;
-        } else {
-            resultStatus = GroupStatus.OPEN;
+        if (this.currentMemberNumber.equals(this.maxMemberNumber)
+            && LocalDate.now().compareTo(this.dueDate) > 0) {
+            return GroupStatus.CLOSE;
+        } else if(!this.currentMemberNumber.equals(this.maxMemberNumber)
+            && LocalDate.now().compareTo(this.dueDate) <= 0){
+            return GroupStatus.OPEN;
         }
-
-        if (this.status.equals(resultStatus)) {
-            return this.status;
-        } else {
-            return resultStatus;
-        }
+        return this.status;
     }
 }
