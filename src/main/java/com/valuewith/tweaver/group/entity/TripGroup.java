@@ -71,14 +71,26 @@ public class TripGroup extends BaseEntity {
         this.thumbnailUrl = tripGroupRequestDto.getThumbnailUrl() == null
             ? this.thumbnailUrl
             : tripGroupRequestDto.getThumbnailUrl();
-        /**
-         * 그룹의 최대 인원 변경으로 인한 그룹 상태변경
-         * 1.최대 인원이 현재 인원과 같은 경우 -> 마감상태로 변경
-         * 2.최대 인원이 현재 인원보다 큰 경우 -> 모집상태로 변경
-         */
-        this.status = this.currentMemberNumber.equals(this.maxMemberNumber)
-            ? GroupStatus.CLOSE
-            : GroupStatus.OPEN;
+        this.status = setGroupStatus();
     }
 
+    /**
+     * 그룹의 최대 인원 변경으로 인한 그룹 상태변경
+     * 1.최대 인원이 현재 인원과 같은 경우 -> 마감상태로 변경
+     * 2.최대 인원이 현재 인원보다 큰 경우 -> 모집상태로 변경
+     */
+    public GroupStatus setGroupStatus() {
+        GroupStatus resultStatus;
+        if (this.currentMemberNumber.equals(this.maxMemberNumber)) {
+            resultStatus = GroupStatus.CLOSE;
+        } else {
+            resultStatus = GroupStatus.OPEN;
+        }
+
+        if (this.status.equals(resultStatus)) {
+            return this.status;
+        } else {
+            return resultStatus;
+        }
+    }
 }
