@@ -20,7 +20,7 @@ public class TripGroupRequestDto {
   private Long tripGroupId;
   private String name;
   private String content;
-  private Integer maxUserNumber;
+  private Integer maxMemberNumber;
   private String tripArea;
   private LocalDate tripDate;
   private LocalDate dueDate;

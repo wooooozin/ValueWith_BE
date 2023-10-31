@@ -2,26 +2,15 @@ package com.valuewith.tweaver.group.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
 import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.chat.repository.ChatRoomRepository;
 import com.valuewith.tweaver.chat.service.ChatRoomService;
-import com.valuewith.tweaver.constants.ImageType;
-import com.valuewith.tweaver.defaultImage.service.ImageService;
 import com.valuewith.tweaver.group.dto.TripGroupRequestDto;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.group.repository.TripGroupRepository;
-import com.valuewith.tweaver.groupMember.entity.GroupMember;
 import com.valuewith.tweaver.groupMember.repository.GroupMemberRepository;
 import com.valuewith.tweaver.groupMember.service.GroupMemberService;
-import com.valuewith.tweaver.menber.entity.Member;
 import com.valuewith.tweaver.place.dto.PlaceDto;
 import com.valuewith.tweaver.place.entity.Place;
 import com.valuewith.tweaver.place.repository.PlaceRepository;
@@ -29,15 +18,10 @@ import com.valuewith.tweaver.place.service.PlaceService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
@@ -70,7 +54,7 @@ public class TripGroupServiceTests {
     TripGroupRequestDto tripGroupRequestDto = TripGroupRequestDto.builder()
         .name("서울 경복궁 여행 모임")
         .content("함께 여행할 동행자 모집합니다! 20대 여성이고, 한복 여행을 하고 싶은분 신청해 주세요.")
-        .maxUserNumber(30)
+        .maxMemberNumber(30)
         .tripArea("서울")
         .tripDate(LocalDate.parse("2023-12-13"))
         .dueDate(LocalDate.parse("2023-12-12"))
@@ -97,7 +81,7 @@ public class TripGroupServiceTests {
     TripGroupRequestDto tripGroupRequestDto = TripGroupRequestDto.builder()
         .name("서울 경복궁 여행 모임")
         .content("함께 여행할 동행자 모집합니다! 20대 여성이고, 한복 여행을 하고 싶은분 신청해 주세요.")
-        .maxUserNumber(30)
+        .maxMemberNumber(30)
         .tripArea("서울")
         .tripDate(LocalDate.parse("2023-12-23"))
         .thumbnailUrl("https://")
@@ -147,7 +131,7 @@ public class TripGroupServiceTests {
     TripGroupRequestDto tripGroupRequestDto = TripGroupRequestDto.builder()
         .name("서울 경복궁 여행 모임")
         .content("함께 여행할 동행자 모집합니다! 20대 여성이고, 한복 여행을 하고 싶은분 신청해 주세요.")
-        .maxUserNumber(30)
+        .maxMemberNumber(30)
         .tripArea("서울")
         .tripDate(LocalDate.parse("2023-12-13"))
         .dueDate(LocalDate.parse("2023-12-12"))
@@ -202,7 +186,7 @@ public class TripGroupServiceTests {
     TripGroupRequestDto tripGroupRequestDto = TripGroupRequestDto.builder()
         .name("서울 경복궁 여행 모임")
         .content("함께 여행할 동행자 모집합니다! 20대 여성이고, 한복 여행을 하고 싶은분 신청해 주세요.")
-        .maxUserNumber(30)
+        .maxMemberNumber(30)
         .tripArea("서울")
         .tripDate(LocalDate.parse("2023-12-13"))
         .dueDate(LocalDate.parse("2023-12-12"))
