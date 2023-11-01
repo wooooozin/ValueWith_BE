@@ -1,6 +1,8 @@
 package com.valuewith.tweaver.auth.dto;
 
-import com.valuewith.tweaver.user.entity.Member;
+import com.valuewith.tweaver.member.entity.Member;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,7 +20,8 @@ public class AuthDto {
     private String gender;
     private Integer age;
 
-    public Member toEntity(String profileUrl) {
+    // TODO: to 메소드 사용법 변경
+    public Member setProfileUrl(String profileUrl) {
       return Member.builder()
           .nickName(this.nickname)
           .email(this.email)
@@ -40,7 +43,15 @@ public class AuthDto {
 
   @Data
   @NoArgsConstructor
+  @AllArgsConstructor
+  @Builder
   public static class EmailInput {
     private String email;
+
+    public static EmailInput from(Member member) {
+      return EmailInput.builder()
+          .email(member.getEmail())
+          .build();
+    }
   }
 }

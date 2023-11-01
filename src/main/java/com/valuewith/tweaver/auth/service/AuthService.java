@@ -1,11 +1,13 @@
 package com.valuewith.tweaver.auth.service;
 
 import com.valuewith.tweaver.auth.dto.AuthDto;
+import com.valuewith.tweaver.auth.dto.AuthDto.EmailInput;
 import com.valuewith.tweaver.commons.redis.RedisUtilService;
 import com.valuewith.tweaver.constants.ImageType;
+import com.valuewith.tweaver.defaultImage.entity.DefaultImage;
+import com.valuewith.tweaver.defaultImage.repository.DefaultImageRepository;
 import com.valuewith.tweaver.defaultImage.service.ImageService;
-import com.valuewith.tweaver.user.entity.Member;
-import com.valuewith.tweaver.user.repository.UserRepository;
+import com.valuewith.tweaver.member.repository.MemberRepository;
 import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,25 +20,29 @@ import org.springframework.web.multipart.MultipartFile;
 public class AuthService {
 
   private final PasswordEncoder passwordEncoder;
-  private final UserRepository userRepository;
+  private final MemberRepository memberRepository;
+  private final DefaultImageRepository defaultImageRepository;
   private final EmailService emailService;
   private final RedisUtilService redisUtilService;
   private final ImageService imageService;
 
   @Transactional
-  public String signUp(AuthDto.SignUpForm form, MultipartFile file) {
+  public EmailInput signUp(AuthDto.SignUpForm form, MultipartFile file) {
     String profileUrl = "";
     if (file != null && !file.isEmpty()) {
       // 사진을 받아온 경우 이미지 등록
       profileUrl = imageService.uploadImageAndGetUrl(file, ImageType.MEMBER);
     } else {
-      // TODO: 사진을 받지 못한 경우 기본사진 등록
-      profileUrl = "https://";
+      // 사진을 못받은 경우 기본 이미지 등록
+      DefaultImage defaultImg = defaultImageRepository.findRandomByImageName("멤버");
+      profileUrl = defaultImg.getDefaultImageUrl();
     }
     // 비밀번호 암호화
     form.setPassword(this.passwordEncoder.encode(form.getPassword()));
-    userRepository.save(form.toEntity(profileUrl));
-    return "회원가입 완료";
+
+    return EmailInput.from(
+        memberRepository.save(form.setProfileUrl(profileUrl))
+    );
   }
 
   public void sendEmailVerification(AuthDto.EmailInput input) {
@@ -63,6 +69,6 @@ public class AuthService {
   }
 
   public Boolean isEmailExist(String email) {
-    return userRepository.existsByEmail(email.toLowerCase(Locale.ROOT));
+    return memberRepository.existsByEmail(email.toLowerCase(Locale.ROOT));
   }
 }
