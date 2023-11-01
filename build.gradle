@@ -29,6 +29,13 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    // SpringSecurity for Auth
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
+    // JWT for Auth
+    implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+    // ApacheCommons for Auth
+    implementation 'org.apache.commons:commons-lang3:3.13.0'
 
     // Openfeign for Email
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
