@@ -2,13 +2,12 @@ package com.valuewith.tweaver.group.controller;
 
 import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.chat.service.ChatRoomService;
-import com.valuewith.tweaver.constants.ImageType;
 import com.valuewith.tweaver.defaultImage.service.ImageService;
 import com.valuewith.tweaver.group.dto.TripGroupRequestDto;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.group.service.TripGroupService;
 import com.valuewith.tweaver.groupMember.service.GroupMemberService;
-import com.valuewith.tweaver.menber.entity.Member;
+import com.valuewith.tweaver.member.entity.Member;
 import com.valuewith.tweaver.place.service.PlaceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

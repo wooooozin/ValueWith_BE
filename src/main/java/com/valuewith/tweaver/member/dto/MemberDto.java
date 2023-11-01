@@ -1,4 +1,4 @@
-package com.valuewith.tweaver.menber.dto;
+package com.valuewith.tweaver.member.dto;
 
 import com.valuewith.tweaver.alert.dto.AlertDto;
 import com.valuewith.tweaver.groupMember.dto.GroupMemberDto;

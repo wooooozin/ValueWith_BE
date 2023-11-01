@@ -6,7 +6,7 @@ import com.valuewith.tweaver.constants.MemberRole;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.groupMember.entity.GroupMember;
 import com.valuewith.tweaver.groupMember.repository.GroupMemberRepository;
-import com.valuewith.tweaver.menber.entity.Member;
+import com.valuewith.tweaver.member.entity.Member;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

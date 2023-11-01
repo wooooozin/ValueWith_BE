@@ -6,7 +6,7 @@ import com.valuewith.tweaver.constants.ApprovedStatus;
 import com.valuewith.tweaver.constants.MemberRole;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.message.entity.Message;
-import com.valuewith.tweaver.menber.entity.Member;
+import com.valuewith.tweaver.member.entity.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
