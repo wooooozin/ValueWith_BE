@@ -4,16 +4,17 @@ import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.place.dto.PlaceDto;
 import com.valuewith.tweaver.place.entity.Place;
 import com.valuewith.tweaver.place.repository.PlaceRepository;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class PlaceService {
 
   private final PlaceRepository placeRepository;
@@ -32,5 +33,15 @@ public class PlaceService {
                 .build())
         .collect(Collectors.toList());
     placeRepository.saveAll(places);
+  }
+
+  /**
+   * 기존 장소 데이터를 지우고 새로 등록
+   * @param placeDtos
+   */
+  public void modifiedPlace(TripGroup tripGroup, List<PlaceDto> placeDtos) {
+    placeRepository.deletePlacesByTripGroup(tripGroup);
+
+    createPlace(tripGroup, placeDtos);
   }
 }

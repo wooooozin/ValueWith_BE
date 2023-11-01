@@ -21,6 +21,7 @@ public class TripGroupRequestDto {
   private String name;
   private String content;
   private Integer maxMemberNumber;
+  private Integer currentMemberNumber;
   private String tripArea;
   private LocalDate tripDate;
   private LocalDate dueDate;

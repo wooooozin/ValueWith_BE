@@ -2,6 +2,7 @@ package com.valuewith.tweaver.group.entity;
 
 import com.valuewith.tweaver.auditing.BaseEntity;
 import com.valuewith.tweaver.constants.GroupStatus;
+import com.valuewith.tweaver.group.dto.TripGroupRequestDto;
 import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -57,4 +58,35 @@ public class TripGroup extends BaseEntity {
     @NotNull
     @Enumerated(EnumType.STRING)
     private GroupStatus status;
+
+    public void updateTripGroup(TripGroupRequestDto tripGroupRequestDto) {
+        this.name = tripGroupRequestDto.getName();
+        this.content = tripGroupRequestDto.getContent();
+        this.maxMemberNumber = tripGroupRequestDto.getMaxMemberNumber();
+        this.tripArea = tripGroupRequestDto.getTripArea();
+        this.tripDate = tripGroupRequestDto.getTripDate();
+        this.dueDate = tripGroupRequestDto.getDueDate() == null
+            ? tripGroupRequestDto.getTripDate().minusDays(1)
+            : tripGroupRequestDto.getDueDate();
+        this.thumbnailUrl = tripGroupRequestDto.getThumbnailUrl() == null
+            ? this.thumbnailUrl
+            : tripGroupRequestDto.getThumbnailUrl();
+        this.status = setGroupStatus();
+    }
+
+    /**
+     * 그룹의 최대 인원 변경으로 인한 그룹 상태변경
+     * 1.최대 인원이 현재 인원과 같고, 마감 날짜가 현재 날짜보다 빠르다면 -> 마감상태로 변경
+     * 2.최대 인원이 현재 인원보다 크고, 마감 날짜가 현재 날짜와 같거나 늦다면 -> 모집상태로 변경
+     */
+    public GroupStatus setGroupStatus() {
+        if (this.currentMemberNumber.equals(this.maxMemberNumber)
+            || LocalDate.now().isAfter(this.dueDate)) {
+            return GroupStatus.CLOSE;
+        } else if(!this.currentMemberNumber.equals(this.maxMemberNumber)
+            && !LocalDate.now().isAfter(this.dueDate)){
+            return GroupStatus.OPEN;
+        }
+        return this.status;
+    }
 }

@@ -35,4 +35,8 @@ public class ChatRoom extends BaseEntity {
   @OneToOne
   @JoinColumn(name = "trip_group_id")
   private TripGroup tripGroup;
+
+  public void updateChatRoom(TripGroup tripGroup) {
+    this.title = tripGroup.getName();
+  }
 }
