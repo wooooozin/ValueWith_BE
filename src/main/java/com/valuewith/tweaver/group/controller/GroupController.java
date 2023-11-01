@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,7 +31,7 @@ public class GroupController {
   private final GroupMemberService groupMemberService;
 
   @PostMapping
-  public ResponseEntity<?> createGroup(
+  public ResponseEntity<String> createGroup(
       @RequestPart(value = "tripGroupRequestDto") TripGroupRequestDto tripGroupRequestDto,
       @RequestPart(value = "file") MultipartFile file) {
     // 1.그룹 등록
@@ -54,4 +55,18 @@ public class GroupController {
     groupMemberService.createGroupMember(tripGroup, member, chatRoom);
     return ResponseEntity.ok("ok");
   }
+
+  @PutMapping
+  public ResponseEntity<String> modifiedGroup(
+      @RequestPart(value = "tripGroupRequestDto") TripGroupRequestDto tripGroupRequestDto,
+      @RequestPart(value = "file") MultipartFile file) {
+    // 1.그룹 수정
+    TripGroup tripGroup = tripGroupService.modifiedTripGroup(tripGroupRequestDto, file);
+    // 2.여행 수정
+    placeService.modifiedPlace(tripGroup, tripGroupRequestDto.getPlaces());
+    // 3.채팅 수정(그룹명 수정으로 인한 채팅룸 제목 수정)
+    chatRoomService.modifiedChatRoom(tripGroup);
+    return ResponseEntity.ok("ok");
+  }
+
 }

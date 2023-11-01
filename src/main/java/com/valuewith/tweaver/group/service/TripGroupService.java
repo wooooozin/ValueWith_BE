@@ -8,6 +8,7 @@ import com.valuewith.tweaver.defaultImage.service.ImageService;
 import com.valuewith.tweaver.group.dto.TripGroupRequestDto;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.group.repository.TripGroupRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,24 @@ public class TripGroupService {
         .build();
 
     return tripGroupRepository.save(tripGroup);
+  }
+
+  public TripGroup modifiedTripGroup(TripGroupRequestDto tripGroupRequestDto, MultipartFile file) {
+
+    if (file != null && !file.isEmpty()) {
+      String imageUrl = imageService.modifiedImageWithFallback(file, tripGroupRequestDto.getThumbnailUrl(), ImageType.THUMBNAIL);
+      tripGroupRequestDto.setThumbnailUrl(imageUrl);
+    }
+
+    Optional<TripGroup> foundTripGroup = tripGroupRepository.findById(tripGroupRequestDto.getTripGroupId());
+
+    TripGroup tripGroup = foundTripGroup.orElseThrow(() -> {
+      throw new RuntimeException("수정할 그룹 데이터가 존재하지 않습니다.");
+    });
+
+    tripGroup.updateTripGroup(tripGroupRequestDto);
+
+    return tripGroup;
   }
 
   public String getThumbnailUrl(String tripArea) {
