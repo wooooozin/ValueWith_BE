@@ -34,4 +34,8 @@ public class ChatRoomService {
     chatRoom.updateChatRoom(tripGroup);
 
   }
+
+  public void deleteChatRoom(Long tripGroupId) {
+    chatRoomRepository.deleteByTripGroupTripGroupId(tripGroupId);
+  }
 }
