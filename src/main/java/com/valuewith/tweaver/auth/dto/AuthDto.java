@@ -43,15 +43,7 @@ public class AuthDto {
 
   @Data
   @NoArgsConstructor
-  @AllArgsConstructor
-  @Builder
   public static class EmailInput {
     private String email;
-
-    public static EmailInput from(Member member) {
-      return EmailInput.builder()
-          .email(member.getEmail())
-          .build();
-    }
   }
 }

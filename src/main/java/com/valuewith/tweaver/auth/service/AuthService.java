@@ -1,7 +1,6 @@
 package com.valuewith.tweaver.auth.service;
 
 import com.valuewith.tweaver.auth.dto.AuthDto;
-import com.valuewith.tweaver.auth.dto.AuthDto.EmailInput;
 import com.valuewith.tweaver.commons.redis.RedisUtilService;
 import com.valuewith.tweaver.constants.ImageType;
 import com.valuewith.tweaver.defaultImage.entity.DefaultImage;
@@ -27,7 +26,7 @@ public class AuthService {
   private final ImageService imageService;
 
   @Transactional
-  public EmailInput signUp(AuthDto.SignUpForm form, MultipartFile file) {
+  public void signUp(AuthDto.SignUpForm form, MultipartFile file) {
     String profileUrl = "";
     if (file != null && !file.isEmpty()) {
       // 사진을 받아온 경우 이미지 등록
@@ -41,9 +40,7 @@ public class AuthService {
     // 비밀번호 암호화
     form.setPassword(this.passwordEncoder.encode(form.getPassword()));
 
-    return EmailInput.from(
-        memberRepository.save(form.setProfileUrl(profileUrl))
-    );
+    memberRepository.save(form.setProfileUrl(profileUrl));
   }
 
   public void sendEmailVerification(AuthDto.EmailInput input) {

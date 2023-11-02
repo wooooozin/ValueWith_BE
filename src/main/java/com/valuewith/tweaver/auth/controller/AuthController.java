@@ -21,8 +21,8 @@ public class AuthController {
   // TODO: 회원가입(등록), 이메일 인증
 
   @PostMapping(value = "/signup")
-  public ResponseEntity<EmailInput> signUp(SignUpForm request, MultipartFile file) {
-    return ResponseEntity.ok(authService.signUp(request, file));
+  public void signUp(SignUpForm request, MultipartFile file) {
+    authService.signUp(request, file);
   }
 
   @PostMapping("/verify")
