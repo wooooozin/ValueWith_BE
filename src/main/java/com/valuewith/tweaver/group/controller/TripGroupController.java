@@ -8,6 +8,7 @@ import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.group.service.TripGroupService;
 import com.valuewith.tweaver.groupMember.service.GroupMemberService;
 import com.valuewith.tweaver.member.entity.Member;
+import com.valuewith.tweaver.message.service.MessageService;
 import com.valuewith.tweaver.place.service.PlaceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,7 @@ public class TripGroupController {
   private final PlaceService placeService;
   private final ChatRoomService chatRoomService;
   private final GroupMemberService groupMemberService;
+  private final MessageService messageService;
 
   @PostMapping
   public ResponseEntity<String> createGroup(
@@ -73,7 +75,7 @@ public class TripGroupController {
   @DeleteMapping("{tripGroupId}")
   public ResponseEntity<String> deleteGroup(@PathVariable("tripGroupId") Long tripGroupId) {
     // 1.메세지 삭제
-
+    messageService.deleteMessage(tripGroupId);
     // 2.채팅 삭제
     chatRoomService.deleteChatRoom(tripGroupId);
     // 3.일정 삭제
