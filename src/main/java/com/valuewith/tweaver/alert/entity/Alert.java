@@ -23,6 +23,10 @@ public class Alert extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long alertId;
 
+  private String content;
+
+  private String redirectUrl;
+
   private Boolean isChecked;
 
   private String userToken;
