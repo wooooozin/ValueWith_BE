@@ -29,8 +29,9 @@ public class TripGroupResponseDto {
     private String gender;
 
     public static TripGroupResponseDto from(
-        TripGroup tripGroup, Member member, Integer currentUserNumber
+        TripGroup tripGroup, Integer currentUserNumber
     ) {
+        Member member = tripGroup.getMember();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return TripGroupResponseDto.builder()
             .tripGroupId(tripGroup.getTripGroupId())
