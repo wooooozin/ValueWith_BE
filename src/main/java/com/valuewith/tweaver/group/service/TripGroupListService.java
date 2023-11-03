@@ -1,5 +1,6 @@
 package com.valuewith.tweaver.group.service;
 
+import com.valuewith.tweaver.constants.ApprovedStatus;
 import com.valuewith.tweaver.constants.GroupStatus;
 import com.valuewith.tweaver.group.dto.TripGroupListResponseDto;
 import com.valuewith.tweaver.group.dto.TripGroupResponseDto;
@@ -30,7 +31,7 @@ public class TripGroupListService {
         );
         List<TripGroupResponseDto> tripGroupResponseDtoList = page.getContent().stream()
             .map(tripGroup -> {
-                int currentMembersCount = groupMemberRepository.countApprovedMembers(tripGroup) + 1;
+                int currentMembersCount = groupMemberRepository.countApprovedMembers(tripGroup, ApprovedStatus.APPROVED) + 1;
                 return TripGroupResponseDto.from(tripGroup, currentMembersCount);
             })
             .collect(Collectors.toList());
