@@ -5,6 +5,8 @@ import com.valuewith.tweaver.auth.dto.AuthDto.EmailInput;
 import com.valuewith.tweaver.auth.dto.AuthDto.SignUpForm;
 import com.valuewith.tweaver.auth.dto.AuthDto.VerificationForm;
 import com.valuewith.tweaver.auth.service.AuthService;
+import com.valuewith.tweaver.commons.security.TokenService;
+import com.valuewith.tweaver.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,10 +21,12 @@ import org.springframework.web.multipart.MultipartFile;
 public class AuthController {
 
   private final AuthService authService;
+  private final TokenService tokenService;
 
   @PostMapping(value = "/signin")
   public ResponseEntity<String> signIn(@RequestBody AuthDto.SignInForm request) {
-    return ResponseEntity.ok(authService.authenticate(request));
+    Member member = authService.authenticate(request);
+    return ResponseEntity.ok(tokenService.createToken(member.getEmail()));
   }
 
   @PostMapping(value = "/signup")
