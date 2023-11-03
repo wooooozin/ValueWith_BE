@@ -3,12 +3,10 @@ package com.valuewith.tweaver.chat.dto;
 import com.valuewith.tweaver.message.dto.MessageDto;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
-@Data
+@Getter
 @NoArgsConstructor
 public class ChatRoomDto {
   private Long chatRoomId;
