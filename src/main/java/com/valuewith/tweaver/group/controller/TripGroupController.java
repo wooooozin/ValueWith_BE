@@ -8,10 +8,13 @@ import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.group.service.TripGroupService;
 import com.valuewith.tweaver.groupMember.service.GroupMemberService;
 import com.valuewith.tweaver.member.entity.Member;
+import com.valuewith.tweaver.message.service.MessageService;
 import com.valuewith.tweaver.place.service.PlaceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,12 +26,12 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/groups/*")
-public class GroupController {
-  private final ImageService imageService;
+public class TripGroupController {
   private final TripGroupService tripGroupService;
   private final PlaceService placeService;
   private final ChatRoomService chatRoomService;
   private final GroupMemberService groupMemberService;
+  private final MessageService messageService;
 
   @PostMapping
   public ResponseEntity<String> createGroup(
@@ -66,6 +69,23 @@ public class GroupController {
     placeService.modifiedPlace(tripGroup, tripGroupRequestDto.getPlaces());
     // 3.채팅 수정(그룹명 수정으로 인한 채팅룸 제목 수정)
     chatRoomService.modifiedChatRoom(tripGroup);
+    return ResponseEntity.ok("ok");
+  }
+
+  @DeleteMapping("{tripGroupId}")
+  public ResponseEntity<String> deleteGroup(@PathVariable("tripGroupId") Long tripGroupId) {
+    // 1.메세지 삭제
+    messageService.deleteMessage(tripGroupId);
+    // 2.채팅 삭제
+    chatRoomService.deleteChatRoom(tripGroupId);
+    // 3.일정 삭제
+    placeService.deletePlaces(tripGroupId);
+    // 4.그룹 삭제
+    tripGroupService.deleteTripGroup(tripGroupId);
+    // 5.그룹 멤버 삭제
+    groupMemberService.deleteGroupMember(tripGroupId);
+    // 6.그룹 멤버에게 그룹 삭제에 대한 알림
+
     return ResponseEntity.ok("ok");
   }
 

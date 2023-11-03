@@ -34,4 +34,8 @@ public class GroupMemberService {
 
       groupMemberRepository.save(groupMember);
   }
+
+  public void deleteGroupMember(Long tripGroupId) {
+    groupMemberRepository.deleteGroupMemberByTripGroupTripGroupId(tripGroupId);
+  }
 }

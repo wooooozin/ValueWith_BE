@@ -74,4 +74,8 @@ public class TripGroupService {
     DefaultImage randomByImageName = defaultImageRepository.findRandomByImageName(tripArea);
     return randomByImageName.getDefaultImageUrl();
   }
+
+  public void deleteTripGroup(Long tripGroupId) {
+    tripGroupRepository.deleteById(tripGroupId);
+  }
 }
