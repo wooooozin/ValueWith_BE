@@ -11,7 +11,6 @@ import com.valuewith.tweaver.group.dto.TripGroupListResponseDto;
 import com.valuewith.tweaver.group.dto.TripGroupResponseDto;
 import com.valuewith.tweaver.group.entity.QTripGroup;
 import com.valuewith.tweaver.group.entity.TripGroup;
-import com.valuewith.tweaver.group.repository.TripGroupRepository;
 import com.valuewith.tweaver.groupMember.entity.QGroupMember;
 import com.valuewith.tweaver.groupMember.repository.GroupMemberRepository;
 import java.util.ArrayList;
@@ -100,6 +99,5 @@ public class TripGroupListService {
         return orders;
     }
 
-}
 }
 
