@@ -28,9 +28,11 @@ public class TripGroupListController {
         @RequestParam(defaultValue = "latest") String sort,
         @RequestParam(defaultValue = "") String title
     ) {
-        Pageable pageable = PageRequest.of(page, 8, sortDirection(sort));
-        TripGroupListResponseDto tripGroupResponseDto = tripGroupListService.getFilteredTripGroups(status, area, title, pageable);
-        return ResponseEntity.ok(tripGroupResponseDto);
+        Pageable pageable = PageRequest.of(page, 12, sortDirection(sort));
+        TripGroupListResponseDto tripGroupListResponseDto = tripGroupListService.getFilteredTripGroups(
+            status, area, title, pageable
+        );
+        return ResponseEntity.ok(tripGroupListResponseDto);
     }
 
     private Sort sortDirection(String sort) {

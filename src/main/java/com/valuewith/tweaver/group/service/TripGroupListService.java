@@ -1,21 +1,18 @@
 package com.valuewith.tweaver.group.service;
 
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.valuewith.tweaver.constants.ApprovedStatus;
 import com.valuewith.tweaver.constants.GroupStatus;
-import com.valuewith.tweaver.constants.MemberRole;
 import com.valuewith.tweaver.group.dto.TripGroupListResponseDto;
 import com.valuewith.tweaver.group.dto.TripGroupResponseDto;
 import com.valuewith.tweaver.group.entity.QTripGroup;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.groupMember.entity.QGroupMember;
 import com.valuewith.tweaver.groupMember.repository.GroupMemberRepository;
-import com.valuewith.tweaver.member.entity.Member;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,16 +27,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TripGroupListService {
 
-    private final JPAQueryFactory queryFactory;
     private final GroupMemberRepository groupMemberRepository;
 
     private static final QTripGroup qTripGroup = QTripGroup.tripGroup;
     private static final QGroupMember qGroupMember = QGroupMember.groupMember;
+    private final JPAQueryFactory queryFactory;
 
     public TripGroupListResponseDto getFilteredTripGroups(
         String status, String area, String title, Pageable pageable
     ) {
-
         /*
         BooleanBuilder는 QueryDSL의 조건을 구성하는 데 사용되며,
         여러 필터링 조건을 동적으로 결합할 수 있음.
@@ -63,22 +59,13 @@ public class TripGroupListService {
             .orderBy(sortOrder(pageable.getSort()).stream().toArray(OrderSpecifier[]::new))
             .fetch();
 
-        List<TripGroupResponseDto> tripGroupResponseDtos = tripGroups.stream()
-            .map(group -> {
-                long currentMembersCount = queryFactory
-                    .select(qGroupMember.count())
-                    .from(qGroupMember)
-                    .where(qGroupMember.tripGroup.eq(group)
-                        .and(qGroupMember.approvedStatus.eq(ApprovedStatus.APPROVED)))
-                    .fetchOne();
+        List<TripGroupResponseDto> tripGroupResponseDtoList = tripGroups.stream()
+            .map(tripGroup -> {
+                int currentMembersCount =
+                    groupMemberRepository.countApprovedMembers(tripGroup, ApprovedStatus.APPROVED)
+                        + 1;
+                return TripGroupResponseDto.from(tripGroup, currentMembersCount);
 
-                Member leader = queryFactory
-                    .select(qGroupMember.member)
-                    .from(qGroupMember)
-                    .where(qGroupMember.tripGroup.tripGroupId.eq(group.getTripGroupId()))
-                    .fetchFirst();
-
-                return TripGroupResponseDto.from(group, leader, (int) currentMembersCount);
             })
             .collect(Collectors.toList());
 
@@ -90,9 +77,8 @@ public class TripGroupListService {
 
         int totalPages = (int) Math.ceil((double) total / pageable.getPageSize());
         boolean isLast = pageable.getOffset() + pageable.getPageSize() >= total;
-
         return TripGroupListResponseDto.from(
-            tripGroupResponseDtos,
+            tripGroupResponseDtoList,
             pageable.getPageNumber(),
             totalPages,
             total,
@@ -103,7 +89,6 @@ public class TripGroupListService {
     // 스프링의 Sort 객체를 QueryDSL OrderSpecifier로 변환
     private List<OrderSpecifier> sortOrder(Sort sort) {
         List<OrderSpecifier> orders = new ArrayList<>();
-
         //sort
         sort.stream().forEach(order -> {
             Order direction = order.isAscending() ? Order.ASC : Order.DESC;
@@ -113,5 +98,6 @@ public class TripGroupListService {
         });
         return orders;
     }
+
 }
 
