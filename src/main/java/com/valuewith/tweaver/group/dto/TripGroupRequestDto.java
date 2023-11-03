@@ -26,4 +26,8 @@ public class TripGroupRequestDto {
   private String thumbnailUrl;
   private GroupStatus status;
   private List<PlaceDto> places = new ArrayList<>();
+
+  public void setThumbnailUrl(String thumbnailUrl) {
+    this.thumbnailUrl = thumbnailUrl;
+  }
 }

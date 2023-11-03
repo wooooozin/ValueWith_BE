@@ -66,6 +66,7 @@ public class TripGroupListService {
                     groupMemberRepository.countApprovedMembers(tripGroup, ApprovedStatus.APPROVED)
                         + 1;
                 return TripGroupResponseDto.from(tripGroup, currentMembersCount);
+
             })
             .collect(Collectors.toList());
 
