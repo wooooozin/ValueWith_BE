@@ -75,8 +75,7 @@ public class TripGroupListService {
                 Member leader = queryFactory
                     .select(qGroupMember.member)
                     .from(qGroupMember)
-                    .where(qGroupMember.tripGroup.tripGroupId.eq(group.getTripGroupId())
-                        .and(qGroupMember.memberRole.eq(MemberRole.LEADER)))
+                    .where(qGroupMember.tripGroup.tripGroupId.eq(group.getTripGroupId()))
                     .fetchFirst();
 
                 return TripGroupResponseDto.from(group, leader, (int) currentMembersCount);
