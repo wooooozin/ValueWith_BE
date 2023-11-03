@@ -33,6 +33,7 @@ public class TripGroupListService {
             .map(tripGroup -> {
                 int currentMembersCount = groupMemberRepository.countApprovedMembers(tripGroup, ApprovedStatus.APPROVED) + 1;
                 return TripGroupResponseDto.from(tripGroup, currentMembersCount);
+
             })
             .collect(Collectors.toList());
 
@@ -45,4 +46,3 @@ public class TripGroupListService {
         );
     }
 }
-

@@ -8,6 +8,7 @@ import com.valuewith.tweaver.defaultImage.service.ImageService;
 import com.valuewith.tweaver.group.dto.TripGroupRequestDto;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.group.repository.TripGroupRepository;
+import com.valuewith.tweaver.member.entity.Member;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ public class TripGroupService {
   private final TripGroupRepository tripGroupRepository;
   private final DefaultImageRepository defaultImageRepository;
 
-  public TripGroup createTripGroup(TripGroupRequestDto tripGroupRequestDto, MultipartFile file) {
+  public TripGroup createTripGroup(TripGroupRequestDto tripGroupRequestDto, MultipartFile file, Member member) {
 
     if (file != null && !file.isEmpty()) {
       String imageUrl = imageService.uploadImageAndGetUrl(file, ImageType.THUMBNAIL);
@@ -37,6 +38,7 @@ public class TripGroupService {
     }
 
     TripGroup tripGroup = TripGroup.builder()
+        .member(member)
         .name(tripGroupRequestDto.getName())
         .content(tripGroupRequestDto.getContent())
         .maxMemberNumber(tripGroupRequestDto.getMaxMemberNumber())

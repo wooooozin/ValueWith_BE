@@ -37,13 +37,6 @@ public class TripGroupController {
   public ResponseEntity<String> createGroup(
       @RequestPart(value = "tripGroupRequestDto") TripGroupRequestDto tripGroupRequestDto,
       @RequestPart(value = "file") MultipartFile file) {
-    // 1.그룹 등록
-    TripGroup tripGroup = tripGroupService.createTripGroup(tripGroupRequestDto, file);
-    // 2.여행 등록
-    placeService.createPlace(tripGroup, tripGroupRequestDto.getPlaces());
-    // 3.채팅 등록
-    ChatRoom chatRoom = chatRoomService.createChatRoom(tripGroup);
-    // 4.멤버 등록(인증된 user값으로 등록) -> 일단 수기로 작성
     // TODO: spring security 인증작업이 끝나면 해당 기능 사용해서 현재 사용자정보 가져오기
     Member member = Member.builder()
         .memberId(1L)
@@ -55,6 +48,13 @@ public class TripGroupController {
         .profileUrl("http://images...")
         .isSocial(true)
         .build();
+    // 1.그룹 등록
+    TripGroup tripGroup = tripGroupService.createTripGroup(tripGroupRequestDto, file, member);
+    // 2.여행 등록
+    placeService.createPlace(tripGroup, tripGroupRequestDto.getPlaces());
+    // 3.채팅 등록
+    ChatRoom chatRoom = chatRoomService.createChatRoom(tripGroup);
+    // 4.멤버 등록(인증된 user값으로 등록) -> 일단 수기로 작성
     groupMemberService.createGroupMember(tripGroup, member, chatRoom);
     return ResponseEntity.ok("ok");
   }
