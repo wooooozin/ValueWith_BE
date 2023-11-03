@@ -5,7 +5,6 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.valuewith.tweaver.constants.ApprovedStatus;
 import com.valuewith.tweaver.constants.GroupStatus;
 import com.valuewith.tweaver.group.dto.TripGroupListResponseDto;
 import com.valuewith.tweaver.group.dto.TripGroupResponseDto;
@@ -21,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -33,6 +33,7 @@ public class TripGroupListService {
     private static final QGroupMember qGroupMember = QGroupMember.groupMember;
     private final JPAQueryFactory queryFactory;
 
+    @Transactional
     public TripGroupListResponseDto getFilteredTripGroups(
         String status, String area, String title, Pageable pageable
     ) {
@@ -54,19 +55,14 @@ public class TripGroupListService {
         List<TripGroup> tripGroups = queryFactory
             .selectFrom(qTripGroup)
             .where(predicate)
+            .leftJoin(qTripGroup.member).fetchJoin()
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .orderBy(sortOrder(pageable.getSort()).stream().toArray(OrderSpecifier[]::new))
             .fetch();
 
         List<TripGroupResponseDto> tripGroupResponseDtoList = tripGroups.stream()
-            .map(tripGroup -> {
-                int currentMembersCount =
-                    groupMemberRepository.countApprovedMembers(tripGroup, ApprovedStatus.APPROVED)
-                        + 1;
-                return TripGroupResponseDto.from(tripGroup, currentMembersCount);
-
-            })
+            .map(TripGroupResponseDto::from)
             .collect(Collectors.toList());
 
         long total = queryFactory
@@ -77,6 +73,7 @@ public class TripGroupListService {
 
         int totalPages = (int) Math.ceil((double) total / pageable.getPageSize());
         boolean isLast = pageable.getOffset() + pageable.getPageSize() >= total;
+
         return TripGroupListResponseDto.from(
             tripGroupResponseDtoList,
             pageable.getPageNumber(),
