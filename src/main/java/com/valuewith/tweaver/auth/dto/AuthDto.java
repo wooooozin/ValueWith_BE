@@ -1,14 +1,17 @@
 package com.valuewith.tweaver.auth.dto;
 
 import com.valuewith.tweaver.member.entity.Member;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 public class AuthDto {
 
-  // TODO: 로그인
+  @Data
+  @NoArgsConstructor
+  public static class SignInForm {
+    private String email;
+    private String password;
+  }
 
   @Data
   @NoArgsConstructor
