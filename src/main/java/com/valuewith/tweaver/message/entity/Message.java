@@ -1,6 +1,7 @@
 package com.valuewith.tweaver.message.entity;
 
 import com.valuewith.tweaver.auditing.BaseEntity;
+import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.groupMember.entity.GroupMember;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -26,6 +27,10 @@ public class Message extends BaseEntity {
 
   @NotNull
   private String content;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "chat_room_id")
+  private ChatRoom chatRoom;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "group_member_id")

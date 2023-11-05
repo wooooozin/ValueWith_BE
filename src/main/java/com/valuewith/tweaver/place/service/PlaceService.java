@@ -44,4 +44,8 @@ public class PlaceService {
 
     createPlace(tripGroup, placeDtos);
   }
+
+  public void deletePlaces(Long tripGroupId) {
+    placeRepository.deleteAllByTripGroupTripGroupId(tripGroupId);
+  }
 }

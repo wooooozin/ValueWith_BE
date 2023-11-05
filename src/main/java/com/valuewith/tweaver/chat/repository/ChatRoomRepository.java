@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
   Optional<ChatRoom> findByTripGroup(TripGroup tripGroup);
+  Optional<ChatRoom> findByTripGroupTripGroupId(Long tripGroupId);
+  void deleteByTripGroupTripGroupId(Long tripGroupId);
 }

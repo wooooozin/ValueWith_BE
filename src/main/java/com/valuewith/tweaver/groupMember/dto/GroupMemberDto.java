@@ -6,12 +6,10 @@ import com.valuewith.tweaver.message.dto.MessageDto;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
-@Data
+@Getter
 @NoArgsConstructor
 public class GroupMemberDto {
   private Long groupMemberId;

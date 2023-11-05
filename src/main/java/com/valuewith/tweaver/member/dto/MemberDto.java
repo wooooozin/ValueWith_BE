@@ -4,12 +4,10 @@ import com.valuewith.tweaver.alert.dto.AlertDto;
 import com.valuewith.tweaver.groupMember.dto.GroupMemberDto;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
-@Data
+@Getter
 @NoArgsConstructor
 public class MemberDto {
   private Long memberId;

@@ -1,14 +1,19 @@
 package com.valuewith.tweaver.auth.service;
 
 import com.valuewith.tweaver.auth.dto.AuthDto;
+import com.valuewith.tweaver.auth.dto.AuthDto.SignInForm;
 import com.valuewith.tweaver.commons.redis.RedisUtilService;
 import com.valuewith.tweaver.constants.ImageType;
 import com.valuewith.tweaver.defaultImage.entity.DefaultImage;
 import com.valuewith.tweaver.defaultImage.repository.DefaultImageRepository;
 import com.valuewith.tweaver.defaultImage.service.ImageService;
+import com.valuewith.tweaver.member.entity.Member;
 import com.valuewith.tweaver.member.repository.MemberRepository;
 import java.util.Locale;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthService implements UserDetailsService {
 
   private final PasswordEncoder passwordEncoder;
   private final MemberRepository memberRepository;
@@ -24,6 +29,32 @@ public class AuthService {
   private final EmailService emailService;
   private final RedisUtilService redisUtilService;
   private final ImageService imageService;
+
+  @Override
+  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    return this.memberRepository.findByEmail(email)
+        .orElseThrow(() -> new UsernameNotFoundException("이메일을 찾을 수 없습니다. -> " + email));
+  }
+
+  public Member authenticate(SignInForm request) {
+    /**
+     * TODO: 커스텀 Exception 예정
+     * 1. 이메일 확인
+     * 2. 비밀번호 확인
+     */
+
+    // 1. 이메일 확인
+    Member member = memberRepository.findByEmail(request.getEmail())
+        .orElseThrow(() -> new RuntimeException("해당 유저를 찾을 수 없습니다."));
+
+    // 2. 비밀번호 확인
+    if (!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
+      throw new RuntimeException("비밀번호가 다릅니다.");
+    }
+
+    // 3. 토큰 발행
+    return member;
+  }
 
   @Transactional
   public void signUp(AuthDto.SignUpForm form, MultipartFile file) {
