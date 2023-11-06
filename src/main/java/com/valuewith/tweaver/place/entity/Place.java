@@ -11,6 +11,7 @@ import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import reactor.util.annotation.Nullable;
 
 @Entity
 @Table(name = "PLACE")
@@ -36,7 +37,7 @@ public class Place extends BaseEntity {
   @NotNull
   private String address;
 
-  @NotNull
+  @Nullable
   private String placeCode;
 
   @NotNull
