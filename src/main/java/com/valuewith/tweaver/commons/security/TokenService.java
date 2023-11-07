@@ -9,9 +9,6 @@ import java.util.Date;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -32,12 +29,8 @@ public class TokenService {
   private final AuthService authService;
 
   /**
-   * Access 토큰을 생성합니다. 페이로드에 들어갈 기본적인 정보는 다음과 같습니다.
-   * 1. subject: Access
-   * 2. expiration: 1시간
-   * 3. claim: email
-   * 변경사항 있을시에 claims에 put(클레임 이름, 값) 형식으로 추가해주세요.
-   * 클레임 이름은 상수로 추가해주세요. (파싱에서 사용)
+   * Access 토큰을 생성합니다. 페이로드에 들어갈 기본적인 정보는 다음과 같습니다. 1. subject: Access 2. expiration: 1시간 3. claim:
+   * email 변경사항 있을시에 claims에 put(클레임 이름, 값) 형식으로 추가해주세요. 클레임 이름은 상수로 추가해주세요. (파싱에서 사용)
    */
   public String createAccessToken(String email) {
     Claims claims = Jwts.claims().setSubject(ACCESS_SUBJECT);
@@ -55,9 +48,7 @@ public class TokenService {
   }
 
   /**
-   * Refresh 토큰을 생성합니다. 페이로드에 들어갈 기본적인 정보는 다음과 같습니다.
-   * 1. subject: Refresh
-   * 2. expiration: 7일(1주)
+   * Refresh 토큰을 생성합니다. 페이로드에 들어갈 기본적인 정보는 다음과 같습니다. 1. subject: Refresh 2. expiration: 7일(1주)
    * Refresh 토큰에는 별도의 클레임이 들어가지 않습니다.
    */
   public String createRefreshToken() {
@@ -70,13 +61,6 @@ public class TokenService {
         .setExpiration(expiredDate)
         .signWith(SignatureAlgorithm.HS512, this.secretKey)  // HMAC 기반 인증
         .compact();
-  }
-
-  // 토큰의 인증정보를 가져옵니다.
-  public Authentication getAuthentication(String jwt) {
-    UserDetails memberDetail = authService.loadUserByUsername(getMemberEmail(jwt));
-    return new UsernamePasswordAuthenticationToken(
-        memberDetail, "", memberDetail.getAuthorities());
   }
 
   /**

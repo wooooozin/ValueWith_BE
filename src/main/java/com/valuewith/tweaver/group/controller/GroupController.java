@@ -50,7 +50,6 @@ public class GroupController {
         .age(20)
         .gender("여성")
         .profileUrl("http://images...")
-        .isSocial(true)
         .build();
     groupMemberService.createGroupMember(tripGroup, member, chatRoom);
     return ResponseEntity.ok("ok");

@@ -32,7 +32,6 @@ public class AuthDto {
           .gender(this.gender)
           .age(this.age)
           .profileUrl(profileUrl)
-          .isSocial(Boolean.FALSE)
           .build();
     }
   }
