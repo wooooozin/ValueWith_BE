@@ -54,6 +54,9 @@ dependencies {
     implementation "com.querydsl:querydsl-jpa:5.0.0"
     implementation "com.querydsl:querydsl-apt:5.0.0"
 
+    // OAuth2 for Auth
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
