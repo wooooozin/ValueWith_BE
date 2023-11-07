@@ -5,11 +5,15 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.valuewith.tweaver.constants.ApprovedStatus;
 import com.valuewith.tweaver.constants.GroupStatus;
 import com.valuewith.tweaver.group.entity.QTripGroup;
 import com.valuewith.tweaver.group.entity.TripGroup;
+import com.valuewith.tweaver.groupMember.entity.GroupMember;
+import com.valuewith.tweaver.groupMember.entity.QGroupMember;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -19,6 +23,7 @@ public class TripGroupRepositoryCustomImpl implements TripGroupRepositoryCustom 
 
     private final JPAQueryFactory queryFactory;
     private final QTripGroup qTripGroup = QTripGroup.tripGroup;
+    private final QGroupMember qGroupMember = QGroupMember.groupMember;
 
     @Override
     public List<TripGroup> findFilteredTripGroups(
@@ -35,13 +40,49 @@ public class TripGroupRepositoryCustomImpl implements TripGroupRepositoryCustom 
             .fetch();
     }
 
-    public long countFilteredTripGroups(String status, String area, String title) {
+    public Long countFilteredTripGroups(String status, String area, String title) {
         BooleanBuilder predicate = createPredicateForTripGroup(status, area, title);
         return queryFactory
             .select(qTripGroup.count())
             .from(qTripGroup)
             .where(predicate)
             .fetchOne();
+    }
+
+    @Override
+    public List<TripGroup> findLeaderTripGroups(Long memberId) {
+        return queryFactory
+            .selectFrom(qTripGroup)
+            .where(qTripGroup.member.memberId.eq(memberId))
+            .where(qTripGroup.status.eq(GroupStatus.OPEN))
+            .orderBy(qTripGroup.createdDateTime.desc())
+            .fetch();
+    }
+
+    @Override
+    public List<TripGroup> findApprovedGroups(Long memberId) {
+        return queryFactory
+            .selectFrom(qTripGroup)
+            .join(qGroupMember)
+            .on(qGroupMember.tripGroup.eq(qTripGroup))
+            .where(qGroupMember.member.memberId.eq(memberId)
+                .and(qGroupMember.approvedStatus.eq(ApprovedStatus.APPROVED))
+                .and(qTripGroup.status.eq(GroupStatus.OPEN)))
+            .orderBy(qTripGroup.createdDateTime.desc())
+            .fetch();
+    }
+
+    @Override
+    public List<TripGroup> findPendingGroups(Long memberId) {
+        return queryFactory
+            .selectFrom(qTripGroup)
+            .join(qGroupMember)
+            .on(qGroupMember.tripGroup.eq(qTripGroup))
+            .where(qGroupMember.member.memberId.eq(memberId)
+                .and(qGroupMember.approvedStatus.eq(ApprovedStatus.PENDING))
+                .and(qTripGroup.status.eq(GroupStatus.OPEN)))
+            .orderBy(qTripGroup.createdDateTime.desc())
+            .fetch();
     }
 
 
