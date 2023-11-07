@@ -1,13 +1,10 @@
 package com.valuewith.tweaver.alert.controller;
 
 import com.valuewith.tweaver.alert.dto.AlertResponseDto;
-import com.valuewith.tweaver.alert.entity.Alert;
 import com.valuewith.tweaver.alert.service.AlertService;
-import com.valuewith.tweaver.commons.security.TokenService;
 import com.valuewith.tweaver.member.entity.Member;
 import com.valuewith.tweaver.member.repository.MemberRepository;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -53,12 +50,13 @@ public class AlertController {
    * @param alarmId
    */
   @PatchMapping("/{alertId}")
-  public void check(
+  public ResponseEntity<Long> check(
       @PathVariable("alertId") Long alarmId
   ) {
     //TODO: 로그인한 유저의 값을 가져오기(현재, 임시로 넣어둔 1L 객체 가져오기)
     Member member = memberRepository.findById(1L).get();
-    alertService.check(member.getMemberId(), alarmId);
+    Long alertCnt = alertService.check(member.getMemberId(), alarmId);
+    return ResponseEntity.ok(alertCnt);
   }
 
   /**
@@ -66,12 +64,13 @@ public class AlertController {
    * @param alarmId
    */
   @DeleteMapping("/{alertId}")
-  public void delete(
+  public ResponseEntity<Long> delete(
       @PathVariable("alertId") Long alarmId
   ) {
     //TODO: 로그인한 유저의 값을 가져오기(현재, 임시로 넣어둔 1L 객체 가져오기)
     Member member = memberRepository.findById(1L).get();
-    alertService.delete(member.getMemberId(), alarmId);
+    Long alertCnt = alertService.delete(member.getMemberId(), alarmId);
+    return ResponseEntity.ok(alertCnt);
   }
 
 }

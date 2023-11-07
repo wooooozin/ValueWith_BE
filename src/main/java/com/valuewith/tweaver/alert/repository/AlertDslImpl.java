@@ -42,4 +42,14 @@ public class AlertDslImpl implements AlertDsl {
         .collect(Collectors.toList());
   }
 
+  @Override
+  public Long getAlertCountByMemberId(Long memberId) {
+    return query.select(alert.count())
+        .from(alert)
+        .where((alert.member.memberId.eq(memberId))
+            .and(alert.isDeleted.eq(false))
+            .and(alert.isChecked.eq(false))
+        ).fetchOne();
+  }
+
 }

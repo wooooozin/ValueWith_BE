@@ -5,4 +5,6 @@ import java.util.List;
 
 public interface AlertDsl {
   List<AlertResponseDto> getAlertsByMemberId(Long memberId);
+
+  Long getAlertCountByMemberId(Long memberId);
 }

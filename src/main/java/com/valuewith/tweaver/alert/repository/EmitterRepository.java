@@ -30,6 +30,12 @@ public class EmitterRepository {
         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
   }
 
+  public Map<String, Object> findAllEventCacheStartById(String userId) {
+    return eventCache.entrySet().stream()
+        .filter(entry -> entry.getKey().startsWith(userId))
+        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+  }
+
   public void deleteById(String id) {
     emitters.remove(id);
   }
