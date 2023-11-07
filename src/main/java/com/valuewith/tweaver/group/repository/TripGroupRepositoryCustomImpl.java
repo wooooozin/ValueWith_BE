@@ -11,9 +11,11 @@ import com.valuewith.tweaver.group.entity.QTripGroup;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.groupMember.entity.GroupMember;
 import com.valuewith.tweaver.groupMember.entity.QGroupMember;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -83,6 +85,17 @@ public class TripGroupRepositoryCustomImpl implements TripGroupRepositoryCustom 
                 .and(qTripGroup.status.eq(GroupStatus.OPEN)))
             .orderBy(qTripGroup.createdDateTime.desc())
             .fetch();
+    }
+
+    @Override
+    public void updateTripGroupStatusToClose() {
+        queryFactory
+            .update(qTripGroup)
+            .set(qTripGroup.status, GroupStatus.CLOSE)
+            .where(qTripGroup.status.eq(GroupStatus.OPEN)
+                .and(qTripGroup.dueDate.eq(LocalDate.now().minusDays(1))))
+            .execute();
+
     }
 
 
