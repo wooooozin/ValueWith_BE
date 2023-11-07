@@ -7,6 +7,11 @@ import org.springframework.data.domain.Pageable;
 public interface TripGroupRepositoryCustom {
 
     List<TripGroup> findFilteredTripGroups(String status, String area, String title, Pageable pageable);
-    long countFilteredTripGroups(String status, String area, String title);
+    Long countFilteredTripGroups(String status, String area, String title);
 
+    List<TripGroup> findLeaderTripGroups(Long memberId);
+
+    List<TripGroup> findApprovedGroups(Long memberId);
+
+    List<TripGroup> findPendingGroups(Long memberId);
 }

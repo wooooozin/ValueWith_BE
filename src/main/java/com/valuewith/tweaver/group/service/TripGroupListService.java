@@ -1,13 +1,15 @@
 package com.valuewith.tweaver.group.service;
 
-import com.valuewith.tweaver.constants.ApprovedStatus;
 import com.valuewith.tweaver.group.dto.TripGroupDetailResponseDto;
 import com.valuewith.tweaver.group.dto.TripGroupListResponseDto;
 import com.valuewith.tweaver.group.dto.TripGroupResponseDto;
+import com.valuewith.tweaver.group.dto.TripGroupStatusResponseDto;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.group.repository.TripGroupRepository;
 import com.valuewith.tweaver.groupMember.dto.GroupMemberDetailResponseDto;
 import com.valuewith.tweaver.groupMember.repository.GroupMemberRepository;
+import com.valuewith.tweaver.member.entity.Member;
+import com.valuewith.tweaver.member.repository.MemberRepository;
 import com.valuewith.tweaver.place.dto.PlaceDetailResponseDto;
 import com.valuewith.tweaver.place.repository.PlaceRepository;
 import java.util.List;
@@ -26,6 +28,7 @@ public class TripGroupListService {
     private final TripGroupRepository tripGroupRepository;
     private final GroupMemberRepository groupMemberRepository;
     private final PlaceRepository placeRepository;
+    private final MemberRepository memberRepository;
 
     public TripGroupListResponseDto getFilteredTripGroups(
         String status, String area, String title, Pageable pageable
@@ -71,5 +74,28 @@ public class TripGroupListService {
         );
     }
 
+    public List<TripGroupStatusResponseDto> getMyTripGroupList(
+        String memberEmail, String status
+    ) {
+        Member member = memberRepository.findByEmail(memberEmail)
+            .orElseThrow(() -> new EntityNotFoundException("이메일 가입정보가 없습니다.. email: " + memberEmail));
+        List<TripGroup> tripGroups = null;
+        switch (status) {
+            case "leader":
+                tripGroups = tripGroupRepository.findLeaderTripGroups(member.getMemberId());
+                break;
+            case "approved":
+                tripGroups = tripGroupRepository.findApprovedGroups(member.getMemberId());
+                break;
+            case "pending":
+                tripGroups = tripGroupRepository.findPendingGroups(member.getMemberId());
+                break;
+            default:
+                throw new IllegalArgumentException("올바르지 않은 접근입니다.");
+        }
+        return tripGroups.stream()
+            .map(TripGroupStatusResponseDto::from)
+            .collect(Collectors.toList());
+    }
 }
 
