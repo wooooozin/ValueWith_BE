@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,6 +21,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.SQLDelete;
 
 @Entity
@@ -34,7 +36,7 @@ public class TripGroup extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tripGroupId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -48,6 +50,7 @@ public class TripGroup extends BaseEntity {
     private Integer maxMemberNumber;
 
     @NotNull
+    @Formula("(SELECT COUNT(*) FROM group_member gm WHERE gm.trip_group_id = trip_group_id AND gm.approved_status = 'APPROVED')")
     private Integer currentMemberNumber;
 
     @NotNull

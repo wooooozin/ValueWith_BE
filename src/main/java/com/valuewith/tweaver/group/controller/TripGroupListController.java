@@ -1,5 +1,6 @@
 package com.valuewith.tweaver.group.controller;
 
+import com.valuewith.tweaver.group.dto.TripGroupDetailResponseDto;
 import com.valuewith.tweaver.group.dto.TripGroupListResponseDto;
 import com.valuewith.tweaver.group.service.TripGroupListService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +35,14 @@ public class TripGroupListController {
             status, area, title, pageable
         );
         return ResponseEntity.ok(tripGroupListResponseDto);
+    }
+
+    @GetMapping("/list/{tripGroupId}")
+    public ResponseEntity<TripGroupDetailResponseDto> getGroupDetail(
+        @PathVariable Long tripGroupId
+    ) {
+        TripGroupDetailResponseDto tripGroupDetailDto = tripGroupListService.getTripGroupDetail(tripGroupId);
+        return ResponseEntity.ok(tripGroupDetailDto);
     }
 
     private Sort sortDirection(String sort) {

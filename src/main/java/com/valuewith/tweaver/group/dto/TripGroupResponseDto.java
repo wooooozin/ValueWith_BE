@@ -28,28 +28,26 @@ public class TripGroupResponseDto {
     private String age;
     private String gender;
 
-    public static TripGroupResponseDto from(
-        TripGroup tripGroup, Integer currentUserNumber
-    ) {
-        Member member = tripGroup.getMember();
+    public static TripGroupResponseDto from(TripGroup tripGroup) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return TripGroupResponseDto.builder()
             .tripGroupId(tripGroup.getTripGroupId())
             .name(tripGroup.getName())
             .content(tripGroup.getContent())
             .maxUserNumber(tripGroup.getMaxMemberNumber())
-            .currentUserNumber(currentUserNumber)
+            .currentUserNumber(tripGroup.getCurrentMemberNumber() + 1)
             .tripArea(tripGroup.getTripArea())
             .tripDate(tripGroup.getTripDate().format(formatter))
             .dueDate(tripGroup.getDueDate().format(formatter))
             .createdAt(tripGroup.getCreatedDateTime().format(formatter))
-            .thumbnailUrl(tripGroup.getThumbnailUrl())
             .status(tripGroup.getStatus().getDescription())
-            .profileUrl(member.getProfileUrl())
-            .nickName(member.getNickName())
-            .age(member.getAge().toString())
-            .gender(member.getGender())
+            .thumbnailUrl(tripGroup.getThumbnailUrl())
+            .profileUrl(tripGroup.getMember().getProfileUrl())
+            .nickName(tripGroup.getMember().getNickName())
+            .age(tripGroup.getMember().getAge().toString())
+            .gender(tripGroup.getMember().getGender())
             .build();
     }
+
 
 }
