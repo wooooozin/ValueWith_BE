@@ -1,4 +1,4 @@
-package com.valuewith.tweaver.commons.security;
+package com.valuewith.tweaver.commons.security.service;
 
 import com.valuewith.tweaver.auth.service.AuthService;
 import io.jsonwebtoken.Claims;
@@ -9,6 +9,9 @@ import java.util.Date;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -26,7 +29,7 @@ public class TokenService {
   @Value("${jwt-secret-key}")
   private String secretKey;
 
-  private final AuthService authService;
+  private final PrincipalService principalService;
 
   /**
    * Access 토큰을 생성합니다. 페이로드에 들어갈 기본적인 정보는 다음과 같습니다. 1. subject: Access 2. expiration: 1시간 3. claim:
@@ -61,6 +64,13 @@ public class TokenService {
         .setExpiration(expiredDate)
         .signWith(SignatureAlgorithm.HS512, this.secretKey)  // HMAC 기반 인증
         .compact();
+  }
+
+  // 토큰의 인증정보를 가져옵니다.
+  public Authentication getAuthentication(String jwt) {
+    UserDetails memberDetail = principalService.loadUserByUsername(getMemberEmail(jwt));
+    return new UsernamePasswordAuthenticationToken(
+        memberDetail, "", memberDetail.getAuthorities());
   }
 
   /**

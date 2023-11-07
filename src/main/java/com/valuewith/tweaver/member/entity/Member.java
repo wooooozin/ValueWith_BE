@@ -1,14 +1,19 @@
 package com.valuewith.tweaver.member.entity;
 
 import com.valuewith.tweaver.auditing.BaseEntity;
+import com.valuewith.tweaver.constants.Provider;
+import com.valuewith.tweaver.member.dto.MemberDto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -50,10 +55,31 @@ public class Member extends BaseEntity {
   private String refreshToken;  // refreshToken
 
   // OAuth2 사용
-  private String provider;  // OAuth 인증 제공자 (카카오, 네이버, ...)
+  @Enumerated(EnumType.STRING)
+  private Provider provider;  // OAuth 인증 제공자 (카카오, 네이버, ...)
   private String providerId;  // provider의 pk
 
-  /**
-   * 인증 관련 모듈은 PrincipalDetails에 있습니다.
+  /*
+    인증 관련 모듈은 PrincipalDetails에 있습니다.
    */
+  public Member update(String nickName, String profileUrl) {
+    this.nickName = nickName;
+    this.profileUrl = profileUrl;
+
+    return this;
+  }
+
+  public static Member from(MemberDto memberDto) {
+    return Member.builder()
+        .email(memberDto.getEmail())
+        .password(memberDto.getPassword())
+        .nickName(memberDto.getNickName())
+        .age(memberDto.getAge())
+        .gender(memberDto.getGender())
+        .profileUrl(memberDto.getProfileUrl())
+        .provider(memberDto.getProvider())
+        .providerId(memberDto.getProviderId())
+        .refreshToken(memberDto.getRefreshToken())
+        .build();
+  }
 }

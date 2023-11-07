@@ -5,7 +5,7 @@ import com.valuewith.tweaver.auth.dto.AuthDto.EmailInput;
 import com.valuewith.tweaver.auth.dto.AuthDto.SignUpForm;
 import com.valuewith.tweaver.auth.dto.AuthDto.VerificationForm;
 import com.valuewith.tweaver.auth.service.AuthService;
-import com.valuewith.tweaver.commons.security.TokenService;
+import com.valuewith.tweaver.commons.security.service.TokenService;
 import com.valuewith.tweaver.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
