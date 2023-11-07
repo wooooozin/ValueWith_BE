@@ -26,7 +26,7 @@ public class AuthController {
   @PostMapping(value = "/signin")
   public ResponseEntity<String> signIn(@RequestBody AuthDto.SignInForm request) {
     Member member = authService.authenticate(request);
-    return ResponseEntity.ok(tokenService.createToken(member.getEmail()));
+    return ResponseEntity.ok(tokenService.createAccessToken(member.getEmail()));
   }
 
   @PostMapping(value = "/signup")
