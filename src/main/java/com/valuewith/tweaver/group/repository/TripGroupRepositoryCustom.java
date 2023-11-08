@@ -14,4 +14,9 @@ public interface TripGroupRepositoryCustom {
     List<TripGroup> findApprovedGroups(Long memberId);
 
     List<TripGroup> findPendingGroups(Long memberId);
+
+    /**
+     * 매일 오전 12시 마감 처리
+     */
+    void updateTripGroupStatusToClose();
 }
