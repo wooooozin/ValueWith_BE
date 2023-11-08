@@ -1,7 +1,6 @@
 package com.valuewith.tweaver.member.dto;
 
 import com.valuewith.tweaver.alert.dto.AlertDto;
-import com.valuewith.tweaver.auth.info.OAuth2UserInfo;
 import com.valuewith.tweaver.constants.Provider;
 import com.valuewith.tweaver.groupMember.dto.GroupMemberDto;
 import com.valuewith.tweaver.member.entity.Member;
@@ -9,10 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @Getter
 @AllArgsConstructor

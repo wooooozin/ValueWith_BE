@@ -1,8 +1,7 @@
 package com.valuewith.tweaver.auth.info;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.openid.connect.sdk.claims.UserInfo;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 public class KakaoOAuth2UserInfo extends OAuth2UserInfo {
 
@@ -25,8 +24,24 @@ public class KakaoOAuth2UserInfo extends OAuth2UserInfo {
     return attributes.get("id").toString();
   }
 
+  @Override
   public String getProfileUrl() {
-    return getValue("kakao_account", "profile", "profile_image");
+    return getValue("kakao_account", "profile", "profile_image_url");
+  }
+
+  @Override
+  public String getGender() {
+    return getValue("kakao_account", "gender");
+  }
+
+  @Override
+  public Integer getAge() {
+    String age = getValue("kakao_account", "age_range");
+    assert age != null;
+    StringTokenizer st = new StringTokenizer(age, "~");
+    age = st.nextToken();
+
+    return Integer.parseInt(age);
   }
 
   private String getValue(String... keys) {

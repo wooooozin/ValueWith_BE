@@ -16,4 +16,8 @@ public abstract class OAuth2UserInfo {
   public abstract String getProviderId();
 
   public abstract String getProfileUrl();
+
+  public abstract String getGender();
+
+  public abstract Integer getAge();
 }

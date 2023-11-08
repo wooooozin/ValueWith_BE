@@ -29,7 +29,12 @@ public class OAuthAttributes {
 
   public Member toEntity(Provider provider, OAuth2UserInfo oauth2UserInfo) {
     return Member.builder()
+        .nickName(oauth2UserInfo.getName())
         .email(oauth2UserInfo.getEmail())
+        .age(oauth2UserInfo.getAge())
+        .password(provider.getValue() + "_" + oauth2UserInfo.getProviderId())
+        .gender(oauth2UserInfo.getGender())
+        .profileUrl(oauth2UserInfo.getProfileUrl())
         .providerId(oauth2UserInfo.getProviderId())
         .provider(provider)
         .build();
