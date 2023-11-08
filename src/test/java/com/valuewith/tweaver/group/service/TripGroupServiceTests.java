@@ -603,4 +603,60 @@ public class TripGroupServiceTests {
     });
 
   }
+
+  /**
+   * 그룹 삭제시, 해당 그룹 채팅의 메세지 삭제
+   * TODO: 메세지 생성 메소드 구현 후 테스트
+   */
+
+  /**
+   * 그룹 삭제시, 채팅 삭제
+   */
+  @Test
+  void deleteChatRoom() {
+      //given
+    ChatRoom foundChatRoom = chatRoomRepository.findByTripGroupTripGroupId(
+        modifiedTestTripGroup.getTripGroupId()).get();
+    //when
+    chatRoomService.deleteChatRoom(modifiedTestTripGroup.getTripGroupId());
+
+      //then
+    chatRoomRepository.findById(foundChatRoom.getChatRoomId()).ifPresent(chatRoom -> {
+      assertEquals(true, chatRoom.isDeleted());
+    });
+  }
+
+  /**
+   * 그룹 삭제시, 일정 삭제
+   */
+  @Test
+  void deletePlaces() {
+      //given
+      //when
+    placeService.deletePlaces(modifiedTestTripGroup.getTripGroupId());
+      //then
+    assertEquals(3, placeRepository.findAll().stream().filter(place -> place.isDeleted() == true).count());
+  }
+
+  /**
+   * 그룹 삭제
+   */
+  @Test
+  void deleteTripGroup() {
+      //given
+      //when
+    tripGroupService.deleteTripGroup(modifiedTestTripGroup.getTripGroupId());
+      //then
+    Optional<TripGroup> foundTripGroup = tripGroupRepository.findById(
+        modifiedTestTripGroup.getTripGroupId());
+    foundTripGroup.ifPresent(tripGroup -> {
+      assertEquals(true, tripGroup.isDeleted());
+    });
+  }
+
+  /**
+   * 그룹 멤버 삭제
+   * TODO: 멤버 등록 구현 완료시, 테스트
+   */
+
 }

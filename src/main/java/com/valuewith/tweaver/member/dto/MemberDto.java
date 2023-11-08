@@ -1,6 +1,6 @@
 package com.valuewith.tweaver.member.dto;
 
-import com.valuewith.tweaver.alert.dto.AlertDto;
+import com.valuewith.tweaver.alert.dto.AlertResponseDto;
 import com.valuewith.tweaver.constants.Provider;
 import com.valuewith.tweaver.groupMember.dto.GroupMemberDto;
 import com.valuewith.tweaver.member.entity.Member;
@@ -25,7 +25,7 @@ public class MemberDto {
   private String providerId;
   private String refreshToken;
   private List<GroupMemberDto> groupMembers = new ArrayList<>();
-  private List<AlertDto> alerts = new ArrayList<>();
+  private List<AlertResponseDto> alerts = new ArrayList<>();
 
   public MemberDto from(Member member) {
     return MemberDto.builder()

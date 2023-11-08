@@ -1,5 +1,8 @@
 package com.valuewith.tweaver.group.service;
 
+import com.valuewith.tweaver.alert.dto.AlertRequestDto;
+import com.valuewith.tweaver.alert.service.AlertService;
+import com.valuewith.tweaver.constants.AlertContent;
 import com.valuewith.tweaver.constants.GroupStatus;
 import com.valuewith.tweaver.constants.ImageType;
 import com.valuewith.tweaver.defaultImage.entity.DefaultImage;
@@ -8,6 +11,8 @@ import com.valuewith.tweaver.defaultImage.service.ImageService;
 import com.valuewith.tweaver.group.dto.TripGroupRequestDto;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.group.repository.TripGroupRepository;
+import com.valuewith.tweaver.groupMember.repository.GroupMemberRepository;
+import com.valuewith.tweaver.member.entity.Member;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,11 +26,12 @@ import org.springframework.web.multipart.MultipartFile;
 @Transactional
 public class TripGroupService {
   private final ImageService imageService;
+  private final AlertService alertService;
 
   private final TripGroupRepository tripGroupRepository;
   private final DefaultImageRepository defaultImageRepository;
 
-  public TripGroup createTripGroup(TripGroupRequestDto tripGroupRequestDto, MultipartFile file) {
+  public TripGroup createTripGroup(TripGroupRequestDto tripGroupRequestDto, MultipartFile file, Member member) {
 
     if (file != null && !file.isEmpty()) {
       String imageUrl = imageService.uploadImageAndGetUrl(file, ImageType.THUMBNAIL);
@@ -37,6 +43,7 @@ public class TripGroupService {
     }
 
     TripGroup tripGroup = TripGroup.builder()
+        .member(member)
         .name(tripGroupRequestDto.getName())
         .content(tripGroupRequestDto.getContent())
         .maxMemberNumber(tripGroupRequestDto.getMaxMemberNumber())
@@ -73,5 +80,28 @@ public class TripGroupService {
   public String getThumbnailUrl(String tripArea) {
     DefaultImage randomByImageName = defaultImageRepository.findRandomByImageName(tripArea);
     return randomByImageName.getDefaultImageUrl();
+  }
+
+  public void deleteTripGroup(Long tripGroupId) {
+    tripGroupRepository.deleteById(tripGroupId);
+  }
+
+  public void sendTripGroupAlert(Long tripGroupId) {
+    Member member = Member.builder()
+        .memberId(1L)
+        .email("dodunge@gmail.com")
+        .password("1234")
+        .nickName("수정")
+        .age(20)
+        .gender("여성")
+        .profileUrl("http://images...")
+        .isSocial(true)
+        .build();
+    alertService.send(AlertRequestDto.builder()
+        .userToken("aaa")
+        .groupId(tripGroupId)
+        .member(member)
+        .content(AlertContent.DELETED_GROUP)
+        .build());
   }
 }

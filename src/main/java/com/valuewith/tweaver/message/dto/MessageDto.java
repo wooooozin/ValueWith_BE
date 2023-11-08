@@ -1,11 +1,9 @@
 package com.valuewith.tweaver.message.dto;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
-@Data
+@Getter
 @NoArgsConstructor
 public class MessageDto {
   private Long messageId;

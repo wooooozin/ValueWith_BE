@@ -34,10 +34,6 @@ public class GroupMember extends BaseEntity {
   private Long groupMemberId;
 
   @NotNull
-  @Enumerated(EnumType.STRING)
-  private MemberRole memberRole;
-
-  @NotNull
   private Boolean isBanned;
 
   @NotNull
