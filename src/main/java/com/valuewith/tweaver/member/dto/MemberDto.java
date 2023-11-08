@@ -1,6 +1,6 @@
 package com.valuewith.tweaver.member.dto;
 
-import com.valuewith.tweaver.alert.dto.AlertDto;
+import com.valuewith.tweaver.alert.dto.AlertResponseDto;
 import com.valuewith.tweaver.groupMember.dto.GroupMemberDto;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,5 +19,5 @@ public class MemberDto {
   private String profileUrl;
   private Boolean isSocial;
   private List<GroupMemberDto> groupMembers = new ArrayList<>();
-  private List<AlertDto> alerts = new ArrayList<>();
+  private List<AlertResponseDto> alerts = new ArrayList<>();
 }

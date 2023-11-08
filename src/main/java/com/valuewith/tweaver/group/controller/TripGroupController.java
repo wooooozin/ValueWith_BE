@@ -1,5 +1,7 @@
 package com.valuewith.tweaver.group.controller;
 
+import com.valuewith.tweaver.alert.dto.AlertRequestDto;
+import com.valuewith.tweaver.alert.service.AlertService;
 import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.chat.service.ChatRoomService;
 import com.valuewith.tweaver.defaultImage.service.ImageService;
@@ -85,6 +87,7 @@ public class TripGroupController {
     // 5.그룹 멤버 삭제
     groupMemberService.deleteGroupMember(tripGroupId);
     // 6.그룹 멤버에게 그룹 삭제에 대한 알림
+    tripGroupService.sendTripGroupAlert(tripGroupId);
 
     return ResponseEntity.ok("ok");
   }
