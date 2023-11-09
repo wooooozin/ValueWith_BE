@@ -1,7 +1,6 @@
 package com.valuewith.tweaver.groupMember.controller;
 
-import com.valuewith.tweaver.commons.security.TokenService;
-import com.valuewith.tweaver.constants.ApprovedStatus;
+import com.valuewith.tweaver.commons.security.service.TokenService;
 import com.valuewith.tweaver.groupMember.dto.GroupMemberListDto;
 import com.valuewith.tweaver.groupMember.service.GroupMemberListService;
 import lombok.RequiredArgsConstructor;
