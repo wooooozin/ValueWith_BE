@@ -10,6 +10,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class PlaceDetailResponseDto {
 
+    private String category;
     private String name;
     private Double x;
     private Double y;
@@ -20,6 +21,7 @@ public class PlaceDetailResponseDto {
 
     public static PlaceDetailResponseDto from(Place place) {
         return PlaceDetailResponseDto.builder()
+            .category(place.getCategory())
             .name(place.getName())
             .x(place.getX())
             .y(place.getY())

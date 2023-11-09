@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class PlaceDto {
   private Long placeId;
   private Long tripGroupId;
+  private String category;
   private String name;
   private Double x;
   private Double y;
