@@ -9,16 +9,14 @@ import com.valuewith.tweaver.constants.ApprovedStatus;
 import com.valuewith.tweaver.constants.GroupStatus;
 import com.valuewith.tweaver.group.entity.QTripGroup;
 import com.valuewith.tweaver.group.entity.TripGroup;
-import com.valuewith.tweaver.groupMember.entity.GroupMember;
 import com.valuewith.tweaver.groupMember.entity.QGroupMember;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class TripGroupRepositoryCustomImpl implements TripGroupRepositoryCustom {
