@@ -4,12 +4,14 @@ import com.valuewith.tweaver.alert.dto.AlertRequestDto;
 import com.valuewith.tweaver.alert.service.AlertService;
 import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.chat.service.ChatRoomService;
+import com.valuewith.tweaver.commons.security.service.TokenService;
 import com.valuewith.tweaver.defaultImage.service.ImageService;
 import com.valuewith.tweaver.group.dto.TripGroupRequestDto;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.group.service.TripGroupService;
 import com.valuewith.tweaver.groupMember.service.GroupMemberService;
 import com.valuewith.tweaver.member.entity.Member;
+import com.valuewith.tweaver.member.service.MemberService;
 import com.valuewith.tweaver.message.service.MessageService;
 import com.valuewith.tweaver.place.service.PlaceService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,26 +32,20 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @RequestMapping("/groups/*")
 public class TripGroupController {
+  private final MemberService memberService;
   private final TripGroupService tripGroupService;
   private final PlaceService placeService;
   private final ChatRoomService chatRoomService;
   private final GroupMemberService groupMemberService;
   private final MessageService messageService;
+  private final TokenService tokenService;
 
   @PostMapping
   public ResponseEntity<String> createGroup(
       @RequestPart(value = "tripGroupRequestDto") TripGroupRequestDto tripGroupRequestDto,
-      @RequestPart(value = "file") MultipartFile file) {
-    // TODO: spring security 인증작업이 끝나면 해당 기능 사용해서 현재 사용자정보 가져오기
-    Member member = Member.builder()
-        .memberId(1L)
-        .email("dodunge@gmail.com")
-        .password("1234")
-        .nickName("수정")
-        .age(20)
-        .gender("여성")
-        .profileUrl("http://images...")
-        .build();
+      @RequestPart(value = "file") MultipartFile file,
+      @RequestHeader("Authorization") String token) {
+    Member member = memberService.findMemberByEmail(tokenService.getMemberEmail(token));
     // 1.그룹 등록
     TripGroup tripGroup = tripGroupService.createTripGroup(tripGroupRequestDto, file, member);
     // 2.여행 등록
