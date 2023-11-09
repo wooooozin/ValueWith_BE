@@ -1,5 +1,6 @@
 package com.valuewith.tweaver.auth.dto;
 
+import com.valuewith.tweaver.constants.Provider;
 import com.valuewith.tweaver.member.entity.Member;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,8 +32,8 @@ public class AuthDto {
           .password(this.password)
           .gender(this.gender)
           .age(this.age)
+          .provider(Provider.NORMAL)
           .profileUrl(profileUrl)
-          .isSocial(Boolean.FALSE)
           .build();
     }
   }

@@ -48,7 +48,6 @@ public class TripGroupController {
         .age(20)
         .gender("여성")
         .profileUrl("http://images...")
-        .isSocial(true)
         .build();
     // 1.그룹 등록
     TripGroup tripGroup = tripGroupService.createTripGroup(tripGroupRequestDto, file, member);

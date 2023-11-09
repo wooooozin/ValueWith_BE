@@ -1,16 +1,14 @@
 package com.valuewith.tweaver.commons.security;
 
+import com.valuewith.tweaver.commons.security.service.TokenService;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
@@ -28,10 +26,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     String token = resolveTokenFromRequest(request);
 
     // 토큰이 올바르다면 인증 정보를 Context에 저장하는 과정이 추가
-    if (StringUtils.hasText(token) && tokenService.isValidToken(token)) {
-      Authentication auth = tokenService.getAuthentication(token);
-      SecurityContextHolder.getContext().setAuthentication(auth);
-    }
+//    if (StringUtils.hasText(token) && tokenService.isValidToken(token)) {
+//      Authentication auth = tokenService.getAuthentication(token);
+//      SecurityContextHolder.getContext().setAuthentication(auth);
+//    }
 
     filterChain.doFilter(request, response);
   }

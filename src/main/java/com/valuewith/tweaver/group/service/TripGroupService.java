@@ -95,7 +95,6 @@ public class TripGroupService {
         .age(20)
         .gender("여성")
         .profileUrl("http://images...")
-        .isSocial(true)
         .build();
     alertService.send(AlertRequestDto.builder()
         .userToken("aaa")

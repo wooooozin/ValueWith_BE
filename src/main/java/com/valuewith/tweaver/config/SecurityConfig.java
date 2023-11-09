@@ -1,5 +1,6 @@
 package com.valuewith.tweaver.config;
 
+import com.valuewith.tweaver.auth.service.OAuthUserCustomService;
 import com.valuewith.tweaver.commons.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
   private final JwtAuthenticationFilter authenticationFilter;
+  private final OAuthUserCustomService oAuthUserCustomService;
 
   /**
    * swagger, h2-console 접근을 위한 설정입니다.
@@ -34,8 +36,15 @@ public class SecurityConfig {
         .permitAll().anyRequest().authenticated()
         .and()
         .headers().frameOptions().disable()
+
         .and()
-        .addFilterBefore(this.authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        .addFilterBefore(this.authenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        .logout(logout -> logout.logoutSuccessUrl("/"))
+
+        .oauth2Login()
+        .userInfoEndpoint()
+        .userService(oAuthUserCustomService);
+
     return http.build();
   }
 

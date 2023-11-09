@@ -1,6 +1,6 @@
 package com.valuewith.tweaver.group.controller;
 
-import com.valuewith.tweaver.commons.security.TokenService;
+import com.valuewith.tweaver.commons.security.service.TokenService;
 import com.valuewith.tweaver.group.dto.TripGroupDetailResponseDto;
 import com.valuewith.tweaver.group.dto.TripGroupListResponseDto;
 import com.valuewith.tweaver.group.dto.TripGroupStatusListDto;

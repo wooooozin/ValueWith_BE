@@ -1,14 +1,18 @@
 package com.valuewith.tweaver.member.dto;
 
 import com.valuewith.tweaver.alert.dto.AlertResponseDto;
+import com.valuewith.tweaver.constants.Provider;
 import com.valuewith.tweaver.groupMember.dto.GroupMemberDto;
+import com.valuewith.tweaver.member.entity.Member;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class MemberDto {
   private Long memberId;
   private String email;
@@ -17,7 +21,23 @@ public class MemberDto {
   private Integer age;
   private String gender;
   private String profileUrl;
-  private Boolean isSocial;
+  private Provider provider;
+  private String providerId;
+  private String refreshToken;
   private List<GroupMemberDto> groupMembers = new ArrayList<>();
   private List<AlertResponseDto> alerts = new ArrayList<>();
+
+  public MemberDto from(Member member) {
+    return MemberDto.builder()
+        .email(member.getEmail())
+        .password(member.getPassword())
+        .nickName(member.getNickName())
+        .age(member.getAge())
+        .gender(member.getGender())
+        .profileUrl(member.getProfileUrl())
+        .provider(member.getProvider())
+        .providerId(member.getProviderId())
+        .refreshToken(member.getRefreshToken())
+        .build();
+  }
 }
