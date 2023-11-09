@@ -3,10 +3,24 @@ package com.valuewith.tweaver.groupMember.entity;
 import com.valuewith.tweaver.auditing.BaseEntity;
 import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.constants.ApprovedStatus;
-import com.valuewith.tweaver.constants.MemberRole;
 import com.valuewith.tweaver.group.entity.TripGroup;
-import com.valuewith.tweaver.message.entity.Message;
 import com.valuewith.tweaver.member.entity.Member;
+import com.valuewith.tweaver.message.entity.Message;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,12 +28,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.SQLDelete;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "GROUP_MEMBER")
@@ -57,4 +65,22 @@ public class GroupMember extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "chat_room_id")
   private ChatRoom chatRoom;
+
+  public static GroupMember from(TripGroup tripGroup, Member member) {
+    return GroupMember.builder()
+        .isBanned(Boolean.FALSE)
+        .approvedStatus(ApprovedStatus.PENDING)
+        .approvedDateTime(LocalDateTime.now())
+        .member(member)
+        .tripGroup(tripGroup)
+        .build();
+  }
+
+  public void rejectApplication() {
+    this.approvedStatus = ApprovedStatus.REJECTED;
+  }
+  public void confirmApplication(ChatRoom chatRoom) {
+    this.approvedStatus = ApprovedStatus.APPROVED;
+    this.chatRoom = chatRoom;
+  }
 }
