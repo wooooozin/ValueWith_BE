@@ -22,6 +22,7 @@ public class PlaceService {
   public void createPlace(TripGroup tripGroup, List<PlaceDto> placeDtos) {
     List<Place> places = placeDtos.stream().map(
             place -> Place.builder()
+                .category(place.getCategory())
                 .name(place.getName())
                 .x(place.getX())
                 .y(place.getY())

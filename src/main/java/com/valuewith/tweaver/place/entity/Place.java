@@ -25,6 +25,9 @@ public class Place extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long placeId;
 
+  @Nullable
+  private String category;
+
   @NotNull
   private String name;
 
