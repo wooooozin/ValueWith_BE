@@ -98,7 +98,6 @@ public class TripGroupService {
 
     groupMembers.stream().forEach(groupMember -> {
       alertService.send(AlertRequestDto.builder()
-          .userToken("aaa")
           .groupId(tripGroupId)
           .member(groupMember.getMember())
           .content(alertContent)

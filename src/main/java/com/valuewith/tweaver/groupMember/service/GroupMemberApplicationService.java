@@ -38,7 +38,6 @@ public class GroupMemberApplicationService {
 
     // 신청이 왔을 때 알람 보내기
     alertService.send(AlertRequestDto.builder()
-        .userToken("aaa")
         .groupId(tripGroupId)
         .member(tripGroup.getMember())
         .content(AlertContent.NEW_APPLICATION)
@@ -65,7 +64,6 @@ public class GroupMemberApplicationService {
 
     // 신청이 거절 되었을 때 알람 보내기
     alertService.send(AlertRequestDto.builder()
-        .userToken("aaa")
         .groupId(foundGroupMember.getTripGroup().getTripGroupId())
         .member(foundGroupMember.getMember())
         .content(AlertContent.APPLICATION_REJECT)
@@ -82,7 +80,6 @@ public class GroupMemberApplicationService {
 
     // 신청이 승인 되었을 때 알람 보내기
     alertService.send(AlertRequestDto.builder()
-        .userToken("aaa")
         .groupId(foundGroupMember.getTripGroup().getTripGroupId())
         .member(foundGroupMember.getMember())
         .content(AlertContent.APPLICATION_APPLY)
@@ -96,7 +93,6 @@ public class GroupMemberApplicationService {
             foundGroupMember.getMember().getMemberId());
     groupMembers.stream().forEach(groupMember -> {
       alertService.send(AlertRequestDto.builder()
-          .userToken("aaa")
           .groupId(groupMember.getTripGroup().getTripGroupId())
           .member(groupMember.getMember())
           .content(AlertContent.ADD_MEMBER)

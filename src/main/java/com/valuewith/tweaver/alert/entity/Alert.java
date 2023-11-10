@@ -38,9 +38,6 @@ public class Alert extends BaseEntity {
   private Boolean isChecked;
 
   @NotNull
-  private String userToken;
-
-  @NotNull
   private Long groupId;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -75,7 +72,6 @@ public class Alert extends BaseEntity {
         .redirectUrl(redirectUrl)
         .isChecked(false)
         .groupId(alertRequestDto.getGroupId())
-        .userToken(alertRequestDto.getUserToken())
         .build();
   }
 }
