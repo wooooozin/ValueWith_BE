@@ -48,4 +48,15 @@ public class GroupMemberRepositoryCustomImpl implements GroupMemberRepositoryCus
                 .and(groupMember.approvedStatus.eq(ApprovedStatus.APPROVED)))
             .fetch();
     }
+
+    @Override
+    public List<GroupMember> findApprovedMembersByTripGroupIdExceptLeader(Long groupLeaderId, Long tripGroupId) {
+        return queryFactory
+            .selectFrom(groupMember)
+            .join(groupMember.tripGroup, QTripGroup.tripGroup).fetchJoin()
+            .where(groupMember.tripGroup.tripGroupId.eq(tripGroupId)
+                .and(groupMember.member.memberId.notIn(groupLeaderId))
+                .and(groupMember.approvedStatus.eq(ApprovedStatus.APPROVED)))
+            .fetch();
+    }
 }

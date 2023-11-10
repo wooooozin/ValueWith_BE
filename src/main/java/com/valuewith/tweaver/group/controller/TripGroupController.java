@@ -1,11 +1,9 @@
 package com.valuewith.tweaver.group.controller;
 
-import com.valuewith.tweaver.alert.dto.AlertRequestDto;
-import com.valuewith.tweaver.alert.service.AlertService;
 import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.chat.service.ChatRoomService;
 import com.valuewith.tweaver.commons.security.service.TokenService;
-import com.valuewith.tweaver.defaultImage.service.ImageService;
+import com.valuewith.tweaver.constants.AlertContent;
 import com.valuewith.tweaver.group.dto.TripGroupRequestDto;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.group.service.TripGroupService;
@@ -67,6 +65,8 @@ public class TripGroupController {
     placeService.modifiedPlace(tripGroup, tripGroupRequestDto.getPlaces());
     // 3.채팅 수정(그룹명 수정으로 인한 채팅룸 제목 수정)
     chatRoomService.modifiedChatRoom(tripGroup);
+    // 4.그룹 멤버에게 그룹 수정에 대한 알림
+    tripGroupService.sendTripGroupAlert(tripGroup.getTripGroupId(), AlertContent.UPDATE_GROUP_PLAN);
     return ResponseEntity.ok("ok");
   }
 
@@ -83,7 +83,7 @@ public class TripGroupController {
     // 5.그룹 멤버 삭제
     groupMemberService.deleteGroupMember(tripGroupId);
     // 6.그룹 멤버에게 그룹 삭제에 대한 알림
-    tripGroupService.sendTripGroupAlert(tripGroupId);
+    tripGroupService.sendTripGroupAlert(tripGroupId, AlertContent.DELETED_GROUP);
 
     return ResponseEntity.ok("ok");
   }

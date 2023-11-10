@@ -11,8 +11,10 @@ import com.valuewith.tweaver.defaultImage.service.ImageService;
 import com.valuewith.tweaver.group.dto.TripGroupRequestDto;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.group.repository.TripGroupRepository;
+import com.valuewith.tweaver.groupMember.entity.GroupMember;
 import com.valuewith.tweaver.groupMember.repository.GroupMemberRepository;
 import com.valuewith.tweaver.member.entity.Member;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,7 @@ public class TripGroupService {
 
   private final TripGroupRepository tripGroupRepository;
   private final DefaultImageRepository defaultImageRepository;
+  private final GroupMemberRepository groupMemberRepository;
 
   public TripGroup createTripGroup(TripGroupRequestDto tripGroupRequestDto, MultipartFile file, Member member) {
 
@@ -86,21 +89,22 @@ public class TripGroupService {
     tripGroupRepository.deleteById(tripGroupId);
   }
 
-  public void sendTripGroupAlert(Long tripGroupId) {
-    Member member = Member.builder()
-        .memberId(1L)
-        .email("dodunge@gmail.com")
-        .password("1234")
-        .nickName("수정")
-        .age(20)
-        .gender("여성")
-        .profileUrl("http://images...")
-        .build();
-    alertService.send(AlertRequestDto.builder()
-        .userToken("aaa")
-        .groupId(tripGroupId)
-        .member(member)
-        .content(AlertContent.DELETED_GROUP)
-        .build());
+  public void sendTripGroupAlert(Long tripGroupId, AlertContent alertContent) {
+    TripGroup tripGroup = tripGroupRepository.findById(tripGroupId)
+        .orElseThrow(() -> new RuntimeException("그룹이 존재하지 않습니다."));
+    List<GroupMember> groupMembers
+        = groupMemberRepository.findApprovedMembersByTripGroupIdExceptLeader(
+            tripGroupId, tripGroup.getMember().getMemberId());
+
+    groupMembers.stream().forEach(groupMember -> {
+      alertService.send(AlertRequestDto.builder()
+          .userToken("aaa")
+          .groupId(tripGroupId)
+          .member(groupMember.getMember())
+          .content(alertContent)
+          .build());
+    });
+
+
   }
 }
