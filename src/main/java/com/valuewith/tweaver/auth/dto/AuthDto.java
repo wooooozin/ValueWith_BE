@@ -2,6 +2,7 @@ package com.valuewith.tweaver.auth.dto;
 
 import com.valuewith.tweaver.constants.Provider;
 import com.valuewith.tweaver.member.entity.Member;
+import javax.validation.constraints.Email;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,7 @@ public class AuthDto {
   public static class SignUpForm {
 
     private String nickname;
+    @Email
     private String email;
     private String password;
     private String gender;
@@ -41,6 +43,7 @@ public class AuthDto {
   @Data
   @NoArgsConstructor
   public static class VerificationForm {
+    @Email
     private String email;
     private String code;
   }
@@ -48,6 +51,7 @@ public class AuthDto {
   @Data
   @NoArgsConstructor
   public static class EmailInput {
+    @Email
     private String email;
   }
 }
