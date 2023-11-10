@@ -18,7 +18,7 @@ public class AlertResponseDto {
   private Long alertId;
   private String redirectUrl;
   private AlertContent content;
-  private LocalDateTime createDateTime;
+  private LocalDateTime createdDateTime;
   private Long groupId;
   private String groupName;
 
@@ -27,7 +27,7 @@ public class AlertResponseDto {
         .alertId(alert.getAlertId())
         .content(alert.getContent())
         .groupId(alert.getGroupId())
-        .createDateTime(alert.getCreatedDateTime())
+        .createdDateTime(alert.getCreatedDateTime())
         .redirectUrl(alert.getRedirectUrl())
         .groupName(groupName)
         .build();
