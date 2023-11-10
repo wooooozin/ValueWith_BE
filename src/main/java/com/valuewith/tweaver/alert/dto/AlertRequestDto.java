@@ -19,7 +19,6 @@ public class AlertRequestDto {
   private String redirectUrl;
   private AlertContent content;
   private LocalDateTime createDate;
-  private String userToken;
   private Long groupId;
   private Member member;
 }
