@@ -10,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 public enum ApprovedStatus {
   PENDING("대기"),
   APPROVED("승인"),
-  REJECTED("거절");
+  REJECTED("거절"),
+  LEFT("퇴장"),
+  BANNED("추방");
 
   private final String description;
 }
