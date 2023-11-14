@@ -77,4 +77,25 @@ public class GroupMemberListService {
         groupMember.leaveApplication(ApprovedStatus.LEFT);
         groupMemberRepository.save(groupMember);
     }
+
+
+    @Transactional
+    public Member bannedGroupMemberFromTripGroup(
+        String memberEmail, Long tripGroupId, Long groupMemberId
+    ) {
+        Member member = memberRepository.findByEmail(memberEmail)
+            .orElseThrow(() -> new EntityNotFoundException("이메일 가입정보가 없습니다. email: " + memberEmail));
+
+        TripGroup tripGroup = tripGroupRepository.findByTripGroupId(tripGroupId)
+            .orElseThrow(() -> new EntityNotFoundException("여행 정보가 없습니다. ID: " + tripGroupId));
+
+        if (!member.getMemberId().equals(tripGroup.getMember().getMemberId())) {
+            throw new IllegalArgumentException("그룹멤버 추방 권한이 없습니다.");
+        }
+        GroupMember groupMember = groupMemberRepository.findByGroupMemberId(groupMemberId)
+            .orElseThrow(() -> new EntityNotFoundException("등록된 그룹멤버 정보가 없습니다." + groupMemberId));
+        groupMember.leaveApplication(ApprovedStatus.BANNED);
+        groupMemberRepository.save(groupMember);
+        return groupMember.getMember();
+    }
 }
