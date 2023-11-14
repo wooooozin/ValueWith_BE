@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -55,5 +56,25 @@ public class GroupMemberListService {
         } else {
             throw new IllegalArgumentException("잘못된 요청입니다.");
         }
+    }
+
+    //TODO - 채팅도 이때 함께 나가지는게 좋을지 고민
+    @Transactional
+    public void leftMemberFromTripGroup(String memberEmail, Long tripGroupId) {
+        Member member = memberRepository.findByEmail(memberEmail)
+            .orElseThrow(() -> new EntityNotFoundException("이메일 가입정보가 없습니다. email: " + memberEmail));
+
+        TripGroup tripGroup = tripGroupRepository.findByTripGroupId(tripGroupId)
+            .orElseThrow(() -> new EntityNotFoundException("여행 정보가 없습니다. ID: " + tripGroupId));
+
+        GroupMember groupMember = groupMemberRepository.findApprovedMemberByTripGroupIdAndMemberId(
+            tripGroup.getTripGroupId(), member.getMemberId()
+        );
+        log.info("😊" + groupMember.getGroupMemberId());
+
+        // 채팅방 아웃 예시
+        // chatRoomService.removeMemberFromChatRoom(member, groupMember.getChatRoom());
+        groupMember.leaveApplication(ApprovedStatus.LEFT);
+        groupMemberRepository.save(groupMember);
     }
 }
