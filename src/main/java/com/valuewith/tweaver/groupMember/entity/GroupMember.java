@@ -79,4 +79,9 @@ public class GroupMember extends BaseEntity {
     this.approvedStatus = ApprovedStatus.APPROVED;
     this.chatRoom = chatRoom;
   }
+
+  public void leaveApplication(ApprovedStatus status) {
+    this.approvedStatus = status;
+    this.isDeleted = true;
+  }
 }
