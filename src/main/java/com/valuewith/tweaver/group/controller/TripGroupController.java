@@ -12,8 +12,10 @@ import com.valuewith.tweaver.member.entity.Member;
 import com.valuewith.tweaver.member.service.MemberService;
 import com.valuewith.tweaver.message.service.MessageService;
 import com.valuewith.tweaver.place.service.PlaceService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +40,7 @@ public class TripGroupController {
   private final MessageService messageService;
   private final TokenService tokenService;
 
+  @ApiOperation(value = "여행 그룹 생성 API")
   @PostMapping
   public ResponseEntity<String> createGroup(
       @RequestPart(value = "tripGroupRequestDto") TripGroupRequestDto tripGroupRequestDto,
@@ -55,6 +58,7 @@ public class TripGroupController {
     return ResponseEntity.ok("ok");
   }
 
+  @ApiOperation(value = "여행 그룹 수정 API")
   @PutMapping
   public ResponseEntity<String> modifiedGroup(
       @RequestPart(value = "tripGroupRequestDto") TripGroupRequestDto tripGroupRequestDto,
@@ -70,6 +74,7 @@ public class TripGroupController {
     return ResponseEntity.ok("ok");
   }
 
+  @ApiOperation(value = "여행 그룹 삭제 API", notes = "이 API 호출 시 메세지/채팅룸/장소/여행그룹 이 동시에 삭제되고 그룹멤버에게 삭제 알림을 발송합니다.")
   @DeleteMapping("{tripGroupId}")
   public ResponseEntity<String> deleteGroup(@PathVariable("tripGroupId") Long tripGroupId) {
     // 1.메세지 삭제
