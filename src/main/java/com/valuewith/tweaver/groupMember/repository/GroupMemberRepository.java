@@ -13,8 +13,8 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, Long>,
   List<GroupMember> findGroupMembersByMember_MemberIdAndApprovedStatus(
       Long memberId, ApprovedStatus approvedStatus);
 
-  Boolean existsByMember_MemberIdAndTripGroup_TripGroupIdAndApprovedStatus(
-      Long memberId, Long tripGroupId, ApprovedStatus approvedStatus);
+  Boolean existsByMember_MemberIdAndTripGroup_TripGroupId(
+      Long memberId, Long tripGroupId);
 
   GroupMember findGroupMemberByMember_MemberIdAndTripGroup_TripGroupId(
       Long memberId, Long tripGroupId);

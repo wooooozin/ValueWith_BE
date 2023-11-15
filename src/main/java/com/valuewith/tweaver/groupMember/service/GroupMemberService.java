@@ -44,8 +44,8 @@ public class GroupMemberService {
   }
 
   public Boolean isGroupMember(Long memberId, Long tripGroupId) {
-    return groupMemberRepository.existsByMember_MemberIdAndTripGroup_TripGroupIdAndApprovedStatus(
-        memberId, tripGroupId, ApprovedStatus.APPROVED);
+    return groupMemberRepository.existsByMember_MemberIdAndTripGroup_TripGroupId(
+        memberId, tripGroupId);
   }
 
   public GroupMember findGroupMemberByMemberIdAndGroupId(Long memberId, Long tripGroupId) {

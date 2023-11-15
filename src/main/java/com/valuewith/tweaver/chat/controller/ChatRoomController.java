@@ -45,14 +45,14 @@ public class ChatRoomController {
   }
 
   @PostMapping("/room/{chatRoomId}")
-  public ResponseEntity<String> enterChatRooms(
+  public ResponseEntity<String> enterChatRoom(
       @AuthenticationPrincipal PrincipalDetails principalDetails,
       @PathVariable Long chatRoomId) {
     ChatRoom chatRoom = chatRoomService.findByChatRoomId(chatRoomId);
     Long memberId = memberService.findMemberByEmail(principalDetails.getUsername()).getMemberId();
     Long tripGroupId = chatRoom.getTripGroup().getTripGroupId();
 
-    // TODO: 해당 그룹원이 아니면 커스텀 익셉션 (승인 상태여야 합니다.)
+    // TODO: 해당 그룹원이 아니면 커스텀 익셉션
     if (!groupMemberService.isGroupMember(memberId, tripGroupId)) {
       throw new RuntimeException("해당 그룹원이 아닙니다.");
     }
