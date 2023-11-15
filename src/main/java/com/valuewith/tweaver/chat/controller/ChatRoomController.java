@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,5 +62,19 @@ public class ChatRoomController {
         memberId, tripGroupId);
 
     return ResponseEntity.ok(chatMemberService.enterChatRoom(chatRoom, groupMember));
+  }
+
+  @DeleteMapping("/room/{chatRoomId}")
+  public ResponseEntity<String> exitChatRoom(
+      @AuthenticationPrincipal PrincipalDetails principalDetails,
+      @PathVariable Long chatRoomId
+  ) {
+    ChatRoom chatRoom = chatRoomService.findByChatRoomId(chatRoomId);
+    Long memberId = memberService.findMemberByEmail(principalDetails.getUsername()).getMemberId();
+    Long tripGroupId = chatRoom.getTripGroup().getTripGroupId();
+    GroupMember groupMember = groupMemberService.findGroupMemberByMemberIdAndGroupId(
+        memberId, tripGroupId);
+
+    return ResponseEntity.ok(chatMemberService.exitChatRoom(chatRoom, groupMember));
   }
 }

@@ -4,6 +4,7 @@ import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.chat.repository.ChatRoomRepository;
 import com.valuewith.tweaver.constants.ApprovedStatus;
 import com.valuewith.tweaver.groupMember.entity.GroupMember;
+import com.valuewith.tweaver.groupMember.repository.GroupMemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class ChatMemberService {
 
   private final ChatRoomRepository chatRoomRepository;
+  private final GroupMemberRepository groupMemberRepository;
 
   public String enterChatRoom(ChatRoom chatroom, GroupMember groupMember) {
     if (groupMember.getIsBanned()) {
@@ -27,5 +29,11 @@ public class ChatMemberService {
     chatRoomRepository.save(newGroupMember.getChatRoom());
 
     return chatroom.getTitle() + " 방 참여";
+  }
+
+  public String exitChatRoom(ChatRoom chatRoom, GroupMember groupMember) {
+    groupMemberRepository.delete(groupMember);
+
+    return chatRoom.getTitle() + " 방 퇴장";
   }
 }
