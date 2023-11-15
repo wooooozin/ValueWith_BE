@@ -42,9 +42,6 @@ public class GroupMember extends BaseEntity {
   private Long groupMemberId;
 
   @NotNull
-  private Boolean isBanned;
-
-  @NotNull
   @Enumerated(EnumType.STRING)
   private ApprovedStatus approvedStatus;
 
@@ -68,7 +65,6 @@ public class GroupMember extends BaseEntity {
 
   public static GroupMember from(TripGroup tripGroup, Member member) {
     return GroupMember.builder()
-        .isBanned(Boolean.FALSE)
         .approvedStatus(ApprovedStatus.PENDING)
         .approvedDateTime(LocalDateTime.now())
         .member(member)
@@ -82,5 +78,10 @@ public class GroupMember extends BaseEntity {
   public void confirmApplication(ChatRoom chatRoom) {
     this.approvedStatus = ApprovedStatus.APPROVED;
     this.chatRoom = chatRoom;
+  }
+
+  public void leaveApplication(ApprovedStatus status) {
+    this.approvedStatus = status;
+    this.isDeleted = true;
   }
 }

@@ -22,6 +22,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public class GroupMemberDetailResponseDto {
 
+    private Long memberId;
+    private String groupMemberEmail;
     private String groupMemberNickname;
     private String groupMemberAge;
     private String groupMemberGender;
@@ -30,6 +32,8 @@ public class GroupMemberDetailResponseDto {
         GroupMember groupMember
     ) {
         return GroupMemberDetailResponseDto.builder()
+            .memberId(groupMember.getMember().getMemberId())
+            .groupMemberEmail(groupMember.getMember().getEmail())
             .groupMemberNickname(groupMember.getMember().getNickName())
             .groupMemberAge(groupMember.getMember().getAge().toString())
             .groupMemberGender(groupMember.getMember().getGender())

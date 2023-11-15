@@ -59,4 +59,14 @@ public class GroupMemberRepositoryCustomImpl implements GroupMemberRepositoryCus
                 .and(groupMember.approvedStatus.eq(ApprovedStatus.APPROVED)))
             .fetch();
     }
+
+    @Override
+    public GroupMember findApprovedMemberByTripGroupIdAndMemberId(Long tripGroupId, Long memberId) {
+        return queryFactory
+            .selectFrom(groupMember)
+            .where(groupMember.tripGroup.tripGroupId.eq(tripGroupId)
+                .and(groupMember.member.memberId.eq(memberId))
+                .and(groupMember.approvedStatus.eq(ApprovedStatus.APPROVED)))
+            .fetchOne();
+    }
 }
