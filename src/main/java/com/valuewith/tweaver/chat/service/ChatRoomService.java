@@ -3,6 +3,8 @@ package com.valuewith.tweaver.chat.service;
 import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.chat.repository.ChatRoomRepository;
 import com.valuewith.tweaver.group.entity.TripGroup;
+import com.valuewith.tweaver.groupMember.entity.GroupMember;
+import com.valuewith.tweaver.groupMember.repository.GroupMemberRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,5 +39,11 @@ public class ChatRoomService {
 
   public void deleteChatRoom(Long tripGroupId) {
     chatRoomRepository.deleteByTripGroupTripGroupId(tripGroupId);
+  }
+
+  public ChatRoom findByChatRoomId(Long chatRoomId) {
+    // TODO: 커스텀 익셉션 해야함
+    return chatRoomRepository.findById(chatRoomId)
+        .orElseThrow(() -> new RuntimeException("채팅방이 존재하지 않습니다."));
   }
 }

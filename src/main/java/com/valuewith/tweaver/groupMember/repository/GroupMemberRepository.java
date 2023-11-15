@@ -10,6 +10,12 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, Long>,
 
   void deleteGroupMemberByTripGroupTripGroupId(Long tripGroupId);
 
-  List<GroupMember> findGroupMembersByMember_MemberIdAndApprovedStatus(Long memberId,
-      ApprovedStatus approvedStatus);
+  List<GroupMember> findGroupMembersByMember_MemberIdAndApprovedStatus(
+      Long memberId, ApprovedStatus approvedStatus);
+
+  Boolean existsByMember_MemberIdAndTripGroup_TripGroupIdAndApprovedStatus(
+      Long memberId, Long tripGroupId, ApprovedStatus approvedStatus);
+
+  GroupMember findGroupMemberByMember_MemberIdAndTripGroup_TripGroupId(
+      Long memberId, Long tripGroupId);
 }

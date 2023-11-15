@@ -83,4 +83,15 @@ public class GroupMember extends BaseEntity {
     this.approvedStatus = ApprovedStatus.APPROVED;
     this.chatRoom = chatRoom;
   }
+
+  public static GroupMember enterChatRoom(ChatRoom chatRoom, GroupMember groupMember) {
+    return GroupMember.builder()
+        .isBanned(groupMember.isBanned)
+        .approvedStatus(groupMember.approvedStatus)
+        .approvedDateTime(groupMember.approvedDateTime)
+        .member(groupMember.member)
+        .tripGroup(groupMember.tripGroup)
+        .chatRoom(chatRoom)
+        .build();
+  }
 }

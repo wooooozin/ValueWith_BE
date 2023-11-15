@@ -38,8 +38,18 @@ public class GroupMemberService {
     groupMemberRepository.deleteGroupMemberByTripGroupTripGroupId(tripGroupId);
   }
 
-  public List<GroupMember> findApprovedGroupByMemberId(Long memberId) {
+  public List<GroupMember> findApprovedGroupsByMemberId(Long memberId) {
     return groupMemberRepository.findGroupMembersByMember_MemberIdAndApprovedStatus(
         memberId, ApprovedStatus.APPROVED);
+  }
+
+  public Boolean isGroupMember(Long memberId, Long tripGroupId) {
+    return groupMemberRepository.existsByMember_MemberIdAndTripGroup_TripGroupIdAndApprovedStatus(
+        memberId, tripGroupId, ApprovedStatus.APPROVED);
+  }
+
+  public GroupMember findGroupMemberByMemberIdAndGroupId(Long memberId, Long tripGroupId) {
+    return groupMemberRepository.findGroupMemberByMember_MemberIdAndTripGroup_TripGroupId(
+        memberId, tripGroupId);
   }
 }

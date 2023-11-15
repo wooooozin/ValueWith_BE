@@ -1,9 +1,8 @@
 package com.valuewith.tweaver.chat.service;
 
-import com.valuewith.tweaver.constants.ApprovedStatus;
+import com.valuewith.tweaver.chat.entity.ChatRoom;
+import com.valuewith.tweaver.chat.repository.ChatRoomRepository;
 import com.valuewith.tweaver.groupMember.entity.GroupMember;
-import com.valuewith.tweaver.groupMember.repository.GroupMemberRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +10,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ChatMemberService {
 
-  private final GroupMemberRepository groupMemberRepository;
+  private final ChatRoomRepository chatRoomRepository;
 
-  public List<GroupMember> findMyGroupsByMemberId(Long groupMemberId) {
-    return groupMemberRepository.findGroupMembersByMember_MemberIdAndApprovedStatus(groupMemberId,
-        ApprovedStatus.APPROVED);
+  public String enterChatRoom(ChatRoom chatroom, GroupMember groupMember) {
+    if (groupMember.getIsBanned()) {
+      throw new RuntimeException("강제퇴장당해 들어갈 수 없습니다.");
+    }
+    GroupMember newGroupMember = GroupMember.enterChatRoom(chatroom, groupMember);
+    chatRoomRepository.save(newGroupMember.getChatRoom());
+
+    return chatroom.getTitle() + " 방 참여";
   }
 }
