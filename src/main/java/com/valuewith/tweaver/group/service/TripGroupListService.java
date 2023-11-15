@@ -45,7 +45,7 @@ public class TripGroupListService {
 
         return TripGroupListResponseDto.from(
             tripGroupResponseDtoList,
-            pageable.getPageNumber(),
+            pageable.getPageNumber() + 1,
             totalPages,
             total,
             isLast

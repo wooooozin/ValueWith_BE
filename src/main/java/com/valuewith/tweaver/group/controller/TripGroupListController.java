@@ -30,13 +30,13 @@ public class TripGroupListController {
 
     @GetMapping("/list")
     public ResponseEntity<TripGroupListResponseDto> getTripGroupsList(
-        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "1") int page,
         @RequestParam(defaultValue = "all") String status,
         @RequestParam(defaultValue = "all") String area,
         @RequestParam(defaultValue = "latest") String sort,
         @RequestParam(defaultValue = "") String title
     ) {
-        Pageable pageable = PageRequest.of(page, 12, sortDirection(sort));
+        Pageable pageable = PageRequest.of(page - 1, 12, sortDirection(sort));
         TripGroupListResponseDto tripGroupListResponseDto = tripGroupListService.getFilteredTripGroups(
             status, area, title, pageable
         );
