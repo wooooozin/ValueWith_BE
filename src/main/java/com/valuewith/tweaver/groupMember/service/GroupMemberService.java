@@ -19,19 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class GroupMemberService {
   private final GroupMemberRepository groupMemberRepository;
-
-  public void createGroupMember(TripGroup tripGroup, Member member, ChatRoom chatRoom) {
-    GroupMember groupMember = GroupMember.builder()
-        .tripGroup(tripGroup)
-        .member(member)
-        .chatRoom(chatRoom)
-        .approvedStatus(ApprovedStatus.APPROVED)
-        .approvedDateTime(LocalDateTime.now())
-        .build();
-
-      groupMemberRepository.save(groupMember);
-  }
-
   public void deleteGroupMember(Long tripGroupId) {
     groupMemberRepository.deleteGroupMemberByTripGroupTripGroupId(tripGroupId);
   }

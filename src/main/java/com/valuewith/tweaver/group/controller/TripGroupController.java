@@ -53,8 +53,6 @@ public class TripGroupController {
     placeService.createPlace(tripGroup, tripGroupRequestDto.getPlaces());
     // 3.채팅 등록
     ChatRoom chatRoom = chatRoomService.createChatRoom(tripGroup);
-    // 4.멤버 등록(인증된 user값으로 등록) -> 일단 수기로 작성
-    groupMemberService.createGroupMember(tripGroup, member, chatRoom);
     return ResponseEntity.ok("ok");
   }
 
