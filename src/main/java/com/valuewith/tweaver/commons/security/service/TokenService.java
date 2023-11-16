@@ -1,11 +1,13 @@
 package com.valuewith.tweaver.commons.security.service;
 
-import com.valuewith.tweaver.auth.service.AuthService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +27,10 @@ public class TokenService {
   private static final String ACCESS_SUBJECT = "Access";
   private static final String REFRESH_SUBJECT = "Refresh";
   private static final String CLAIM_EMAIL = "email";
+  private static final String BEARER = "Bearer ";
+
+  private final String accessHeader = "Authorization";
+  private final String refreshHeader = "RefreshToken";
 
   @Value("${jwt-secret-key}")
   private String secretKey;
@@ -100,5 +106,56 @@ public class TokenService {
     } catch (ExpiredJwtException e) {
       return e.getClaims();
     }
+  }
+
+  /**
+   * 헤더에 Authorization: "Bearer {token}" 형식으로 오게 됩니다.
+   * 이때 "Bearer "를 지우고 "{token}" 값으로 파싱합니다.
+   */
+  public String parseAccessToken(HttpServletRequest request) {
+    String fullToken = request.getHeader(accessHeader);
+    if (StringUtils.hasText(fullToken) && fullToken.startsWith(BEARER)) {
+      return fullToken.replace(BEARER, "");
+    }
+    return "";
+  }
+
+  public String parseRefreshToken(HttpServletRequest request) {
+    String fullToken = request.getHeader(refreshHeader);
+    if (StringUtils.hasText(fullToken) && fullToken.startsWith(BEARER)) {
+      return fullToken.replace(BEARER, "");
+    }
+    return "";
+  }
+
+  // 재발급된 Access 토큰을 헤더에 넣어서 보냅니다.
+  public void sendAccessToken(HttpServletResponse response, String accessToken) {
+    response.setStatus(HttpServletResponse.SC_OK);
+    response.setHeader(accessHeader, accessToken);
+  }
+
+  // Access 토큰, Refresh 토큰을 모두 헤더에 넣어서 보냅니다.
+  public void sendAccessTokenAndRefreshToken(HttpServletResponse response,
+      String accessHeader, String refreshToken) {
+    response.setStatus(HttpServletResponse.SC_OK);
+
+    setAccessTokenToHeader(response, BEARER);
+    setRefreshTokenToHeader(response, BEARER);
+    setRefreshTokenToCookie(response, refreshToken);
+  }
+
+  public void setAccessTokenToHeader(HttpServletResponse response, String accessToken) {
+    response.setHeader(accessHeader, accessToken);
+  }
+
+  public void setRefreshTokenToHeader(HttpServletResponse response, String refreshToken) {
+    response.setHeader(refreshHeader, refreshToken);
+  }
+
+  public void setRefreshTokenToCookie(HttpServletResponse response, String refreshToken) {
+    Cookie cookie = new Cookie(refreshHeader, refreshToken);
+    cookie.setMaxAge(Math.toIntExact(REFRESH_TOKEN_VALID_TIME));  // 쿠키 만료
+    cookie.setPath("/");
+    response.addCookie(cookie);
   }
 }

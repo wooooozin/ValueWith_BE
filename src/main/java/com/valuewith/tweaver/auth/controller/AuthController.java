@@ -13,12 +13,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/auth", produces = "application/json; charset=utf8")
+@RequestMapping(value = "/auth")
 public class AuthController {
 
   private final AuthService authService;
@@ -31,7 +32,8 @@ public class AuthController {
   }
 
   @PostMapping(value = "/signup")
-  public void signUp(@Valid SignUpForm request, MultipartFile file) {
+  public void signUp(@Valid SignUpForm request,
+      @RequestPart(required = false) MultipartFile file) {
     authService.signUp(request, file);
   }
 

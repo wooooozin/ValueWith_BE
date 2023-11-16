@@ -27,7 +27,7 @@ public class OAuthAttributes {
         .build();
   }
 
-  public Member toEntity(Provider provider, OAuth2UserInfo oauth2UserInfo) {
+  public Member toEntity(Provider provider, String refreshToken, OAuth2UserInfo oauth2UserInfo) {
     return Member.builder()
         .nickName(oauth2UserInfo.getName())
         .email(oauth2UserInfo.getEmail())
@@ -36,6 +36,7 @@ public class OAuthAttributes {
         .gender(oauth2UserInfo.getGender())
         .profileUrl(oauth2UserInfo.getProfileUrl())
         .providerId(oauth2UserInfo.getProviderId())
+        .refreshToken(refreshToken)
         .provider(provider)
         .build();
   }

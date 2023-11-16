@@ -2,6 +2,7 @@ package com.valuewith.tweaver.auth.service;
 
 import com.valuewith.tweaver.auth.dto.OAuthAttributes;
 import com.valuewith.tweaver.commons.PrincipalDetails;
+import com.valuewith.tweaver.commons.security.service.TokenService;
 import com.valuewith.tweaver.constants.Provider;
 import com.valuewith.tweaver.member.entity.Member;
 import com.valuewith.tweaver.member.repository.MemberRepository;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class OAuthUserCustomService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
   private final MemberRepository memberRepository;
+  private final TokenService tokenService;
 
   /**
    * oAuth2User: userRequest에서 OAuth2User를 가져옵니다.
@@ -67,7 +69,8 @@ public class OAuthUserCustomService implements OAuth2UserService<OAuth2UserReque
   }
 
   private Member saveOrUpdate(OAuthAttributes extractAttribute, Provider provider) {
-    Member member = extractAttribute.toEntity(provider, extractAttribute.getOauth2UserInfo());
+    String refreshToken = tokenService.createRefreshToken();
+    Member member = extractAttribute.toEntity(provider, refreshToken, extractAttribute.getOauth2UserInfo());
     return memberRepository.save(member);
   }
 }

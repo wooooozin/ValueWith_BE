@@ -1,5 +1,6 @@
 package com.valuewith.tweaver.config;
 
+import com.valuewith.tweaver.auth.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.valuewith.tweaver.auth.service.OAuthUserCustomService;
 import com.valuewith.tweaver.commons.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,8 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf().disable().sessionManagement().
-        sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+        sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
         .authorizeHttpRequests().antMatchers(
             // 허용 URL
             "/v2/api-docs", "/v3/api-docs", "/v3/api-docs/**", "/swagger-resources",
@@ -42,10 +44,16 @@ public class SecurityConfig {
         .logout(logout -> logout.logoutSuccessUrl("/"))
 
         .oauth2Login()
+        .authorizationEndpoint().baseUri("/oauth2/authorization")
+
+        .and()
         .userInfoEndpoint()
         .userService(oAuthUserCustomService);
 
     return http.build();
   }
 
+//  public HttpCookieOAuth2AuthorizationRequestRepository a() {
+//
+//  }
 }

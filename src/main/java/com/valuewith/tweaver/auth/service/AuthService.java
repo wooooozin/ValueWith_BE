@@ -10,6 +10,7 @@ import com.valuewith.tweaver.defaultImage.service.ImageService;
 import com.valuewith.tweaver.member.entity.Member;
 import com.valuewith.tweaver.member.repository.MemberRepository;
 import java.util.Locale;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -56,8 +57,8 @@ public class AuthService {
       profileUrl = imageService.uploadImageAndGetUrl(file, ImageType.MEMBER);
     } else {
       // 사진을 못받은 경우 기본 이미지 등록
-      // TODO: 기본 프로필 이미지 업로드 되면 다시 확인
-      DefaultImage defaultImg = defaultImageRepository.findRandomByImageName("멤버");
+      // TODO: 기본 프로필 이미지 업로드 되면 다시 확인 (23년 11월 16일 1차 작업중)
+      DefaultImage defaultImg = defaultImageRepository.findByImageName("멤버");
       profileUrl = defaultImg.getDefaultImageUrl();
     }
     // 비밀번호 암호화
