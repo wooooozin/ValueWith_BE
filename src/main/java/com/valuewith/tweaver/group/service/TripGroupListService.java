@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +46,7 @@ public class TripGroupListService {
 
         return TripGroupListResponseDto.from(
             tripGroupResponseDtoList,
-            pageable.getPageNumber(),
+            pageable.getPageNumber() + 1,
             totalPages,
             total,
             isLast
@@ -74,28 +75,27 @@ public class TripGroupListService {
         );
     }
 
-    public List<TripGroupStatusResponseDto> getMyTripGroupList(
-        String memberEmail, String status
+    public Page<TripGroupStatusResponseDto> getMyTripGroupList(
+        String memberEmail, String status, Pageable pageable
     ) {
         Member member = memberRepository.findByEmail(memberEmail)
             .orElseThrow(() -> new EntityNotFoundException("이메일 가입정보가 없습니다.. email: " + memberEmail));
-        List<TripGroup> tripGroups = null;
+        Page<TripGroup> tripGroups = null;
         switch (status) {
             case "leader":
-                tripGroups = tripGroupRepository.findLeaderTripGroups(member.getMemberId());
+                tripGroups = tripGroupRepository.findLeaderTripGroups(member.getMemberId(), pageable);
                 break;
             case "approved":
-                tripGroups = tripGroupRepository.findApprovedGroups(member.getMemberId());
+                tripGroups = tripGroupRepository.findApprovedGroups(member.getMemberId(), pageable);
                 break;
             case "pending":
-                tripGroups = tripGroupRepository.findPendingGroups(member.getMemberId());
+                tripGroups = tripGroupRepository.findPendingGroups(member.getMemberId(), pageable);
                 break;
             default:
                 throw new IllegalArgumentException("올바르지 않은 접근입니다.");
         }
-        return tripGroups.stream()
-            .map(TripGroupStatusResponseDto::from)
-            .collect(Collectors.toList());
+        return tripGroups.map(TripGroupStatusResponseDto::from);
+
     }
 }
 
