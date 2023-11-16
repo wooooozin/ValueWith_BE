@@ -44,7 +44,7 @@ public class TripGroupController {
   @PostMapping
   public ResponseEntity<String> createGroup(
       @RequestPart(value = "tripGroupRequestDto") TripGroupRequestDto tripGroupRequestDto,
-      @RequestPart(value = "file") MultipartFile file,
+      @RequestPart(value = "file", required = false) MultipartFile file,
       @RequestHeader("Authorization") String token) {
     Member member = memberService.findMemberByEmail(tokenService.getMemberEmail(token));
     // 1.그룹 등록
