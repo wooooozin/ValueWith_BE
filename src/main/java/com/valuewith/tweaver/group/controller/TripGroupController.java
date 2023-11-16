@@ -30,7 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/groups/*")
+@RequestMapping("/groups")
 public class TripGroupController {
   private final MemberService memberService;
   private final TripGroupService tripGroupService;
@@ -75,7 +75,7 @@ public class TripGroupController {
   }
 
   @ApiOperation(value = "여행 그룹 삭제 API", notes = "이 API 호출 시 메세지/채팅룸/장소/여행그룹 이 동시에 삭제되고 그룹멤버에게 삭제 알림을 발송합니다.")
-  @DeleteMapping("{tripGroupId}")
+  @DeleteMapping("/{tripGroupId}")
   public ResponseEntity<String> deleteGroup(@PathVariable("tripGroupId") Long tripGroupId) {
     // 1.메세지 삭제
     messageService.deleteMessage(tripGroupId);
