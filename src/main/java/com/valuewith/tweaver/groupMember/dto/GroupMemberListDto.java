@@ -11,6 +11,7 @@ import lombok.Getter;
 public class GroupMemberListDto {
 
     private Long groupMemberId;
+    private Long memberId;
     private String groupMemberNickname;
     private String groupMemberAge;
     private String groupMemberGender;
@@ -19,7 +20,8 @@ public class GroupMemberListDto {
 
     public static GroupMemberListDto from(GroupMember groupMember) {
         return GroupMemberListDto.builder()
-                .groupMemberId(groupMember.getMember().getMemberId())
+                .groupMemberId(groupMember.getGroupMemberId())
+                .memberId(groupMember.getMember().getMemberId())
                 .groupMemberNickname(groupMember.getMember().getNickName())
                 .groupMemberAge(groupMember.getMember().getAge().toString())
                 .groupMemberGender(groupMember.getMember().getGender())
