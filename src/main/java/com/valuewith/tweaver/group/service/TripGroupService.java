@@ -90,11 +90,8 @@ public class TripGroupService {
   }
 
   public void sendTripGroupAlert(Long tripGroupId, AlertContent alertContent) {
-    TripGroup tripGroup = tripGroupRepository.findById(tripGroupId)
-        .orElseThrow(() -> new RuntimeException("그룹이 존재하지 않습니다."));
     List<GroupMember> groupMembers
-        = groupMemberRepository.findApprovedMembersByTripGroupIdExceptLeader(
-            tripGroupId, tripGroup.getMember().getMemberId());
+        = groupMemberRepository.findApprovedMembersByTripGroupId(tripGroupId);
 
     groupMembers.stream().forEach(groupMember -> {
       alertService.send(AlertRequestDto.builder()
