@@ -25,7 +25,7 @@ public class GroupMemberDetailResponseDto {
     private Long memberId;
     private String groupMemberEmail;
     private String groupMemberNickname;
-    private String groupMemberAge;
+    private Integer groupMemberAge;
     private String groupMemberGender;
     private String groupMemberProfileUrl;
     public static GroupMemberDetailResponseDto from(
@@ -35,7 +35,7 @@ public class GroupMemberDetailResponseDto {
             .memberId(groupMember.getMember().getMemberId())
             .groupMemberEmail(groupMember.getMember().getEmail())
             .groupMemberNickname(groupMember.getMember().getNickName())
-            .groupMemberAge(groupMember.getMember().getAge().toString())
+            .groupMemberAge(groupMember.getMember().getAge())
             .groupMemberGender(groupMember.getMember().getGender())
             .groupMemberProfileUrl(groupMember.getMember().getProfileUrl())
             .build();
