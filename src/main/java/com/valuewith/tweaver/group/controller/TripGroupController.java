@@ -60,7 +60,7 @@ public class TripGroupController {
   @PutMapping
   public ResponseEntity<String> modifiedGroup(
       @RequestPart(value = "tripGroupRequestDto") TripGroupRequestDto tripGroupRequestDto,
-      @RequestPart(value = "file") MultipartFile file) {
+      @RequestPart(value = "file", required = false) MultipartFile file) {
     // 1.그룹 수정
     TripGroup tripGroup = tripGroupService.modifiedTripGroup(tripGroupRequestDto, file);
     // 2.여행 수정
