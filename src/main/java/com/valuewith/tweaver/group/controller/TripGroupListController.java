@@ -6,10 +6,13 @@ import com.valuewith.tweaver.group.dto.TripGroupListResponseDto;
 import com.valuewith.tweaver.group.dto.TripGroupStatusListDto;
 import com.valuewith.tweaver.group.dto.TripGroupStatusResponseDto;
 import com.valuewith.tweaver.group.service.TripGroupListService;
+import com.valuewith.tweaver.member.entity.Member;
+import com.valuewith.tweaver.member.service.MemberService;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,6 +31,7 @@ public class TripGroupListController {
 
     private final TripGroupListService tripGroupListService;
     private final TokenService tokenService;
+    private final MemberService memberService;
 
     @ApiOperation(
         value = "메인 여행 그룹을 조회하는 API",
@@ -69,11 +73,13 @@ public class TripGroupListController {
     @GetMapping("/list/my-list")
     public ResponseEntity<TripGroupStatusListDto> getMyTripGroupList(
         @RequestHeader("Authorization") String token,
-        @RequestParam(required = false) String status
+        @RequestParam(required = false) String status,
+        @RequestParam(defaultValue = "1") int page
     ) {
+        Pageable pageable = PageRequest.of(page - 1, 8);
         String memberEmail = tokenService.getMemberEmail(token);
         log.info("😀" + memberEmail);
-        List<TripGroupStatusResponseDto> myTripGroupList = tripGroupListService.getMyTripGroupList(memberEmail, status);
+        Page<TripGroupStatusResponseDto> myTripGroupList = tripGroupListService.getMyTripGroupList(memberEmail, status, pageable);
         TripGroupStatusListDto tripGroupStatusListDto = TripGroupStatusListDto.from(myTripGroupList);
         return ResponseEntity.ok(tripGroupStatusListDto);
     }
