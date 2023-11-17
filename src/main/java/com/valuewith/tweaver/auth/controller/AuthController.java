@@ -25,13 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class AuthController {
 
   private final AuthService authService;
-  private final TokenService tokenService;
-
-  @PostMapping(value = "/signin")
-  public ResponseEntity<String> signIn(@RequestBody @Valid AuthDto.SignInForm request) {
-    Member member = authService.authenticate(request);
-    return ResponseEntity.ok(tokenService.createAccessToken(member.getEmail()));
-  }
 
   @PostMapping(value = "/signup")
   public void signUp(@Valid SignUpForm request,
