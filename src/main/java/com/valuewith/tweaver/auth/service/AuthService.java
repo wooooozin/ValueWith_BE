@@ -2,7 +2,10 @@ package com.valuewith.tweaver.auth.service;
 
 import com.valuewith.tweaver.auth.dto.AuthDto;
 import com.valuewith.tweaver.auth.dto.AuthDto.SignInForm;
+import com.valuewith.tweaver.auth.dto.AuthDto.TokensAndMemberId;
+import com.valuewith.tweaver.auth.dto.LoginMemberIdDto;
 import com.valuewith.tweaver.commons.redis.RedisUtilService;
+import com.valuewith.tweaver.commons.security.service.TokenService;
 import com.valuewith.tweaver.constants.ImageType;
 import com.valuewith.tweaver.defaultImage.entity.DefaultImage;
 import com.valuewith.tweaver.defaultImage.repository.DefaultImageRepository;
@@ -10,7 +13,8 @@ import com.valuewith.tweaver.defaultImage.service.ImageService;
 import com.valuewith.tweaver.member.entity.Member;
 import com.valuewith.tweaver.member.repository.MemberRepository;
 import java.util.Locale;
-import javax.validation.Valid;
+import java.util.Optional;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,6 +31,7 @@ public class AuthService {
   private final EmailService emailService;
   private final RedisUtilService redisUtilService;
   private final ImageService imageService;
+  private final TokenService tokenService;
 
 
   public Member authenticate(SignInForm request) {
@@ -92,5 +97,27 @@ public class AuthService {
 
   public Boolean isEmailExist(String email) {
     return memberRepository.existsByEmail(email.toLowerCase(Locale.ROOT));
+  }
+
+  public TokensAndMemberId reissueTwoTokens(HttpServletResponse response, String refreshToken) {
+    Optional<Member> member = memberRepository.findByRefreshToken(refreshToken);
+    if (member.isEmpty()) {
+      return null;
+    }
+    String newRefreshToken = reissueRefreshToken(member.get());
+    String newAccessToken = tokenService.createAccessToken(member.get().getEmail());
+
+    tokenService.sendAccessToken(response, newAccessToken);
+    tokenService.sendAccessTokenAndRefreshToken(response, newAccessToken, newRefreshToken);
+
+    LoginMemberIdDto loginMember = LoginMemberIdDto.from(member.get());
+    return TokensAndMemberId.from(newAccessToken, newRefreshToken, loginMember);
+  }
+
+  private String reissueRefreshToken(Member member) {
+    String newRefreshToken = tokenService.createRefreshToken();
+    member.updateRefreshToken(newRefreshToken);
+    memberRepository.saveAndFlush(member);
+    return newRefreshToken;
   }
 }

@@ -70,4 +70,22 @@ public class AuthDto {
     @Email
     private String email;
   }
+
+  @Getter
+  @AllArgsConstructor
+  @NoArgsConstructor
+  @Builder
+  public static class TokensAndMemberId {
+    private String accessToken;
+    private String refreshToken;
+    private LoginMemberIdDto loginMemberIdDto;
+
+    public static TokensAndMemberId from(String accessToken, String refreshToken, LoginMemberIdDto idDto) {
+      return TokensAndMemberId.builder()
+          .accessToken(accessToken)
+          .refreshToken(refreshToken)
+          .loginMemberIdDto(idDto)
+          .build();
+    }
+  }
 }

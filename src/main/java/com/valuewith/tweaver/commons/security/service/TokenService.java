@@ -5,6 +5,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
+import java.util.Optional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -120,12 +121,10 @@ public class TokenService {
     return "";
   }
 
-  public String parseRefreshToken(HttpServletRequest request) {
-    String fullToken = request.getHeader(refreshHeader);
-    if (StringUtils.hasText(fullToken) && fullToken.startsWith(BEARER)) {
-      return fullToken.replace(BEARER, "");
-    }
-    return "";
+  public Optional<String> parseRefreshToken(HttpServletRequest request) {
+    return Optional.ofNullable(request.getHeader(refreshHeader))
+        .filter(refresh -> refresh.startsWith(BEARER))
+        .map(refresh -> refresh.replace(BEARER, ""));
   }
 
   // 재발급된 Access 토큰을 헤더에 넣어서 보냅니다.

@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -67,6 +66,10 @@ public class Member extends BaseEntity {
     this.profileUrl = profileUrl;
 
     return this;
+  }
+
+  public void updateRefreshToken(String refreshToken) {
+    this.refreshToken = refreshToken;
   }
 
   public static Member from(MemberDto memberDto) {

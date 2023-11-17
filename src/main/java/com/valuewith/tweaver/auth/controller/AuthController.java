@@ -3,10 +3,12 @@ package com.valuewith.tweaver.auth.controller;
 import com.valuewith.tweaver.auth.dto.AuthDto;
 import com.valuewith.tweaver.auth.dto.AuthDto.EmailInput;
 import com.valuewith.tweaver.auth.dto.AuthDto.SignUpForm;
+import com.valuewith.tweaver.auth.dto.AuthDto.TokensAndMemberId;
 import com.valuewith.tweaver.auth.dto.AuthDto.VerificationForm;
 import com.valuewith.tweaver.auth.service.AuthService;
 import com.valuewith.tweaver.commons.security.service.TokenService;
 import com.valuewith.tweaver.member.entity.Member;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -45,5 +47,14 @@ public class AuthController {
   @PostMapping("/verify/check")
   public ResponseEntity<Boolean> checkCode(VerificationForm request) {
     return ResponseEntity.ok(authService.isVerified(request));  // true
+  }
+
+  @PostMapping("/refresh")
+  public ResponseEntity<TokensAndMemberId> reissueAccessToken(HttpServletResponse response,
+      @RequestBody String refreshToken) {
+
+    TokensAndMemberId memberData = authService.reissueTwoTokens(response, refreshToken);
+
+    return ResponseEntity.ok(memberData);
   }
 }
