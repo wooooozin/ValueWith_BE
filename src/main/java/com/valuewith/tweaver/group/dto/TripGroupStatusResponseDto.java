@@ -21,6 +21,11 @@ public class TripGroupStatusResponseDto {
     private String dueDate;
     private String thumbnailUrl;
     private String status;
+    private String leaderEmail;
+    private String profileUrl;
+    private String nickName;
+    private Integer age;
+    private String gender;
 
     public static TripGroupStatusResponseDto from(TripGroup tripGroup) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -35,6 +40,11 @@ public class TripGroupStatusResponseDto {
             .dueDate(tripGroup.getDueDate().format(formatter))
             .thumbnailUrl(tripGroup.getThumbnailUrl())
             .status(tripGroup.getStatus().getDescription())
+            .leaderEmail(tripGroup.getMember().getEmail())
+            .profileUrl(tripGroup.getMember().getProfileUrl())
+            .nickName(tripGroup.getMember().getNickName())
+            .age(tripGroup.getMember().getAge())
+            .gender(tripGroup.getMember().getGender())
             .build();
     }
 
