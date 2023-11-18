@@ -51,6 +51,8 @@ public class SecurityConfig {
             "/webjars/**", "/swagger-ui.html", "/**", "/h2-console", "/")
         .permitAll().anyRequest().authenticated()
         .and()
+        .formLogin().disable()
+        .httpBasic().disable()
         .headers().frameOptions().disable()
 
         .and()
