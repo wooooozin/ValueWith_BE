@@ -48,7 +48,7 @@ public class SecurityConfig {
             // 허용 URL
             "/v2/api-docs", "/v3/api-docs", "/v3/api-docs/**", "/swagger-resources",
             "/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui/**",
-            "/webjars/**", "/swagger-ui.html", "/**", "/h2-console")
+            "/webjars/**", "/swagger-ui.html", "/**", "/h2-console", "/")
         .permitAll().anyRequest().authenticated()
         .and()
         .headers().frameOptions().disable()
