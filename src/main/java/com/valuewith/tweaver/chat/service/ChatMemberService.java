@@ -16,9 +16,6 @@ public class ChatMemberService {
   private final GroupMemberRepository groupMemberRepository;
 
   public String enterChatRoom(ChatRoom chatroom, GroupMember groupMember) {
-    if (groupMember.getIsBanned()) {
-      throw new RuntimeException("강제퇴장당해 들어갈 수 없습니다.");
-    }
     if (groupMember.getApprovedStatus().equals(ApprovedStatus.PENDING)) {
       throw new RuntimeException("승인 대기중인 회원은 채팅방에 입장할 수 없습니다.");
     }
