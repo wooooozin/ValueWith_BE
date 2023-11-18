@@ -17,10 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PlaceService {
 
+  private final PlaceDistanceService placeDistanceService;
   private final PlaceRepository placeRepository;
 
   public void createPlace(TripGroup tripGroup, List<PlaceDto> placeDtos) {
-    List<Place> places = placeDtos.stream().map(
+    List<PlaceDto> placeIncludeDistance = placeDistanceService.setDistancesFromApi(placeDtos);
+    List<Place> places = placeIncludeDistance.stream().map(
             place -> Place.builder()
                 .category(place.getCategory())
                 .name(place.getName())

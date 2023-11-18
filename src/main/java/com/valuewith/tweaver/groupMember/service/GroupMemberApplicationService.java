@@ -89,7 +89,6 @@ public class GroupMemberApplicationService {
     List<GroupMember> groupMembers
         = groupMemberRepository.findApprovedMembersByTripGroupIdAndMemberId(
             foundGroupMember.getTripGroup().getTripGroupId(),
-            foundGroupMember.getTripGroup().getMember().getMemberId(),
             foundGroupMember.getMember().getMemberId());
     groupMembers.stream().forEach(groupMember -> {
       alertService.send(AlertRequestDto.builder()

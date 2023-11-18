@@ -44,7 +44,7 @@ public class TripGroupController {
   @PostMapping
   public ResponseEntity<String> createGroup(
       @RequestPart(value = "tripGroupRequestDto") TripGroupRequestDto tripGroupRequestDto,
-      @RequestPart(value = "file") MultipartFile file,
+      @RequestPart(value = "file", required = false) MultipartFile file,
       @RequestHeader("Authorization") String token) {
     Member member = memberService.findMemberByEmail(tokenService.getMemberEmail(token));
     // 1.그룹 등록
@@ -53,8 +53,6 @@ public class TripGroupController {
     placeService.createPlace(tripGroup, tripGroupRequestDto.getPlaces());
     // 3.채팅 등록
     ChatRoom chatRoom = chatRoomService.createChatRoom(tripGroup);
-    // 4.멤버 등록(인증된 user값으로 등록) -> 일단 수기로 작성
-    groupMemberService.createGroupMember(tripGroup, member, chatRoom);
     return ResponseEntity.ok("ok");
   }
 
@@ -62,7 +60,7 @@ public class TripGroupController {
   @PutMapping
   public ResponseEntity<String> modifiedGroup(
       @RequestPart(value = "tripGroupRequestDto") TripGroupRequestDto tripGroupRequestDto,
-      @RequestPart(value = "file") MultipartFile file) {
+      @RequestPart(value = "file", required = false) MultipartFile file) {
     // 1.그룹 수정
     TripGroup tripGroup = tripGroupService.modifiedTripGroup(tripGroupRequestDto, file);
     // 2.여행 수정
