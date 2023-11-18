@@ -32,12 +32,12 @@ public class GroupMemberApplicationController {
     return ResponseEntity.ok("ok");
   }
 
-  @DeleteMapping("{groupMemberId}")
+  @DeleteMapping("{tripGroupId}")
   public ResponseEntity<String> deleteApplication(
-      @PathVariable("groupMemberId") Long groupMemberId,
+      @PathVariable("tripGroupId") Long tripGroupId,
       @RequestHeader("Authorization") String token) {
     String memberEmail = tokenService.getMemberEmail(token);
-    groupMemberApplicationService.deleteApplication(groupMemberId, memberEmail);
+    groupMemberApplicationService.deleteApplication(tripGroupId, memberEmail);
 
     return ResponseEntity.ok("ok");
   }
