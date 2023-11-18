@@ -3,20 +3,30 @@ package com.valuewith.tweaver.auth.dto;
 import com.valuewith.tweaver.constants.Provider;
 import com.valuewith.tweaver.member.entity.Member;
 import javax.validation.constraints.Email;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public class AuthDto {
 
-  @Data
+  @Getter
+  @AllArgsConstructor
   @NoArgsConstructor
+  @Builder
   public static class SignInForm {
+
+    @Email
     private String email;
     private String password;
   }
 
-  @Data
+  @Getter
+  @AllArgsConstructor
   @NoArgsConstructor
+  @Builder
+  @Setter
   public static class SignUpForm {
 
     private String nickname;
@@ -40,18 +50,42 @@ public class AuthDto {
     }
   }
 
-  @Data
+  @Getter
+  @AllArgsConstructor
   @NoArgsConstructor
+  @Builder
   public static class VerificationForm {
+
     @Email
     private String email;
     private String code;
   }
 
-  @Data
+  @Getter
+  @AllArgsConstructor
   @NoArgsConstructor
+  @Builder
   public static class EmailInput {
+
     @Email
     private String email;
+  }
+
+  @Getter
+  @AllArgsConstructor
+  @NoArgsConstructor
+  @Builder
+  public static class TokensAndMemberId {
+    private String accessToken;
+    private String refreshToken;
+    private LoginMemberIdDto loginMemberIdDto;
+
+    public static TokensAndMemberId from(String accessToken, String refreshToken, LoginMemberIdDto idDto) {
+      return TokensAndMemberId.builder()
+          .accessToken(accessToken)
+          .refreshToken(refreshToken)
+          .loginMemberIdDto(idDto)
+          .build();
+    }
   }
 }

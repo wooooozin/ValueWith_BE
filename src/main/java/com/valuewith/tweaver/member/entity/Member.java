@@ -3,6 +3,9 @@ package com.valuewith.tweaver.member.entity;
 import com.valuewith.tweaver.auditing.BaseEntity;
 import com.valuewith.tweaver.constants.Provider;
 import com.valuewith.tweaver.member.dto.MemberDto;
+import com.valuewith.tweaver.message.entity.Message;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,10 +13,11 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -54,6 +58,10 @@ public class Member extends BaseEntity {
 
   private String refreshToken;  // refreshToken
 
+  @OneToMany(mappedBy = "member")
+  @Builder.Default
+  private List<Message> messages = new ArrayList<>();
+
   // OAuth2 사용
   @Enumerated(EnumType.STRING)
   private Provider provider;  // OAuth 인증 제공자 (카카오, 네이버, ...)
@@ -67,6 +75,10 @@ public class Member extends BaseEntity {
     this.profileUrl = profileUrl;
 
     return this;
+  }
+
+  public void updateRefreshToken(String refreshToken) {
+    this.refreshToken = refreshToken;
   }
 
   public static Member from(MemberDto memberDto) {

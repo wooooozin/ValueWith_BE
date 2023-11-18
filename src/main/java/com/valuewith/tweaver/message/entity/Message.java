@@ -2,16 +2,22 @@ package com.valuewith.tweaver.message.entity;
 
 import com.valuewith.tweaver.auditing.BaseEntity;
 import com.valuewith.tweaver.chat.entity.ChatRoom;
-import com.valuewith.tweaver.groupMember.entity.GroupMember;
+import com.valuewith.tweaver.member.entity.Member;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.SQLDelete;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "MESSAGE")
@@ -33,6 +39,14 @@ public class Message extends BaseEntity {
   private ChatRoom chatRoom;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "group_member_id")
-  private GroupMember groupMember;
+  @JoinColumn(name = "member_id")
+  private Member member;
+
+  public static Message from(ChatRoom chatRoom, Member member, String content) {
+    return Message.builder()
+        .content(content)
+        .chatRoom(chatRoom)
+        .member(member)
+        .build();
+  }
 }

@@ -8,13 +8,12 @@ import com.valuewith.tweaver.groupMember.entity.GroupMember;
 import com.valuewith.tweaver.groupMember.repository.GroupMemberRepository;
 import com.valuewith.tweaver.member.entity.Member;
 import com.valuewith.tweaver.member.repository.MemberRepository;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
