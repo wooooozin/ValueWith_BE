@@ -73,13 +73,6 @@ public class TokenService {
         .compact();
   }
 
-  // 토큰의 인증정보를 가져옵니다.
-  public Authentication getAuthentication(String jwt) {
-    UserDetails memberDetail = principalService.loadUserByUsername(getMemberEmail(jwt));
-    return new UsernamePasswordAuthenticationToken(
-        memberDetail, "", memberDetail.getAuthorities());
-  }
-
   /**
    * 토큰의 이메일 정보를 가져옵니다.
    */
@@ -154,6 +147,7 @@ public class TokenService {
   public void setRefreshTokenToCookie(HttpServletResponse response, String refreshToken) {
     Cookie cookie = new Cookie(refreshHeader, refreshToken);
     cookie.setMaxAge(Math.toIntExact(REFRESH_TOKEN_VALID_TIME));  // 쿠키 만료
+    cookie.setHttpOnly(true);
     cookie.setPath("/");
     response.addCookie(cookie);
   }
