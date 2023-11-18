@@ -7,6 +7,7 @@ import com.valuewith.tweaver.constants.ApprovedStatus;
 import com.valuewith.tweaver.group.entity.QTripGroup;
 import com.valuewith.tweaver.groupMember.entity.GroupMember;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,10 +39,9 @@ public class GroupMemberRepositoryCustomImpl implements GroupMemberRepositoryCus
     }
 
     @Override
-    public List<GroupMember> findApprovedMembersByTripGroupIdAndMemberId(Long tripGroupId, Long memberId) {
+    public List<GroupMember> findApprovedMembersByTripGroupIdAndNotInMemberId(Long tripGroupId, Long memberId) {
         return queryFactory
             .selectFrom(groupMember)
-            .join(groupMember.tripGroup, QTripGroup.tripGroup).fetchJoin()
             .where(groupMember.tripGroup.tripGroupId.eq(tripGroupId)
                 .and(groupMember.member.memberId.notIn(memberId))
                 .and(groupMember.approvedStatus.eq(ApprovedStatus.APPROVED)))
@@ -56,5 +56,15 @@ public class GroupMemberRepositoryCustomImpl implements GroupMemberRepositoryCus
                 .and(groupMember.member.memberId.eq(memberId))
                 .and(groupMember.approvedStatus.eq(ApprovedStatus.APPROVED)))
             .fetchOne();
+    }
+
+    @Override
+    public Optional<GroupMember> findPendingMembersByTripGroupIdAndMemberId(Long tripGroupId, Long memberId) {
+        return Optional.ofNullable(queryFactory
+            .selectFrom(groupMember)
+            .where(groupMember.tripGroup.tripGroupId.eq(tripGroupId)
+                .and(groupMember.member.memberId.eq(memberId))
+                .and(groupMember.approvedStatus.eq(ApprovedStatus.PENDING)))
+            .fetchOne());
     }
 }

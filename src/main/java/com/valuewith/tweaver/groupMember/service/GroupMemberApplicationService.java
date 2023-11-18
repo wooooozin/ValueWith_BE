@@ -44,16 +44,14 @@ public class GroupMemberApplicationService {
         .build());
   }
 
-  public void deleteApplication(Long groupMemberId, String memberEmail) {
-    // 본인 신청만 삭제 할 수 있도록 신청자와 로그인자 비교(다른 사용자가 url로 접근하여 삭제 할 수 없게)
+  public void deleteApplication(Long tripGroupId, String memberEmail) {
+    Member member = memberRepository.findByEmail(memberEmail)
+        .orElseThrow(() -> new RuntimeException("멤버가 존재하지 않습니다."));
+    // 대기중인 신청 검색
     GroupMember foundGroupMember
-        = groupMemberRepository.findById(groupMemberId)
-        .orElseThrow(() -> new RuntimeException("신청이 존재하지 않습니다."));
-    if(memberEmail.equals(foundGroupMember.getMember().getEmail())) {
-      groupMemberRepository.deleteById(groupMemberId);
-    } else {
-      throw new RuntimeException("잘못된 접근 입니다.");
-    }
+        = groupMemberRepository.findPendingMembersByTripGroupIdAndMemberId(tripGroupId, member.getMemberId())
+        .orElseThrow(() -> new RuntimeException("대기중인 신청이 존재하지 않습니다."));
+    groupMemberRepository.deleteById(foundGroupMember.getGroupMemberId());
   }
 
   public void rejectApplication(Long groupMemberId) {
@@ -87,15 +85,15 @@ public class GroupMemberApplicationService {
 
     // 승인된 그룹에 다른 멤버들에게 추가 그룹원이 있다는 알람 보내기
     List<GroupMember> groupMembers
-        = groupMemberRepository.findApprovedMembersByTripGroupIdAndMemberId(
-            foundGroupMember.getTripGroup().getTripGroupId(),
-            foundGroupMember.getMember().getMemberId());
+        = groupMemberRepository.findApprovedMembersByTripGroupIdAndNotInMemberId(
+        foundGroupMember.getTripGroup().getTripGroupId(),
+        foundGroupMember.getMember().getMemberId());
     groupMembers.stream().forEach(groupMember -> {
-      alertService.send(AlertRequestDto.builder()
-          .groupId(groupMember.getTripGroup().getTripGroupId())
-          .member(groupMember.getMember())
-          .content(AlertContent.ADD_MEMBER)
-          .build());
+          alertService.send(AlertRequestDto.builder()
+              .groupId(groupMember.getTripGroup().getTripGroupId())
+              .member(groupMember.getMember())
+              .content(AlertContent.ADD_MEMBER)
+              .build());
         }
     );
   }
