@@ -50,10 +50,6 @@ public class GroupMember extends BaseEntity {
 
   private LocalDateTime approvedDateTime;
 
-  @OneToMany(mappedBy = "groupMember")
-  @Builder.Default
-  private List<Message> messages = new ArrayList<>();
-
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "member_id")
   private Member member;

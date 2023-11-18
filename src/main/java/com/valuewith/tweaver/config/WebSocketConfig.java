@@ -25,7 +25,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     수신자는 설정한 경로를 구독합니다.
     이후 MessageBroker가 구독자들에게 메시지를 전달해 줍니다.
      */
-    registry.enableSimpleBroker("/topic");
+    registry.enableSimpleBroker("/sub");
 
     /*
     메시지 발신 경로입니다.

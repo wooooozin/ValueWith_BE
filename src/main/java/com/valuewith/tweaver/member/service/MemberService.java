@@ -16,4 +16,7 @@ public class MemberService {
         .orElseThrow(() -> new RuntimeException("멤버가 존재하지 않습니다."));
   }
 
+  public Member findMemberByMemberId(Long id) {
+    return memberRepository.findById(id).orElseThrow();
+  }
 }
