@@ -21,7 +21,7 @@ public class SigninFailureHandler extends SimpleUrlAuthenticationFailureHandler 
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);  // 401 error
       response.setContentType(CONTENT_TYPE);
       response.setCharacterEncoding(CHARACTER_ENCODING);
-      response.getWriter().write("로그인을 실패하였습니다.");
+      response.getWriter().write("로그인을 실패하였습니다."+ exception.getMessage());
     }
   }
 }
