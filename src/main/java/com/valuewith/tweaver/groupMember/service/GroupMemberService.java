@@ -26,7 +26,6 @@ public class GroupMemberService {
         .tripGroup(tripGroup)
         .member(member)
         .chatRoom(chatRoom)
-        .isBanned(false)
         .approvedStatus(ApprovedStatus.APPROVED)
         .approvedDateTime(LocalDateTime.now())
         .build();

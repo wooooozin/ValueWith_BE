@@ -38,25 +38,23 @@ public class GroupMemberRepositoryCustomImpl implements GroupMemberRepositoryCus
     }
 
     @Override
-    public List<GroupMember> findApprovedMembersByTripGroupIdAndMemberId(Long tripGroupId,
-        Long groupLeaderId, Long memberId) {
+    public List<GroupMember> findApprovedMembersByTripGroupIdAndMemberId(Long tripGroupId, Long memberId) {
         return queryFactory
             .selectFrom(groupMember)
             .join(groupMember.tripGroup, QTripGroup.tripGroup).fetchJoin()
             .where(groupMember.tripGroup.tripGroupId.eq(tripGroupId)
-                .and(groupMember.member.memberId.notIn(groupLeaderId, memberId))
+                .and(groupMember.member.memberId.notIn(memberId))
                 .and(groupMember.approvedStatus.eq(ApprovedStatus.APPROVED)))
             .fetch();
     }
 
     @Override
-    public List<GroupMember> findApprovedMembersByTripGroupIdExceptLeader(Long groupLeaderId, Long tripGroupId) {
+    public GroupMember findApprovedMemberByTripGroupIdAndMemberId(Long tripGroupId, Long memberId) {
         return queryFactory
             .selectFrom(groupMember)
-            .join(groupMember.tripGroup, QTripGroup.tripGroup).fetchJoin()
             .where(groupMember.tripGroup.tripGroupId.eq(tripGroupId)
-                .and(groupMember.member.memberId.notIn(groupLeaderId))
+                .and(groupMember.member.memberId.eq(memberId))
                 .and(groupMember.approvedStatus.eq(ApprovedStatus.APPROVED)))
-            .fetch();
+            .fetchOne();
     }
 }

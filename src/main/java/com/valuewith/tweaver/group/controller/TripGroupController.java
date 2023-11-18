@@ -12,8 +12,10 @@ import com.valuewith.tweaver.member.entity.Member;
 import com.valuewith.tweaver.member.service.MemberService;
 import com.valuewith.tweaver.message.service.MessageService;
 import com.valuewith.tweaver.place.service.PlaceService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/groups/*")
+@RequestMapping("/groups")
 public class TripGroupController {
   private final MemberService memberService;
   private final TripGroupService tripGroupService;
@@ -38,10 +40,11 @@ public class TripGroupController {
   private final MessageService messageService;
   private final TokenService tokenService;
 
+  @ApiOperation(value = "여행 그룹 생성 API")
   @PostMapping
   public ResponseEntity<String> createGroup(
       @RequestPart(value = "tripGroupRequestDto") TripGroupRequestDto tripGroupRequestDto,
-      @RequestPart(value = "file") MultipartFile file,
+      @RequestPart(value = "file", required = false) MultipartFile file,
       @RequestHeader("Authorization") String token) {
     Member member = memberService.findMemberByEmail(tokenService.getMemberEmail(token));
     // 1.그룹 등록
@@ -50,15 +53,14 @@ public class TripGroupController {
     placeService.createPlace(tripGroup, tripGroupRequestDto.getPlaces());
     // 3.채팅 등록
     ChatRoom chatRoom = chatRoomService.createChatRoom(tripGroup);
-    // 4.멤버 등록(인증된 user값으로 등록) -> 일단 수기로 작성
-    groupMemberService.createGroupMember(tripGroup, member, chatRoom);
     return ResponseEntity.ok("ok");
   }
 
+  @ApiOperation(value = "여행 그룹 수정 API")
   @PutMapping
   public ResponseEntity<String> modifiedGroup(
       @RequestPart(value = "tripGroupRequestDto") TripGroupRequestDto tripGroupRequestDto,
-      @RequestPart(value = "file") MultipartFile file) {
+      @RequestPart(value = "file", required = false) MultipartFile file) {
     // 1.그룹 수정
     TripGroup tripGroup = tripGroupService.modifiedTripGroup(tripGroupRequestDto, file);
     // 2.여행 수정
@@ -70,7 +72,8 @@ public class TripGroupController {
     return ResponseEntity.ok("ok");
   }
 
-  @DeleteMapping("{tripGroupId}")
+  @ApiOperation(value = "여행 그룹 삭제 API", notes = "이 API 호출 시 메세지/채팅룸/장소/여행그룹 이 동시에 삭제되고 그룹멤버에게 삭제 알림을 발송합니다.")
+  @DeleteMapping("/{tripGroupId}")
   public ResponseEntity<String> deleteGroup(@PathVariable("tripGroupId") Long tripGroupId) {
     // 1.메세지 삭제
     messageService.deleteMessage(tripGroupId);

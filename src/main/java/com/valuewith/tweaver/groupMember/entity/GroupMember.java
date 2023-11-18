@@ -5,10 +5,7 @@ import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.constants.ApprovedStatus;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.member.entity.Member;
-import com.valuewith.tweaver.message.entity.Message;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -18,11 +15,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -40,9 +35,6 @@ public class GroupMember extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long groupMemberId;
-
-  @NotNull
-  private Boolean isBanned;
 
   @NotNull
   @Enumerated(EnumType.STRING)
@@ -64,7 +56,6 @@ public class GroupMember extends BaseEntity {
 
   public static GroupMember from(TripGroup tripGroup, Member member) {
     return GroupMember.builder()
-        .isBanned(Boolean.FALSE)
         .approvedStatus(ApprovedStatus.PENDING)
         .approvedDateTime(LocalDateTime.now())
         .member(member)
@@ -82,12 +73,15 @@ public class GroupMember extends BaseEntity {
 
   public static GroupMember enterChatRoom(ChatRoom chatRoom, GroupMember groupMember) {
     return GroupMember.builder()
-        .isBanned(groupMember.isBanned)
         .approvedStatus(groupMember.approvedStatus)
         .approvedDateTime(groupMember.approvedDateTime)
         .member(groupMember.member)
         .tripGroup(groupMember.tripGroup)
         .chatRoom(chatRoom)
         .build();
+  }
+  public void leaveApplication(ApprovedStatus status) {
+    this.approvedStatus = status;
+    this.isDeleted = true;
   }
 }

@@ -23,9 +23,10 @@ public class TripGroupResponseDto {
     private String createdAt;
     private String status;
     private String thumbnailUrl;
+    private String leaderEmail;
     private String profileUrl;
     private String nickName;
-    private String age;
+    private Integer age;
     private String gender;
 
     public static TripGroupResponseDto from(TripGroup tripGroup) {
@@ -43,8 +44,9 @@ public class TripGroupResponseDto {
             .status(tripGroup.getStatus().getDescription())
             .thumbnailUrl(tripGroup.getThumbnailUrl())
             .profileUrl(tripGroup.getMember().getProfileUrl())
+            .leaderEmail(tripGroup.getMember().getEmail())
             .nickName(tripGroup.getMember().getNickName())
-            .age(tripGroup.getMember().getAge().toString())
+            .age(tripGroup.getMember().getAge())
             .gender(tripGroup.getMember().getGender())
             .build();
     }

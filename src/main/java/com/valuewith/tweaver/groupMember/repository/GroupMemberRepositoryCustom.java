@@ -9,7 +9,7 @@ public interface GroupMemberRepositoryCustom {
 
     List<GroupMember> findGroupMembersByTripGroupAndApprovedStatus(Long tripGroupId, ApprovedStatus approvedStatus);
 
-    List<GroupMember> findApprovedMembersByTripGroupIdAndMemberId(Long tripGroupId, Long groupLeaderId, Long memberId);
+    List<GroupMember> findApprovedMembersByTripGroupIdAndMemberId(Long tripGroupId, Long memberId);
 
-    List<GroupMember> findApprovedMembersByTripGroupIdExceptLeader(Long groupLeaderId, Long tripGroupId);
+    GroupMember findApprovedMemberByTripGroupIdAndMemberId(Long tripGroupId, Long memberId);
 }
