@@ -43,24 +43,35 @@ public class SecurityConfig {
    */
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.csrf().disable().sessionManagement().
-        sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
+    http
         .cors(cors -> cors.configurationSource(request -> {
-      CorsConfiguration config = new CorsConfiguration();
-      config.setAllowedOrigins(Arrays.asList("https://tweaver.vercel.app"));
-      config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-      config.setAllowedHeaders(Arrays.asList("*"));
-      config.setAllowCredentials(true);
-      return config;
-    }))
-        .authorizeHttpRequests().antMatchers(
-            // 허용 URL
-            "/v2/api-docs", "/v3/api-docs", "/v3/api-docs/**", "/swagger-resources",
-            "/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui/**",
-            "/webjars/**", "/swagger-ui.html", "/**", "/h2-console", "/")
-        .permitAll().anyRequest().authenticated()
+          CorsConfiguration config = new CorsConfiguration();
+          config.setAllowedOrigins(Arrays.asList("https://tweaver.vercel.app"));
+          config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+          config.setAllowedHeaders(Arrays.asList("*"));
+          config.setAllowCredentials(true);
+          return config;
+        }))
+        .csrf().disable()
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
+        .authorizeHttpRequests(authz -> authz
+            .antMatchers(
+                "/v2/api-docs",
+                "/v3/api-docs",
+                "/v3/api-docs/**",
+                "/swagger-resources/**",
+                "/configuration/ui",
+                "/configuration/security",
+                "/swagger-ui/**",
+                "/webjars/**",
+                "/swagger-ui.html",
+                "/h2-console/**",
+                "/"
+            ).permitAll()
+            .anyRequest().authenticated()
+        )
         .formLogin().disable()
         .httpBasic().disable()
         .headers().frameOptions().disable()
@@ -70,13 +81,14 @@ public class SecurityConfig {
         .addFilterBefore(jwtAuthenticationFilter(), CustomJsonAuthenticationFilter.class)
         .logout(logout -> logout.logoutSuccessUrl("/"))
 
-        .oauth2Login()
-        .authorizationEndpoint()
-        .baseUri("/oauth2/authorization")
-        .authorizationRequestRepository(oAuth2AuthorizationRequestRepository())
-        .and()
-        .userInfoEndpoint()
-        .userService(oAuthUserCustomService);
+        .oauth2Login(oauth2 -> oauth2
+            .authorizationEndpoint()
+            .baseUri("/oauth2/authorization")
+            .authorizationRequestRepository(oAuth2AuthorizationRequestRepository())
+            .and()
+            .userInfoEndpoint()
+            .userService(oAuthUserCustomService)
+        );
 
     return http.build();
   }
