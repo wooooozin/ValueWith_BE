@@ -10,6 +10,7 @@ import com.valuewith.tweaver.commons.security.CustomJsonAuthenticationFilter;
 import com.valuewith.tweaver.commons.security.JwtAuthenticationFilter;
 import com.valuewith.tweaver.commons.security.service.TokenService;
 import com.valuewith.tweaver.member.repository.MemberRepository;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @RequiredArgsConstructor
@@ -44,10 +46,14 @@ public class SecurityConfig {
     http.csrf().disable().sessionManagement().
         sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-        .cors().disable()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
+        .cors(cors -> cors.configurationSource(request -> {
+      CorsConfiguration config = new CorsConfiguration();
+      config.setAllowedOrigins(Arrays.asList("https://tweaver.vercel.app"));
+      config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+      config.setAllowedHeaders(Arrays.asList("*"));
+      config.setAllowCredentials(true);
+      return config;
+    }))
         .authorizeHttpRequests().antMatchers(
             // 허용 URL
             "/v2/api-docs", "/v3/api-docs", "/v3/api-docs/**", "/swagger-resources",
