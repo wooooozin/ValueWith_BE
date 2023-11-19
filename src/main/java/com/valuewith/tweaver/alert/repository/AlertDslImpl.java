@@ -8,6 +8,9 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.valuewith.tweaver.alert.dto.AlertResponseDto;
+import com.valuewith.tweaver.alert.entity.QAlert;
+import com.valuewith.tweaver.constants.GroupStatus;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +53,15 @@ public class AlertDslImpl implements AlertDsl {
             .and(alert.isDeleted.eq(false))
             .and(alert.isChecked.eq(false))
         ).fetchOne();
+  }
+
+  @Override
+  public void checkAllByMemberId(Long memberId) {
+    query
+        .update(alert)
+        .set(alert.isChecked, true)
+        .where(alert.member.memberId.eq(memberId))
+        .execute();
   }
 
 }

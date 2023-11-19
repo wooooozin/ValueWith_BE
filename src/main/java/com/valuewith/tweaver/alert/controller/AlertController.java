@@ -61,6 +61,18 @@ public class AlertController {
   }
 
   /**
+   * 전체 알림 읽음 처리
+   */
+  @PatchMapping("/all")
+  public ResponseEntity<String> allCheck(
+      @RequestHeader("Authorization") String token
+  ) {
+    Member member = memberService.findMemberByEmail(tokenService.getMemberEmail(token));
+    alertService.allCheck(member.getMemberId());
+    return ResponseEntity.ok("ok");
+  }
+
+  /**
    * 알림 삭제 처리
    * @param alarmId
    */
