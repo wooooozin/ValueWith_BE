@@ -30,7 +30,7 @@ import org.hibernate.annotations.SQLDelete;
 @ToString
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE TRIP_GROUP SET IS_DELETED = 1 WHERE TRIP_GROUP_ID = ?")
+@SQLDelete(sql = "UPDATE trip_group SET IS_DELETED = 1 WHERE TRIP_GROUP_ID = ?")
 public class TripGroup extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

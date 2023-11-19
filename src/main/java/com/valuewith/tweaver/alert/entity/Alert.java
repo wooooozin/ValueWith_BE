@@ -21,7 +21,7 @@ import javax.persistence.*;
 @ToString
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE ALERT SET IS_DELETED = 1 WHERE ALERT_ID = ?")
+@SQLDelete(sql = "UPDATE alert SET IS_DELETED = 1 WHERE ALERT_ID = ?")
 public class Alert extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -38,7 +38,9 @@ public class ChatRoomService {
   }
 
   public void deleteChatRoom(Long tripGroupId) {
-    chatRoomRepository.deleteByTripGroupTripGroupId(tripGroupId);
+    ChatRoom chatRoom = chatRoomRepository.findByTripGroupTripGroupId(tripGroupId)
+        .orElseThrow(() -> new RuntimeException("삭제 하려는 메세지의 채팅방이 존재하지 않습니다."));
+    chatRoomRepository.deleteById(chatRoom.getChatRoomId());
   }
 
   public ChatRoom findByChatRoomId(Long chatRoomId) {

@@ -19,7 +19,7 @@ import reactor.util.annotation.Nullable;
 @ToString
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE PLACE SET IS_DELETED = 1 WHERE PLACE_ID = ?")
+@SQLDelete(sql = "UPDATE place SET IS_DELETED = 1 WHERE PLACE_ID = ?")
 public class Place extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
