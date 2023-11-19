@@ -44,6 +44,10 @@ public class SecurityConfig {
     http.csrf().disable().sessionManagement().
         sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
+        .cors().disable()
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
         .authorizeHttpRequests().antMatchers(
             // 허용 URL
             "/v2/api-docs", "/v3/api-docs", "/v3/api-docs/**", "/swagger-resources",
