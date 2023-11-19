@@ -54,16 +54,13 @@ public class Alert extends BaseEntity {
 
     /**
      * url 설정
-     * 1. 승인, 거부, 내가 신청한 그룹에 새로운 멤버 추가, 일정 수정 되었을 경우에는 그룹 상세페이지로
-     * 2. 내가 만든 그룹의 새로운 신청자, 혹은 내 그룹이 삭제된 경우 나의 페이지로 이동
+     * 1. 그룹에 새로운 신청이 있는 경우에는 마이 라운지로 이동
+     * 2. 그룹 내용이 변경된 겨우 그룹 상세페이지로
      */
-    if (alertContent == AlertContent.APPLICATION_APPLY ||
-        alertContent == AlertContent.APPLICATION_REJECT ||
-        alertContent == AlertContent.ADD_MEMBER ||
-        alertContent == AlertContent.UPDATE_GROUP_PLAN) {
-      redirectUrl = RedirectUrlType.GROUP_DETAIL.getUrl() + alertRequestDto.getGroupId();
-    } else {
+    if (alertContent == AlertContent.NEW_APPLICATION) {
       redirectUrl = RedirectUrlType.MY_PAGE.getUrl();
+    } else if(alertContent == AlertContent.UPDATE_GROUP_PLAN) {
+      redirectUrl = RedirectUrlType.GROUP_DETAIL.getUrl() + alertRequestDto.getGroupId();
     }
 
     return Alert.builder()
