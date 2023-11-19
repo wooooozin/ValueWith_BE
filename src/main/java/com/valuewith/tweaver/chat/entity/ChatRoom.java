@@ -23,7 +23,7 @@ import org.hibernate.annotations.SQLDelete;
 @ToString
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE CHAT_ROOM SET IS_DELETED = 1 WHERE CHAT_ROOM_ID = ?")
+@SQLDelete(sql = "UPDATE chat_room SET IS_DELETED = 1 WHERE CHAT_ROOM_ID = ?")
 public class ChatRoom extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
