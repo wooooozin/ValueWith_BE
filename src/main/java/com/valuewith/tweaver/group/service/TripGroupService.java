@@ -101,4 +101,9 @@ public class TripGroupService {
 
 
   }
+
+  public List<TripGroup> findMyTripGroupListByMemberId(Long memberId) {
+    return tripGroupRepository.findTripGroupsByMember_MemberId(
+        memberId);
+  }
 }
