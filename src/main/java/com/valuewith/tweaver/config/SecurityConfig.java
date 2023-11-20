@@ -22,7 +22,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -68,8 +67,22 @@ public class SecurityConfig {
                 "/webjars/**",
                 "/swagger-ui.html",
                 "/h2-console/**",
-                "/"
-            ).permitAll()
+                "/",
+                "/auth/**",
+                "/login/**",
+                "/chat/**",
+                "/pub/**",
+                "/sub/**",
+                "/oauth/**",
+                "/alert",
+                "/alert/**",
+                "/users/**",
+                "/groups/**"
+            )
+            .permitAll()
+            // 회원만 들어갈 수 있는 API는 현재 Security에서 거르지 못합니다.
+            // UserDetails를 상속받는
+            // commons.PrincipalDetails 엔티티에서 authorities를 사용하면 세부 설정이 가능합니다.
             .anyRequest().authenticated()
         )
         .formLogin().disable()
