@@ -60,7 +60,7 @@ public class TripGroupListService {
         TripGroupResponseDto tripGroupResponseDto = TripGroupResponseDto.from(tripGroup);
 
         List<GroupMemberDetailResponseDto> groupMembers = groupMemberRepository
-            .findApprovedMembersByTripGroupId(tripGroup.getTripGroupId())
+            .findApprovedAndPendingMembersByTripGroupId(tripGroup.getTripGroupId())
             .stream()
             .map(GroupMemberDetailResponseDto::from)
             .collect(Collectors.toList());
