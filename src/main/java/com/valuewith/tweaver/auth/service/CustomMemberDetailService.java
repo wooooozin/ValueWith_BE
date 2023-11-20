@@ -23,6 +23,7 @@ public class CustomMemberDetailService implements UserDetailsService {
 
     Provider memberProvider = member.getProvider();
     if (memberProvider != Provider.NORMAL) {
+      //TODO: 소셜로그인 Provider 안맞을 경우 생기는 익셉션 추가
       throw new RuntimeException(memberProvider + " 소셜 로그인 계정입니다.");
     }
     return new PrincipalDetails(member);

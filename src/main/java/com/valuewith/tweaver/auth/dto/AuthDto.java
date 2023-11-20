@@ -36,7 +36,6 @@ public class AuthDto {
     private String gender;
     private Integer age;
 
-    // TODO: to 메소드 사용법 변경
     public Member setProfileUrl(String profileUrl) {
       return Member.builder()
           .nickName(this.nickname)
