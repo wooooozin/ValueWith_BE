@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "GROUP_MEMBER")
@@ -31,6 +32,7 @@ import org.hibernate.annotations.SQLDelete;
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE group_member SET IS_DELETED = 1 WHERE GROUP_MEMBER_ID = ?")
+@Where(clause = "IS_DELETED = 0")
 public class GroupMember extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
