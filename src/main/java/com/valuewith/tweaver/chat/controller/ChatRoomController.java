@@ -1,11 +1,17 @@
 package com.valuewith.tweaver.chat.controller;
 
 
+import static com.valuewith.tweaver.constants.ErrorCode.NOT_A_MEMBER;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.valuewith.tweaver.chat.dto.ChatRoomDto;
 import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.chat.service.ChatMemberService;
 import com.valuewith.tweaver.chat.service.ChatRoomService;
 import com.valuewith.tweaver.commons.PrincipalDetails;
+import com.valuewith.tweaver.exception.CustomException;
+import com.valuewith.tweaver.group.entity.TripGroup;
+import com.valuewith.tweaver.group.service.TripGroupService;
 import com.valuewith.tweaver.groupMember.entity.GroupMember;
 import com.valuewith.tweaver.groupMember.service.GroupMemberService;
 import com.valuewith.tweaver.member.entity.Member;
@@ -13,6 +19,7 @@ import com.valuewith.tweaver.member.service.MemberService;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.ListUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,18 +36,32 @@ public class ChatRoomController {
 
   private final ChatMemberService chatMemberService;
   private final ChatRoomService chatRoomService;
-  private final GroupMemberService groupMemberService;
   private final MemberService memberService;
+  private final GroupMemberService groupMemberService;
+  private final TripGroupService tripGroupService;
+  private final ObjectMapper objectMapper;
 
   @GetMapping("/room")
   public ResponseEntity<List<ChatRoomDto>> findChatRooms(
       @AuthenticationPrincipal PrincipalDetails principalDetails) {
     Member member = memberService.findMemberByEmail(principalDetails.getUsername());
-    List<ChatRoomDto> chatRoomList = groupMemberService.findApprovedGroupsByMemberId(
+    // 1. 그룹원인 경우
+    List<ChatRoomDto> memberChat = groupMemberService.findApprovedGroupsByMemberId(
             member.getMemberId())
         .stream()
         .map(groupMember -> ChatRoomDto.from(groupMember.getChatRoom()))
         .collect(Collectors.toList());
+
+    // 2. 그룹장일 경우
+    List<ChatRoomDto> leaderChat = tripGroupService.findMyTripGroupListByMemberId(member.getMemberId())
+        .stream()
+        .map(TripGroup::getTripGroupId)
+        .map(chatRoomService::findByChatRoomId)
+        .map(ChatRoomDto::from)
+        .collect(Collectors.toList());
+
+    // 3. 전부 통합
+    List<ChatRoomDto> chatRoomList = ListUtils.union(memberChat, leaderChat);
 
     return ResponseEntity.ok(chatRoomList);
   }
@@ -53,9 +74,8 @@ public class ChatRoomController {
     Long memberId = memberService.findMemberByEmail(principalDetails.getUsername()).getMemberId();
     Long tripGroupId = chatRoom.getTripGroup().getTripGroupId();
 
-    // TODO: 해당 그룹원이 아니면 커스텀 익셉션
     if (!groupMemberService.isGroupMember(memberId, tripGroupId)) {
-      throw new RuntimeException("해당 그룹원이 아닙니다.");
+      throw new CustomException(NOT_A_MEMBER);
     }
 
     GroupMember groupMember = groupMemberService.findGroupMemberByMemberIdAndGroupId(
