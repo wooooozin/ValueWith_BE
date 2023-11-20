@@ -117,7 +117,11 @@ public class ImageService {
                 throw new S3ImageNotFoundException(ErrorCode.S3_IMAGE_NOT_FOUND);
             }
 
-            amazonS3.deleteObject(bucketName, currentKey);
+            boolean exists = defaultImageRepository.existsDefaultImageByImageName(currentUrl);
+            if(!exists) {
+                amazonS3.deleteObject(bucketName, currentKey);
+            }
+
             return newImageUrl;
         } catch (Exception e) {
             String newKey = generateKey(newImageUrl);
