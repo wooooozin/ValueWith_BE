@@ -64,20 +64,18 @@ public class TripGroupService {
 
   public TripGroup modifiedTripGroup(TripGroupRequestDto tripGroupRequestDto, MultipartFile file) {
 
-    if (file != null && !file.isEmpty()) {
-      String imageUrl = imageService.modifiedImageWithFallback(file, tripGroupRequestDto.getThumbnailUrl(), ImageType.THUMBNAIL);
-      tripGroupRequestDto.setThumbnailUrl(imageUrl);
-    }
-
-    Optional<TripGroup> foundTripGroup = tripGroupRepository.findById(tripGroupRequestDto.getTripGroupId());
-
-    TripGroup tripGroup = foundTripGroup.orElseThrow(() -> {
+    TripGroup foundTripGroup = tripGroupRepository.findById(tripGroupRequestDto.getTripGroupId()).orElseThrow(() -> {
       throw new RuntimeException("수정할 그룹 데이터가 존재하지 않습니다.");
     });
 
-    tripGroup.updateTripGroup(tripGroupRequestDto);
+    if (file != null && !file.isEmpty()) {
+      String imageUrl = imageService.modifiedImageWithFallback(file, foundTripGroup.getThumbnailUrl(), ImageType.THUMBNAIL);
+      tripGroupRequestDto.setThumbnailUrl(imageUrl);
+    }
 
-    return tripGroup;
+    foundTripGroup.updateTripGroup(tripGroupRequestDto);
+
+    return foundTripGroup;
   }
 
   public String getThumbnailUrl(String tripArea) {
