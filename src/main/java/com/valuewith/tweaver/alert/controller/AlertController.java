@@ -19,14 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @RestController
-@RequestMapping("/alert/*")
+@RequestMapping("/alert")
 @RequiredArgsConstructor
 public class AlertController {
   private final MemberService memberService;
   private final AlertService alertService;
   private final TokenService tokenService;
-  // TODO: 로그인 기능 pull받고 로그인한 유저객체 가져와서 사용하면 이부분 삭제
-  private final MemberRepository memberRepository;
 
   /**
    * 로그인 한 유저 알람 sse 연결
@@ -60,6 +58,18 @@ public class AlertController {
     Member member = memberService.findMemberByEmail(tokenService.getMemberEmail(token));
     Long alertCnt = alertService.check(member.getMemberId(), alarmId);
     return ResponseEntity.ok(alertCnt);
+  }
+
+  /**
+   * 전체 알림 읽음 처리
+   */
+  @PatchMapping("/all")
+  public ResponseEntity<String> allCheck(
+      @RequestHeader("Authorization") String token
+  ) {
+    Member member = memberService.findMemberByEmail(tokenService.getMemberEmail(token));
+    alertService.allCheck(member.getMemberId());
+    return ResponseEntity.ok("ok");
   }
 
   /**

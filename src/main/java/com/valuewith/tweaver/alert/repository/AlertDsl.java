@@ -7,4 +7,6 @@ public interface AlertDsl {
   List<AlertResponseDto> getAlertsByMemberId(Long memberId);
 
   Long getAlertCountByMemberId(Long memberId);
+
+  void checkAllByMemberId(Long memberId);
 }

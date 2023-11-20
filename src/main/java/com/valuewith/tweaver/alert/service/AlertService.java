@@ -125,6 +125,11 @@ public class AlertService {
     return getAlertCount(memberId);
   }
 
+  // 모든 알람 isChecked true로 설정
+  public void allCheck(Long memberId) {
+    alertRepository.checkAllByMemberId(memberId);
+  }
+
   // 삭제한 알람은 삭제시키기
   public Long delete(Long memberId, Long alertId) {
     Alert alert = alertRepository.findByAlertIdAndIsDeleted(alertId, false)

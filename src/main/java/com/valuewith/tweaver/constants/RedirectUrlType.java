@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum RedirectUrlType {
-  GROUP_DETAIL("/group/%s"), // 그룹 상세페이지 - groupId를 넣어서 보내줌
-  MY_PAGE("/mypage/"); // 마이페이지 - 내 모집 화면 url
+  GROUP_DETAIL("/group/list/"), // 그룹 상세페이지 - groupId를 넣어서 보내줌
+  MY_PAGE("/mylounge"); // 마이페이지 - 내 모집 화면 url
 
   private final String url;
 }
