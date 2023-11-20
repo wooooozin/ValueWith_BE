@@ -32,7 +32,7 @@ public class MessageController {
 
     MessageDto newMessage = messageService.createMessage(chatRoom, sender, helloMessage);
 
-    simpMessageSendingOperations.convertAndSend("/sub/chat/room" + chatRoom.getChatRoomId(),
+    simpMessageSendingOperations.convertAndSend("/sub/chat/room/" + chatRoom.getChatRoomId(),
         newMessage);
   }
 
@@ -44,7 +44,7 @@ public class MessageController {
 
     MessageDto newMessage = messageService.createMessage(chatRoom, sender, message.getContent());
 
-    simpMessageSendingOperations.convertAndSend("/sub/chat/room" + chatRoom.getChatRoomId(),
+    simpMessageSendingOperations.convertAndSend("/sub/chat/room/" + chatRoom.getChatRoomId(),
         newMessage);
   }
 
@@ -58,7 +58,7 @@ public class MessageController {
 
     MessageDto newMessage = messageService.createMessage(chatRoom, sender, byeMessage);
 
-    simpMessageSendingOperations.convertAndSend("/sub/chat/room" + chatRoom.getChatRoomId(),
+    simpMessageSendingOperations.convertAndSend("/sub/chat/room/" + chatRoom.getChatRoomId(),
         newMessage);
   }
 }
