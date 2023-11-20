@@ -41,8 +41,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     if (request.getRequestURI().equals("/auth/signin")
         && StringUtils.hasText(token)
         && tokenService.isValidToken(token)) {
-//      Authentication auth = tokenService.getAuthentication(token);
-//      SecurityContextHolder.getContext().setAuthentication(auth);
       filterChain.doFilter(request, response);
       return;
     }

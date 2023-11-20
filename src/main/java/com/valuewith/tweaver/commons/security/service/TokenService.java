@@ -1,5 +1,9 @@
 package com.valuewith.tweaver.commons.security.service;
 
+import static com.valuewith.tweaver.constants.ErrorCode.*;
+
+import com.valuewith.tweaver.constants.ErrorCode;
+import com.valuewith.tweaver.exception.CustomException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -77,18 +81,31 @@ public class TokenService {
    * 토큰의 이메일 정보를 가져옵니다.
    */
   public String getMemberEmail(String token) {
-    return this.parseClaims(token).get(CLAIM_EMAIL).toString();
+    try {
+      if (StringUtils.hasText(token) && token.startsWith(BEARER)) {
+        token = token.replace(BEARER, "");
+      }
+      return this.parseClaims(token).get(CLAIM_EMAIL).toString();
+    } catch (Exception e) {
+      System.out.println("들어온 token: " + token);
+      throw new CustomException(INVALID_JWT);
+    }
   }
 
   /**
    * 토큰의 유효시간을 검증합니다.
    */
   public Boolean isValidToken(String token) {
-    if (!StringUtils.hasText(token)) {
-      return Boolean.FALSE;
+    try {
+      if (!StringUtils.hasText(token)) {
+        return Boolean.FALSE;
+      }
+      Claims claims = parseClaims(token);
+      return claims.getExpiration().after(new Date());
+    } catch (Exception e) {
+      System.out.println("들어온 token: " + token);
+      throw new CustomException(INVALID_JWT);
     }
-    Claims claims = parseClaims(token);
-    return claims.getExpiration().after(new Date());
   }
 
   /**
@@ -111,7 +128,7 @@ public class TokenService {
     if (StringUtils.hasText(fullToken) && fullToken.startsWith(BEARER)) {
       return fullToken.replace(BEARER, "");
     }
-    return "";
+    return "";  // TODO: 204 얘정 -eod940.23.11.20
   }
 
   public Optional<String> parseRefreshToken(HttpServletRequest request) {
@@ -128,11 +145,11 @@ public class TokenService {
 
   // Access 토큰, Refresh 토큰을 모두 헤더에 넣어서 보냅니다.
   public void sendAccessTokenAndRefreshToken(HttpServletResponse response,
-      String accessHeader, String refreshToken) {
+      String accessToken, String refreshToken) {
     response.setStatus(HttpServletResponse.SC_OK);
 
-    setAccessTokenToHeader(response, BEARER);
-    setRefreshTokenToHeader(response, BEARER);
+    setAccessTokenToHeader(response, BEARER + accessToken);
+    setRefreshTokenToHeader(response, BEARER + refreshToken);
     setRefreshTokenToCookie(response, refreshToken);
   }
 

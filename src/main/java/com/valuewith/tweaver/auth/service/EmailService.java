@@ -1,8 +1,12 @@
 package com.valuewith.tweaver.auth.service;
 
+import static com.valuewith.tweaver.constants.ErrorCode.*;
+
 import com.valuewith.tweaver.auth.client.MailgunClient;
 import com.valuewith.tweaver.auth.client.mailgun.SendEmailForm;
 import com.valuewith.tweaver.commons.redis.RedisUtilService;
+import com.valuewith.tweaver.constants.ErrorCode;
+import com.valuewith.tweaver.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
@@ -15,7 +19,11 @@ public class EmailService {
   private final RedisUtilService redisUtilService;
 
   public String sendMail(SendEmailForm sendForm) {
-    return mailgunClient.sendEmail(sendForm).getBody();
+    try {
+      return mailgunClient.sendEmail(sendForm).getBody();
+    } catch (Exception e) {
+      throw new CustomException(FAILURE_SENDING_EMAIL);
+    }
   }
 
   public void sendCodeForValid(String memberEmail) {

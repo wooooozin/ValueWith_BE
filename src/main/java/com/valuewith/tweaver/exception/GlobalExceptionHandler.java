@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoFileProvidedException.class)
-    public ResponseEntity<ErrorResponseDto> handleNoFileProvidedException(NoFileProvidedException e) {
+    public ResponseEntity<ErrorResponseDto> handleNoFileProvidedException(
+        NoFileProvidedException e) {
         ErrorResponseDto responseDto = ErrorResponseDto.from(e.getErrorCode());
         return ResponseEntity
             .status(e.getHttpStatus())
@@ -24,7 +25,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(InvalidFileMediaTypeException.class)
-    public ResponseEntity<ErrorResponseDto> handleInvalidFileMediaTypeException(InvalidFileMediaTypeException e) {
+    public ResponseEntity<ErrorResponseDto> handleInvalidFileMediaTypeException(
+        InvalidFileMediaTypeException e) {
         ErrorResponseDto responseDto = ErrorResponseDto.from(e.getErrorCode());
         return ResponseEntity
             .status(e.getHttpStatus())
@@ -32,7 +34,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(S3ImageNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handleS3ImageNotFoundException(S3ImageNotFoundException e) {
+    public ResponseEntity<ErrorResponseDto> handleS3ImageNotFoundException(
+        S3ImageNotFoundException e) {
         ErrorResponseDto responseDto = ErrorResponseDto.from(e.getErrorCode());
         return ResponseEntity
             .status(e.getHttpStatus())
@@ -48,7 +51,17 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(LocationNameEmptyException.class)
-    public ResponseEntity<ErrorResponseDto> handleLocationNameEmptyException(LocationNameEmptyException e) {
+    public ResponseEntity<ErrorResponseDto> handleLocationNameEmptyException(
+        LocationNameEmptyException e) {
+        ErrorResponseDto responseDto = ErrorResponseDto.from(e.getErrorCode());
+        return ResponseEntity
+            .status(e.getHttpStatus())
+            .body(responseDto);
+    }
+
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ErrorResponseDto> handleCustomException(
+        CustomException e) {
         ErrorResponseDto responseDto = ErrorResponseDto.from(e.getErrorCode());
         return ResponseEntity
             .status(e.getHttpStatus())
