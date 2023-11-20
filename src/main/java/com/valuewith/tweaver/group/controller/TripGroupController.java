@@ -60,9 +60,10 @@ public class TripGroupController {
   @PutMapping
   public ResponseEntity<String> modifiedGroup(
       @RequestPart(value = "tripGroupRequestDto") TripGroupRequestDto tripGroupRequestDto,
-      @RequestPart(value = "file", required = false) MultipartFile file) {
+      @RequestPart(value = "file", required = false) MultipartFile file,
+      @RequestPart(value = "isDeletedFile") Boolean isDeletedFile) {
     // 1.그룹 수정
-    TripGroup tripGroup = tripGroupService.modifiedTripGroup(tripGroupRequestDto, file);
+    TripGroup tripGroup = tripGroupService.modifiedTripGroup(tripGroupRequestDto, file, isDeletedFile);
     // 2.여행 수정
     placeService.modifiedPlace(tripGroup, tripGroupRequestDto.getPlaces());
     // 3.채팅 수정(그룹명 수정으로 인한 채팅룸 제목 수정)

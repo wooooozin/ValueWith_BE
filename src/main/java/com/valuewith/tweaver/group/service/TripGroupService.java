@@ -62,7 +62,7 @@ public class TripGroupService {
     return tripGroupRepository.save(tripGroup);
   }
 
-  public TripGroup modifiedTripGroup(TripGroupRequestDto tripGroupRequestDto, MultipartFile file) {
+  public TripGroup modifiedTripGroup(TripGroupRequestDto tripGroupRequestDto, MultipartFile file, Boolean isDeletedFile) {
 
     TripGroup foundTripGroup = tripGroupRepository.findById(tripGroupRequestDto.getTripGroupId()).orElseThrow(() -> {
       throw new RuntimeException("수정할 그룹 데이터가 존재하지 않습니다.");
@@ -71,6 +71,10 @@ public class TripGroupService {
     if (file != null && !file.isEmpty()) {
       String imageUrl = imageService.modifiedImageWithFallback(file, foundTripGroup.getThumbnailUrl(), ImageType.THUMBNAIL);
       tripGroupRequestDto.setThumbnailUrl(imageUrl);
+    } else {
+      if(isDeletedFile) {
+        tripGroupRequestDto.setThumbnailUrl(getThumbnailUrl(tripGroupRequestDto.getTripArea()));
+      }
     }
 
     foundTripGroup.updateTripGroup(tripGroupRequestDto);
