@@ -1,5 +1,6 @@
 package com.valuewith.tweaver.groupMember.dto;
 
+import com.valuewith.tweaver.constants.ApprovedStatus;
 import com.valuewith.tweaver.groupMember.entity.GroupMember;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +17,7 @@ public class GroupMemberDetailResponseDto {
     private Integer groupMemberAge;
     private String groupMemberGender;
     private String groupMemberProfileUrl;
+    private String groupMemberStatus;
     public static GroupMemberDetailResponseDto from(
         GroupMember groupMember
     ) {
@@ -26,6 +28,7 @@ public class GroupMemberDetailResponseDto {
             .groupMemberAge(groupMember.getMember().getAge())
             .groupMemberGender(groupMember.getMember().getGender())
             .groupMemberProfileUrl(groupMember.getMember().getProfileUrl())
+            .groupMemberStatus(groupMember.getApprovedStatus().name().toLowerCase())
             .build();
     }
 
