@@ -14,6 +14,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "ALERT")
@@ -22,6 +23,7 @@ import javax.persistence.*;
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE alert SET IS_DELETED = 1 WHERE ALERT_ID = ?")
+@Where(clause = "IS_DELETED = 0")
 public class Alert extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

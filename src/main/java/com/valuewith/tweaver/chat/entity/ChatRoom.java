@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "CHAT_ROOM")
@@ -24,6 +25,7 @@ import org.hibernate.annotations.SQLDelete;
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE chat_room SET IS_DELETED = 1 WHERE CHAT_ROOM_ID = ?")
+@Where(clause = "IS_DELETED = 0")
 public class ChatRoom extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

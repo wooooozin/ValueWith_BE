@@ -11,6 +11,7 @@ import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.Where;
 import reactor.util.annotation.Nullable;
 
 @Entity
@@ -20,6 +21,7 @@ import reactor.util.annotation.Nullable;
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE place SET IS_DELETED = 1 WHERE PLACE_ID = ?")
+@Where(clause = "IS_DELETED = 0")
 public class Place extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
