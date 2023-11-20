@@ -23,7 +23,8 @@ public class GroupMemberRepositoryCustomImpl implements GroupMemberRepositoryCus
             .selectFrom(groupMember)
             .join(groupMember.tripGroup, QTripGroup.tripGroup).fetchJoin()
             .where(groupMember.tripGroup.tripGroupId.eq(tripGroupId)
-                .and(groupMember.approvedStatus.eq(ApprovedStatus.APPROVED)))
+                .and(groupMember.approvedStatus.eq(ApprovedStatus.APPROVED))
+                .or(groupMember.approvedStatus.eq(ApprovedStatus.PENDING)))
             .fetch();
     }
 

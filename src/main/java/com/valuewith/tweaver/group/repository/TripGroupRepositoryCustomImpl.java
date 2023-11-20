@@ -56,8 +56,7 @@ public class TripGroupRepositoryCustomImpl implements TripGroupRepositoryCustom 
     public Page<TripGroup> findLeaderTripGroups(Long memberId, Pageable pageable) {
         List<TripGroup> tripGroups = queryFactory
             .selectFrom(qTripGroup)
-            .where(qTripGroup.member.memberId.eq(memberId),
-                qTripGroup.status.eq(GroupStatus.OPEN))
+            .where(qTripGroup.member.memberId.eq(memberId))
             .orderBy(qTripGroup.createdDateTime.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
