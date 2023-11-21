@@ -44,7 +44,7 @@ public class MemberService {
     Member member = memberRepository.findById(memberId)
         .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
-    // 패스워드 처리 - 카카오면 그냥 endoedPassword 넣기
+    // 패스워드 처리 - 카카오면 그냥 encodedPassword 넣기
     String encodedPassword = member.getPassword();
 
     if (member.getProvider() != Provider.KAKAO) {
