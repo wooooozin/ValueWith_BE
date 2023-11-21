@@ -86,4 +86,9 @@ public class GroupMember extends BaseEntity {
     this.approvedStatus = status;
     this.isDeleted = true;
   }
+
+  public void cancelApplication() {
+    this.approvedStatus = ApprovedStatus.CANCEL;
+    this.isDeleted = true;
+  }
 }
