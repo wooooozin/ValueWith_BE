@@ -82,7 +82,8 @@ public class SecurityConfig {
                 "/alert/**",
                 "/users/**",
                 "/groups/**",
-                "/images/**"
+                "/images/**",
+                "/member"
             )
             .permitAll()
             // 회원만 들어갈 수 있는 API는 현재 Security에서 거르지 못합니다.
