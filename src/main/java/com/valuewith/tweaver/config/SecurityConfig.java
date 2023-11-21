@@ -83,6 +83,7 @@ public class SecurityConfig {
                 "/users/**",
                 "/groups/**",
                 "/images/**",
+                "/member/**",
                 "/member"
             )
             .permitAll()
