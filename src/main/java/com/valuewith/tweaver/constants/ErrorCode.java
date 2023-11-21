@@ -12,7 +12,8 @@ public enum ErrorCode {
     S3_IMAGE_NOT_FOUND("이미지 저장소에서 파일을 찾을 수 없습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
     URL_IS_EMPTY("제공된 URL이 없습니다.", HttpStatus.BAD_REQUEST),
     LOCATION_NAME_NOT_FOUNT("지역 이름은 필수입니다.", HttpStatus.BAD_REQUEST),
-
+    INVALID_PROFILE_MODIFIED_MEMBER("프로필 수정 권한이 없습니다.", HttpStatus.NON_AUTHORITATIVE_INFORMATION),
+    NOT_MATCH_PASSWORD("입력한 비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
     // ======== Auth ========
     // 401
     INVALID_CODE("만료된 코드 입니다.", HttpStatus.UNAUTHORIZED),
@@ -25,9 +26,9 @@ public enum ErrorCode {
     DUPLICATE_EMAIL("중복된 이메일입니다.", HttpStatus.CONFLICT),
     // 502
     FAILURE_SENDING_EMAIL("이메일 전송에 실패하였습니다.", HttpStatus.BAD_GATEWAY),
-    FAILURE_GETTING_PROFILE_IMG("프로필 이미지가 없습니다.", HttpStatus.BAD_GATEWAY),
-
+    FAILURE_GETTING_PROFILE_IMG("프로필 이미지가 없습니다.", HttpStatus.BAD_GATEWAY)
     ;
+
 
 
     private final String description;
