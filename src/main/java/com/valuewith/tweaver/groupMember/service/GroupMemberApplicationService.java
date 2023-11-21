@@ -58,7 +58,7 @@ public class GroupMemberApplicationService {
     GroupMember foundGroupMember
         = groupMemberRepository.findPendingMembersByTripGroupIdAndMemberId(tripGroupId, member.getMemberId())
         .orElseThrow(() -> new RuntimeException("대기중인 신청이 존재하지 않습니다."));
-    groupMemberRepository.deleteById(foundGroupMember.getGroupMemberId());
+    foundGroupMember.cancelApplication();
   }
 
   public void rejectApplication(Long groupMemberId) {
