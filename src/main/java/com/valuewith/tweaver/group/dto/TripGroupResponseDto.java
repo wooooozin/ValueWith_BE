@@ -36,7 +36,7 @@ public class TripGroupResponseDto {
             .name(tripGroup.getName())
             .content(tripGroup.getContent())
             .maxUserNumber(tripGroup.getMaxMemberNumber())
-            .currentUserNumber(tripGroup.getCurrentMemberNumber() + 1)
+            .currentUserNumber(tripGroup.getCurrentMemberNumber())
             .tripArea(tripGroup.getTripArea())
             .tripDate(tripGroup.getTripDate().format(formatter))
             .dueDate(tripGroup.getDueDate().format(formatter))
