@@ -1,6 +1,7 @@
 package com.valuewith.tweaver.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.valuewith.tweaver.auth.handler.OAuth2FailureHandler;
 import com.valuewith.tweaver.auth.handler.OAuth2SuccessHandler;
 import com.valuewith.tweaver.auth.handler.SigninFailureHandler;
 import com.valuewith.tweaver.auth.handler.SigninSuccessHandler;
@@ -23,6 +24,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -113,6 +115,7 @@ public class SecurityConfig {
                 .userService(oAuthUserCustomService)
             )
             .successHandler(oAuth2SuccessHandler())
+            .failureHandler(oAuth2FailureHandler())
         );
 
     return http.build();
@@ -151,6 +154,11 @@ public class SecurityConfig {
   public OAuth2SuccessHandler oAuth2SuccessHandler() {
     return new OAuth2SuccessHandler(oAuth2AuthorizationRequestRepository(), appProperties,
         tokenService, memberRepository);
+  }
+
+  @Bean
+  public OAuth2FailureHandler oAuth2FailureHandler() {
+    return new OAuth2FailureHandler(oAuth2AuthorizationRequestRepository());
   }
 
   @Bean
