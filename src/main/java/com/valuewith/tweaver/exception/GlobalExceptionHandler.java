@@ -67,4 +67,13 @@ public class GlobalExceptionHandler {
             .status(e.getHttpStatus())
             .body(responseDto);
     }
+
+    @ExceptionHandler(SocialLoginFailureException.class)
+    public ResponseEntity<ErrorResponseDto> handleSocialLoginFailureException(
+        SocialLoginFailureException e) {
+        ErrorResponseDto responseDto = ErrorResponseDto.from(e.getErrorCode());
+        return ResponseEntity
+            .status(e.getHttpStatus())
+            .body(responseDto);
+    }
 }

@@ -52,12 +52,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     getRedirectStrategy().sendRedirect(request, response, targetUrl);
   }
 
-  protected void clearAuthenticationAttributes(HttpServletRequest request,
-      HttpServletResponse response) {
-    super.clearAuthenticationAttributes(request);
-    cookieRequestRepository.removeAuthorizationRequestCookies(request, response);
-  }
-
   protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response,
       Authentication authentication) {
     Optional<String> redirectUri = CookieService.getCookie(request,
@@ -70,10 +64,27 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     String targetUri = redirectUri.orElse(getDefaultTargetUrl());
     String refreshToken = tokenService.createRefreshToken();
+    Optional<Member> member = getMember(authentication);
+
+    // 멤버가 존재한다면 리프레시토큰 그대로
+    if (member.isPresent()) {
+      refreshToken = member.get().getRefreshToken();
+    }
 
     return UriComponentsBuilder
         .fromUriString(targetUri).queryParam("refreshToken", refreshToken)
         .build().toUriString();
+  }
+
+  private Optional<Member> getMember(Authentication authentication) {
+    PrincipalDetails memberData = (PrincipalDetails) authentication.getDetails();
+    return memberRepository.findByEmail(memberData.getName());
+  }
+
+  protected void clearAuthenticationAttributes(HttpServletRequest request,
+      HttpServletResponse response) {
+    super.clearAuthenticationAttributes(request);
+    cookieRequestRepository.removeAuthorizationRequestCookies(request, response);
   }
 
   private boolean isAuthorizedRedirectUri(String redirectUri) {
