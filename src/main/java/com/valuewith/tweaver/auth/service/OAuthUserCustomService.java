@@ -23,12 +23,10 @@ public class OAuthUserCustomService implements OAuth2UserService<OAuth2UserReque
   private final TokenService tokenService;
 
   /**
-   * oAuth2User: userRequest에서 OAuth2User를 가져옵니다.
-   *   - OAuth2User는 OAuth 서비스(ex. 카카오 관련 요소들)를 가지고 있습니다.
-   * registrationID: OAuth 서비스 이름을 가져옵니다. (ex. {registrationId: "kakao"})
-   *   - 현재는 kakao만 사용해 불필요하지만, 추후 다른 소셜로그인 기능 추가시 필요합니다. (추가시 주석 제거)
-   * memberAttributedName: OAuth 로그인시 키 값이 됩니다. (제공 사이트마다 다르므로 따로 변수선언을 해줍니다.)
-   * attributes: OAuth 서비스의 유저 정보들을 가져옵니다.
+   * oAuth2User: userRequest에서 OAuth2User를 가져옵니다. - OAuth2User는 OAuth 서비스(ex. 카카오 관련 요소들)를 가지고 있습니다.
+   * registrationID: OAuth 서비스 이름을 가져옵니다. (ex. {registrationId: "kakao"}) - 현재는 kakao만 사용해 불필요하지만,
+   * 추후 다른 소셜로그인 기능 추가시 필요합니다. (추가시 주석 제거) memberAttributedName: OAuth 로그인시 키 값이 됩니다. (제공 사이트마다 다르므로
+   * 따로 변수선언을 해줍니다.) attributes: OAuth 서비스의 유저 정보들을 가져옵니다.
    */
   @Override
   public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -58,19 +56,21 @@ public class OAuthUserCustomService implements OAuth2UserService<OAuth2UserReque
   }
 
   /**
-   * provider와 providerId로 유저를 찾습니다.
-   * 유저가 없을 경우 회원가입 후 Member를 리턴합니다.
+   * provider와 providerId로 유저를 찾습니다. 유저가 없을 경우 회원가입 후 Member를 리턴합니다.
    */
   private Member getMember(OAuthAttributes extractAttribute, Provider provider) {
-
+    String gottenNickName = extractAttribute.getOauth2UserInfo().getName();
+    String gottenProfile = extractAttribute.getOauth2UserInfo().getName();
     return memberRepository.findByProviderAndProviderId(
             provider, extractAttribute.getOauth2UserInfo().getProviderId())
-        .orElseGet(() -> saveOrUpdate(extractAttribute, provider));
+        .map(member -> member.update(gottenNickName, gottenProfile))
+        .orElseGet(() -> updateAndSave(extractAttribute, provider));
   }
 
-  private Member saveOrUpdate(OAuthAttributes extractAttribute, Provider provider) {
+  private Member updateAndSave(OAuthAttributes extractAttribute, Provider provider) {
     String refreshToken = tokenService.createRefreshToken();
-    Member member = extractAttribute.toEntity(provider, refreshToken, extractAttribute.getOauth2UserInfo());
+    Member member = extractAttribute.toEntity(provider, refreshToken,
+        extractAttribute.getOauth2UserInfo());
     return memberRepository.save(member);
   }
 }
