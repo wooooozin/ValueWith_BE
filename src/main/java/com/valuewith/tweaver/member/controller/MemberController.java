@@ -10,6 +10,7 @@ import com.valuewith.tweaver.member.dto.MemberResponseDto;
 import com.valuewith.tweaver.member.entity.Member;
 import com.valuewith.tweaver.member.service.MemberService;
 import io.swagger.annotations.Authorization;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +48,7 @@ public class MemberController {
     public ResponseEntity<String> modifiedMemberProfile(
         @RequestHeader("Authorization") String token,
         @PathVariable Long memberId,
-        @RequestPart MemberRequestDto requestDto,
+        @Valid @RequestPart MemberRequestDto requestDto,
         @RequestPart(required = false) MultipartFile file
     ) {
         String memberEmail = tokenService.getMemberEmail(token);
