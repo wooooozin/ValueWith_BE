@@ -79,6 +79,14 @@ public class Member extends BaseEntity {
     return this;
   }
 
+  public Member modifiedProfile(String nickName, Integer age, String profileUrl, String password) {
+    this.nickName = nickName;
+    this.age = age;
+    this.profileUrl = profileUrl;
+    this.password = password;
+    return this;
+  }
+
   public void updateRefreshToken(String refreshToken) {
     this.refreshToken = refreshToken;
   }
