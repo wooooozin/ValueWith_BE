@@ -1,7 +1,6 @@
 package com.valuewith.tweaver.groupMember.service;
 
 import com.valuewith.tweaver.alert.dto.AlertRequestDto;
-import com.valuewith.tweaver.alert.service.AlertService;
 import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.chat.repository.ChatRoomRepository;
 import com.valuewith.tweaver.constants.AlertContent;
@@ -14,6 +13,7 @@ import com.valuewith.tweaver.member.repository.MemberRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +27,8 @@ public class GroupMemberApplicationService {
   private final ChatRoomRepository chatRoomRepository;
   private final MemberRepository memberRepository;
   private final TripGroupRepository tripGroupRepository;
-  private final AlertService alertService;
+
+  private final ApplicationEventPublisher eventPublisher;
 
   public void createApplication(Long tripGroupId, String memberEmail) {
     TripGroup tripGroup = tripGroupRepository.findByTripGroupId(tripGroupId)
@@ -43,11 +44,11 @@ public class GroupMemberApplicationService {
     }
 
     // 신청이 왔을 때 알람 보내기
-    alertService.send(AlertRequestDto.builder()
-        .groupId(tripGroupId)
-        .member(tripGroup.getMember())
-        .content(AlertContent.NEW_APPLICATION)
-        .build());
+    eventPublisher.publishEvent(AlertRequestDto.builder()
+            .groupId(tripGroupId)
+            .member(tripGroup.getMember())
+            .content(AlertContent.NEW_APPLICATION)
+            .build());
   }
 
   public void deleteApplication(Long tripGroupId, String memberEmail) {
@@ -67,7 +68,7 @@ public class GroupMemberApplicationService {
     foundGroupMember.rejectApplication();
 
     // 신청이 거절 되었을 때 알람 보내기
-    alertService.send(AlertRequestDto.builder()
+    eventPublisher.publishEvent(AlertRequestDto.builder()
         .groupId(foundGroupMember.getTripGroup().getTripGroupId())
         .member(foundGroupMember.getMember())
         .content(AlertContent.APPLICATION_REJECT)
@@ -83,7 +84,7 @@ public class GroupMemberApplicationService {
     foundGroupMember.confirmApplication(chatRoom);
 
     // 신청이 승인 되었을 때 알람 보내기
-    alertService.send(AlertRequestDto.builder()
+    eventPublisher.publishEvent(AlertRequestDto.builder()
         .groupId(foundGroupMember.getTripGroup().getTripGroupId())
         .member(foundGroupMember.getMember())
         .content(AlertContent.APPLICATION_APPLY)
@@ -95,11 +96,11 @@ public class GroupMemberApplicationService {
         foundGroupMember.getTripGroup().getTripGroupId(),
         foundGroupMember.getMember().getMemberId());
     groupMembers.stream().forEach(groupMember -> {
-          alertService.send(AlertRequestDto.builder()
-              .groupId(groupMember.getTripGroup().getTripGroupId())
-              .member(groupMember.getMember())
-              .content(AlertContent.ADD_MEMBER)
-              .build());
+      eventPublisher.publishEvent(AlertRequestDto.builder()
+          .groupId(groupMember.getTripGroup().getTripGroupId())
+          .member(groupMember.getMember())
+          .content(AlertContent.ADD_MEMBER)
+          .build());
         }
     );
   }

@@ -1,7 +1,6 @@
 package com.valuewith.tweaver.group.service;
 
 import com.valuewith.tweaver.alert.dto.AlertRequestDto;
-import com.valuewith.tweaver.alert.service.AlertService;
 import com.valuewith.tweaver.constants.AlertContent;
 import com.valuewith.tweaver.constants.GroupStatus;
 import com.valuewith.tweaver.constants.ImageType;
@@ -15,9 +14,9 @@ import com.valuewith.tweaver.groupMember.entity.GroupMember;
 import com.valuewith.tweaver.groupMember.repository.GroupMemberRepository;
 import com.valuewith.tweaver.member.entity.Member;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,7 +27,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Transactional
 public class TripGroupService {
   private final ImageService imageService;
-  private final AlertService alertService;
+
+  private final ApplicationEventPublisher eventPublisher;
 
   private final TripGroupRepository tripGroupRepository;
   private final DefaultImageRepository defaultImageRepository;
@@ -96,7 +96,7 @@ public class TripGroupService {
         = groupMemberRepository.findApprovedMembersByTripGroupId(tripGroupId);
 
     groupMembers.stream().forEach(groupMember -> {
-      alertService.send(AlertRequestDto.builder()
+      eventPublisher.publishEvent(AlertRequestDto.builder()
           .groupId(tripGroupId)
           .member(groupMember.getMember())
           .content(alertContent)
