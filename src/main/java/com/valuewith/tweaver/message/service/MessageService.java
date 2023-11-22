@@ -9,13 +9,12 @@ import com.valuewith.tweaver.message.repository.MessageRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class MessageService {
+
   private final ChatRoomRepository chatRoomRepository;
   private final MessageRepository messageRepository;
 
@@ -33,9 +32,8 @@ public class MessageService {
     return MessageDto.from(createdMessage);
   }
 
-  public List<MessageDto> findAllByMessage(Long memberId) {
-
-    return messageRepository.findAllByMember_MemberId(memberId)
+  public List<MessageDto> findAllByMessageList(Long chatRoomId) {
+    return messageRepository.findAllByChatRoom_ChatRoomId(chatRoomId)
         .stream()
         .map(MessageDto::from)
         .collect(Collectors.toList());
