@@ -27,7 +27,7 @@ import org.springframework.util.StringUtils;
 @Getter
 public class TokenService {
 
-  private static final Long ACCESS_TOKEN_VALID_TIME = 1000L * 60L * 60L;  // 1시간
+  private static final Long ACCESS_TOKEN_VALID_TIME = 1000L * 60L * 5L;  // 1시간 -> test용 5분
   private static final Long REFRESH_TOKEN_VALID_TIME = 1000L * 60L * 60L * 24L * 7L;  // 7일
   private static final String ACCESS_SUBJECT = "Access";
   private static final String REFRESH_SUBJECT = "Refresh";

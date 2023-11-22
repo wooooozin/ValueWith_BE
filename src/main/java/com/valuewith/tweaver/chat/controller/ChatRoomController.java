@@ -70,6 +70,8 @@ public class ChatRoomController {
   public ResponseEntity<String> enterChatRoom(
       @AuthenticationPrincipal PrincipalDetails principalDetails,
       @PathVariable Long chatRoomId) {
+
+    // 팀장일때는 TrpiGroupId로 찾아야함!!
     ChatRoom chatRoom = chatRoomService.findByChatRoomId(chatRoomId);
     Long memberId = memberService.findMemberByEmail(principalDetails.getUsername()).getMemberId();
     Long tripGroupId = chatRoom.getTripGroup().getTripGroupId();

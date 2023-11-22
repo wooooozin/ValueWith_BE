@@ -43,7 +43,6 @@ public class ChatRoomService {
   }
 
   public ChatRoom findByChatRoomId(Long chatRoomId) {
-    // TODO: 커스텀 익셉션 해야함
     return chatRoomRepository.findById(chatRoomId)
         .orElseThrow(() -> new RuntimeException("채팅방이 존재하지 않습니다."));
   }
