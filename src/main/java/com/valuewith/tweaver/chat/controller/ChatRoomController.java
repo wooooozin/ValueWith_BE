@@ -17,7 +17,6 @@ import com.valuewith.tweaver.groupMember.entity.GroupMember;
 import com.valuewith.tweaver.groupMember.service.GroupMemberService;
 import com.valuewith.tweaver.member.entity.Member;
 import com.valuewith.tweaver.member.service.MemberService;
-import com.valuewith.tweaver.message.dto.MessageDto;
 import com.valuewith.tweaver.message.service.MessageService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,21 +51,25 @@ public class ChatRoomController {
       HttpServletRequest request) {
     String accessToken = tokenService.parseAccessToken(request);
     Member member = memberService.findMemberByEmail(tokenService.getMemberEmail(accessToken));
-    List<MessageDto> messageList = messageService.findAllByMessage(member.getMemberId());
 
     // 1. 그룹원인 경우
     List<ChatRoomDto> memberChat = groupMemberService.findApprovedGroupsByMemberId(
             member.getMemberId())
         .stream()
-        .map(groupMember -> ChatRoomDto.from(groupMember.getChatRoom(), messageList))
+        .map(groupMember ->
+            ChatRoomDto.from(groupMember.getChatRoom(),
+                messageService.findAllByMessageList(groupMember.getChatRoom().getChatRoomId())))
         .collect(Collectors.toList());
 
     // 2. 그룹장일 경우
-    List<ChatRoomDto> leaderChat = tripGroupService.findMyTripGroupListByMemberId(member.getMemberId())
+    List<ChatRoomDto> leaderChat = tripGroupService.findMyTripGroupListByMemberId(
+            member.getMemberId())
         .stream()
         .map(TripGroup::getTripGroupId)
         .map(chatRoomService::findByChatRoomId)
-        .map(chatRoom -> ChatRoomDto.from(chatRoom, messageList))
+        .map(chatRoom ->
+            ChatRoomDto.from(chatRoom,
+                messageService.findAllByMessageList(chatRoom.getChatRoomId())))
         .collect(Collectors.toList());
 
     // 3. 전부 통합
