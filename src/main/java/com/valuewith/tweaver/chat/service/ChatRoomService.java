@@ -1,7 +1,12 @@
 package com.valuewith.tweaver.chat.service;
 
+import static com.valuewith.tweaver.constants.ErrorCode.CHAT_ROOM_NOT_FOUND;
+import static com.valuewith.tweaver.constants.ErrorCode.CHAT_ROOM_NOT_FOUND_FOR_DELETE;
+
 import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.chat.repository.ChatRoomRepository;
+import com.valuewith.tweaver.constants.ErrorCode;
+import com.valuewith.tweaver.exception.CustomException;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import java.util.List;
 import java.util.Optional;
@@ -38,13 +43,13 @@ public class ChatRoomService {
 
   public void deleteChatRoom(Long tripGroupId) {
     ChatRoom chatRoom = chatRoomRepository.findByTripGroupTripGroupId(tripGroupId)
-        .orElseThrow(() -> new RuntimeException("삭제 하려는 메세지의 채팅방이 존재하지 않습니다."));
+        .orElseThrow(() -> new CustomException(CHAT_ROOM_NOT_FOUND_FOR_DELETE));
     chatRoomRepository.deleteById(chatRoom.getChatRoomId());
   }
 
   public ChatRoom findByChatRoomId(Long chatRoomId) {
     return chatRoomRepository.findById(chatRoomId)
-        .orElseThrow(() -> new RuntimeException("채팅방이 존재하지 않습니다."));
+        .orElseThrow(() -> new CustomException(CHAT_ROOM_NOT_FOUND));
   }
 
   public List<ChatRoom> findChatRoomListByTripGroupId(Long tripGroupId) {

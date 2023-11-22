@@ -23,6 +23,7 @@ public enum ErrorCode {
     UNVALIDATED_REDIRECT_URI("인증에 실패하였습니다.\n(Unauthorized uri)", HttpStatus.UNAUTHORIZED),
     // 404
     CHAT_ROOM_NOT_FOUND("채팅방을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    CHAT_ROOM_NOT_FOUND_FOR_DELETE("삭제하려는 채팅방을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     MEMBER_NOT_FOUND("회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     // 409
     DUPLICATE_EMAIL("중복된 이메일입니다.", HttpStatus.CONFLICT),
