@@ -9,6 +9,7 @@ import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.chat.service.ChatMemberService;
 import com.valuewith.tweaver.chat.service.ChatRoomService;
 import com.valuewith.tweaver.commons.PrincipalDetails;
+import com.valuewith.tweaver.commons.security.service.TokenService;
 import com.valuewith.tweaver.exception.CustomException;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.group.service.TripGroupService;
@@ -16,8 +17,11 @@ import com.valuewith.tweaver.groupMember.entity.GroupMember;
 import com.valuewith.tweaver.groupMember.service.GroupMemberService;
 import com.valuewith.tweaver.member.entity.Member;
 import com.valuewith.tweaver.member.service.MemberService;
+import com.valuewith.tweaver.message.dto.MessageDto;
+import com.valuewith.tweaver.message.service.MessageService;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.ListUtils;
 import org.springframework.http.ResponseEntity;
@@ -39,17 +43,22 @@ public class ChatRoomController {
   private final MemberService memberService;
   private final GroupMemberService groupMemberService;
   private final TripGroupService tripGroupService;
+  private final TokenService tokenService;
+  private final MessageService messageService;
   private final ObjectMapper objectMapper;
 
   @GetMapping("/room")
   public ResponseEntity<List<ChatRoomDto>> findChatRooms(
-      @AuthenticationPrincipal PrincipalDetails principalDetails) {
-    Member member = memberService.findMemberByEmail(principalDetails.getUsername());
+      HttpServletRequest request) {
+    String accessToken = tokenService.parseAccessToken(request);
+    Member member = memberService.findMemberByEmail(tokenService.getMemberEmail(accessToken));
+    List<MessageDto> messageList = messageService.findAllByMessage(member.getMemberId());
+
     // 1. 그룹원인 경우
     List<ChatRoomDto> memberChat = groupMemberService.findApprovedGroupsByMemberId(
             member.getMemberId())
         .stream()
-        .map(groupMember -> ChatRoomDto.from(groupMember.getChatRoom()))
+        .map(groupMember -> ChatRoomDto.from(groupMember.getChatRoom(), messageList))
         .collect(Collectors.toList());
 
     // 2. 그룹장일 경우
@@ -57,7 +66,7 @@ public class ChatRoomController {
         .stream()
         .map(TripGroup::getTripGroupId)
         .map(chatRoomService::findByChatRoomId)
-        .map(ChatRoomDto::from)
+        .map(chatRoom -> ChatRoomDto.from(chatRoom, messageList))
         .collect(Collectors.toList());
 
     // 3. 전부 통합
