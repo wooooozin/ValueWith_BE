@@ -1,6 +1,8 @@
 package com.valuewith.tweaver.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.valuewith.tweaver.auth.handler.OAuth2FailureHandler;
+import com.valuewith.tweaver.auth.handler.OAuth2SuccessHandler;
 import com.valuewith.tweaver.auth.handler.SigninFailureHandler;
 import com.valuewith.tweaver.auth.handler.SigninSuccessHandler;
 import com.valuewith.tweaver.auth.repository.HttpCookieOAuth2AuthorizationRequestRepository;
@@ -22,6 +24,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -35,6 +38,7 @@ public class SecurityConfig {
   private final CustomMemberDetailService customMemberDetailService;
   private final TokenService tokenService;
   private final MemberRepository memberRepository;
+  private final AppPropertiesConfig appProperties;
 
   /**
    * swagger, h2-console 접근을 위한 설정입니다. 인증이 필요한 URI 목록 중 아래에 있는 [허용 URL]의 모든 접근을 허용합니다. 사실상 모든
@@ -102,12 +106,18 @@ public class SecurityConfig {
         .logout(logout -> logout.logoutSuccessUrl("/"))
 
         .oauth2Login(oauth2 -> oauth2
-            .authorizationEndpoint()
-            .baseUri("/oauth2/authorization")
-            .authorizationRequestRepository(oAuth2AuthorizationRequestRepository())
-            .and()
-            .userInfoEndpoint()
-            .userService(oAuthUserCustomService)
+            .authorizationEndpoint(endPoint -> endPoint
+                .baseUri("/oauth2/authorization")
+                .authorizationRequestRepository(oAuth2AuthorizationRequestRepository())
+            )
+            .redirectionEndpoint(endPoint -> endPoint
+                .baseUri("/oauth2/callback/kakao")
+            )
+            .userInfoEndpoint(endPoint -> endPoint
+                .userService(oAuthUserCustomService)
+            )
+            .successHandler(oAuth2SuccessHandler())
+            .failureHandler(oAuth2FailureHandler())
         );
 
     return http.build();
@@ -140,6 +150,17 @@ public class SecurityConfig {
   @Bean
   public SigninFailureHandler signinFailureHandler() {
     return new SigninFailureHandler();
+  }
+
+  @Bean
+  public OAuth2SuccessHandler oAuth2SuccessHandler() {
+    return new OAuth2SuccessHandler(oAuth2AuthorizationRequestRepository(), appProperties,
+        tokenService, memberRepository);
+  }
+
+  @Bean
+  public OAuth2FailureHandler oAuth2FailureHandler() {
+    return new OAuth2FailureHandler(oAuth2AuthorizationRequestRepository());
   }
 
   @Bean
