@@ -6,6 +6,8 @@ import com.valuewith.tweaver.member.entity.Member;
 import com.valuewith.tweaver.message.dto.MessageDto;
 import com.valuewith.tweaver.message.entity.Message;
 import com.valuewith.tweaver.message.repository.MessageRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.stereotype.Service;
@@ -31,4 +33,11 @@ public class MessageService {
     return MessageDto.from(createdMessage);
   }
 
+  public List<MessageDto> findAllByMessage(Long memberId) {
+
+    return messageRepository.findAllByMember_MemberId(memberId)
+        .stream()
+        .map(MessageDto::from)
+        .collect(Collectors.toList());
+  }
 }
