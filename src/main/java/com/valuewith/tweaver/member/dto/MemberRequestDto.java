@@ -27,17 +27,7 @@ public class MemberRequestDto {
 
     private String profileUrl;
 
-    @NotBlank(message = "비밀번호는 필수 항목입니다.")
-    @Pattern(
-        regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$",
-        message = "비밀번호는 영문과 숫자를 포함한 6자 이상이어야 합니다."
-    )
     private String firstPassword;
 
-    @NotBlank(message = "비밀번호는 필수 항목입니다.")
-    @Pattern(
-        regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$",
-        message = "비밀번호는 영문과 숫자를 포함한 6자 이상이어야 합니다."
-    )
     private String secondPassword;
 }
