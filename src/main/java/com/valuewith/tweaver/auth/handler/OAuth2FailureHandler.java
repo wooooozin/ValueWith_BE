@@ -26,6 +26,8 @@ public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler 
   public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
       AuthenticationException exception) throws IOException, ServletException {
     System.out.println("인증 실패");
+
+    super.onAuthenticationFailure(request, response, exception);
     String targetUrl = CookieService.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
         .map(Cookie::getValue)
         .orElse(("/"));

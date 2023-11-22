@@ -77,7 +77,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
   }
 
   private Optional<Member> getMember(Authentication authentication) {
-    PrincipalDetails memberData = (PrincipalDetails) authentication.getDetails();
+    PrincipalDetails memberData = (PrincipalDetails) authentication.getPrincipal();
     return memberRepository.findByEmail(memberData.getName());
   }
 
