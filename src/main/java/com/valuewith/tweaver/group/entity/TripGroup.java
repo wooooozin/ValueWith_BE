@@ -107,6 +107,7 @@ public class TripGroup extends BaseEntity {
         this.currentMemberNumber = this.currentMemberNumber + 1;
         this.status = setGroupStatus();
     }
+    
     public void decrementCurrentMemberNumber() {
         if (this.currentMemberNumber > 0) {
             this.currentMemberNumber = this.currentMemberNumber - 1;
