@@ -105,10 +105,12 @@ public class TripGroup extends BaseEntity {
 
     public void incrementCurrentMemberNumber() {
         this.currentMemberNumber = this.currentMemberNumber + 1;
+        this.status = this.setGroupStatus();
     }
     public void decrementCurrentMemberNumber() {
         if (this.currentMemberNumber > 0) {
             this.currentMemberNumber = this.currentMemberNumber - 1;
+            this.status = this.setGroupStatus();
         } else {
             throw new CustomException(ErrorCode.MEMBER_COUNT_CANNOT_BE_NEGATIVE);
         }

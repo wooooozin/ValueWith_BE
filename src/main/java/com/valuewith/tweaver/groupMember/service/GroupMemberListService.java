@@ -77,7 +77,6 @@ public class GroupMemberListService {
 
         // 현재 멤버 수 감소
         tripGroup.decrementCurrentMemberNumber();
-        tripGroup.setGroupStatus();
         tripGroupRepository.save(tripGroup);
     }
 
@@ -102,7 +101,6 @@ public class GroupMemberListService {
 
         // 현재 멤버 수 감소
         tripGroup.decrementCurrentMemberNumber();
-        tripGroup.setGroupStatus();
         tripGroupRepository.save(tripGroup);
 
         return groupMember.getMember();
