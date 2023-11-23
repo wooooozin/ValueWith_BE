@@ -93,10 +93,10 @@ public class TripGroup extends BaseEntity {
      * 2.최대 인원이 현재 인원보다 크고, 마감 날짜가 현재 날짜와 같거나 늦다면 -> 모집상태로 변경
      */
     public GroupStatus setGroupStatus() {
-        if (this.currentMemberNumber.equals(this.maxMemberNumber)
+        if (this.currentMemberNumber == this.maxMemberNumber
             || LocalDate.now().isAfter(this.dueDate)) {
             return GroupStatus.CLOSE;
-        } else if(!this.currentMemberNumber.equals(this.maxMemberNumber)
+        } else if(this.currentMemberNumber < this.maxMemberNumber
             && !LocalDate.now().isAfter(this.dueDate)){
             return GroupStatus.OPEN;
         }
@@ -105,12 +105,12 @@ public class TripGroup extends BaseEntity {
 
     public void incrementCurrentMemberNumber() {
         this.currentMemberNumber = this.currentMemberNumber + 1;
-        this.status = this.setGroupStatus();
+        this.status = setGroupStatus();
     }
     public void decrementCurrentMemberNumber() {
         if (this.currentMemberNumber > 0) {
             this.currentMemberNumber = this.currentMemberNumber - 1;
-            this.status = this.setGroupStatus();
+            this.status = setGroupStatus();
         } else {
             throw new CustomException(ErrorCode.MEMBER_COUNT_CANNOT_BE_NEGATIVE);
         }
