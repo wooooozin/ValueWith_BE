@@ -94,6 +94,7 @@ public class GroupMemberApplicationService {
 
     // 현재 멤버 수 증가
     tripGroup.incrementCurrentMemberNumber();
+    tripGroup.setGroupStatus();
     tripGroupRepository.save(tripGroup); // 변경된 상태 저장
 
     // 신청이 승인 되었을 때 알람 보내기
