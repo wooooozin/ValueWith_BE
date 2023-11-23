@@ -1,7 +1,9 @@
 package com.valuewith.tweaver.group.entity;
 
 import com.valuewith.tweaver.auditing.BaseEntity;
+import com.valuewith.tweaver.constants.ErrorCode;
 import com.valuewith.tweaver.constants.GroupStatus;
+import com.valuewith.tweaver.exception.CustomException;
 import com.valuewith.tweaver.group.dto.TripGroupRequestDto;
 import com.valuewith.tweaver.member.entity.Member;
 import java.time.LocalDate;
@@ -52,7 +54,6 @@ public class TripGroup extends BaseEntity {
     private Integer maxMemberNumber;
 
     @NotNull
-    @Formula("(SELECT COUNT(*) FROM group_member gm WHERE gm.trip_group_id = trip_group_id AND gm.approved_status = 'APPROVED')")
     private Integer currentMemberNumber;
 
     @NotNull
@@ -101,4 +102,17 @@ public class TripGroup extends BaseEntity {
         }
         return this.status;
     }
+
+    public void incrementCurrentMemberNumber() {
+        this.currentMemberNumber = this.currentMemberNumber + 1;
+    }
+    public void decrementCurrentMemberNumber() {
+        if (this.currentMemberNumber > 0) {
+            this.currentMemberNumber = this.currentMemberNumber - 1;
+        } else {
+            throw new CustomException(ErrorCode.MEMBER_COUNT_CANNOT_BE_NEGATIVE);
+        }
+    }
+
+
 }

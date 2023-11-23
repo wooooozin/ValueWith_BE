@@ -4,6 +4,8 @@ import com.valuewith.tweaver.alert.dto.AlertRequestDto;
 import com.valuewith.tweaver.chat.entity.ChatRoom;
 import com.valuewith.tweaver.chat.repository.ChatRoomRepository;
 import com.valuewith.tweaver.constants.AlertContent;
+import com.valuewith.tweaver.constants.ErrorCode;
+import com.valuewith.tweaver.exception.CustomException;
 import com.valuewith.tweaver.group.entity.TripGroup;
 import com.valuewith.tweaver.group.repository.TripGroupRepository;
 import com.valuewith.tweaver.groupMember.entity.GroupMember;
@@ -37,6 +39,11 @@ public class GroupMemberApplicationService {
         .orElseThrow(() -> new RuntimeException("멤버 정보가 존재하지 않습니다."));
     Boolean exists = groupMemberRepository.existsByMember_MemberIdAndTripGroup_TripGroupId(
         member.getMemberId(), tripGroupId);
+
+    if (tripGroup.getCurrentMemberNumber() >= tripGroup.getMaxMemberNumber()) {
+      throw new CustomException(ErrorCode.MEMBER_COUNT_MAX);
+    }
+
     if(exists) {
       throw new RuntimeException("이미 신청한 그룹 입니다. 같은 그룹에 중복 신청할 수 없습니다.");
     } else {
@@ -82,6 +89,12 @@ public class GroupMemberApplicationService {
     ChatRoom chatRoom = chatRoomRepository.findByTripGroup(foundGroupMember.getTripGroup())
         .orElseThrow(() -> new RuntimeException("신청하고자 하는 그룹의 채팅방이 존재하지 않습니다."));
     foundGroupMember.confirmApplication(chatRoom);
+
+    TripGroup tripGroup = foundGroupMember.getTripGroup();
+
+    // 현재 멤버 수 증가
+    tripGroup.incrementCurrentMemberNumber();
+    tripGroupRepository.save(tripGroup); // 변경된 상태 저장
 
     // 신청이 승인 되었을 때 알람 보내기
     eventPublisher.publishEvent(AlertRequestDto.builder()
