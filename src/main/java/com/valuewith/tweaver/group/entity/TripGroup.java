@@ -52,7 +52,6 @@ public class TripGroup extends BaseEntity {
     private Integer maxMemberNumber;
 
     @NotNull
-    @Formula("(SELECT COUNT(*) FROM group_member gm WHERE gm.trip_group_id = trip_group_id AND gm.approved_status = 'APPROVED')")
     private Integer currentMemberNumber;
 
     @NotNull
@@ -101,4 +100,19 @@ public class TripGroup extends BaseEntity {
         }
         return this.status;
     }
+
+    public void incrementCurrentMemberNumber() {
+        this.currentMemberNumber = this.currentMemberNumber + 1;
+        this.status = setGroupStatus();
+    }
+    
+    public void decrementCurrentMemberNumber() {
+        if (this.currentMemberNumber > 0) {
+            this.currentMemberNumber = this.currentMemberNumber - 1;
+            this.status = setGroupStatus();
+        } else {
+            throw new CustomException(ErrorCode.MEMBER_COUNT_CANNOT_BE_NEGATIVE);
+        }
+    }
+
 }
