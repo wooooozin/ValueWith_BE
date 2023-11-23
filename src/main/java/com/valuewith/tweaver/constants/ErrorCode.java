@@ -27,6 +27,11 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND("회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     // 409
     DUPLICATE_EMAIL("중복된 이메일입니다.", HttpStatus.CONFLICT),
+
+    // 422
+    MEMBER_COUNT_CANNOT_BE_NEGATIVE("그룹 멤버는 0명 이하가 될 수 없습니다", HttpStatus.UNPROCESSABLE_ENTITY),
+    MEMBER_COUNT_MAX("그룹이 이미 최대 인원에 도달했습니다. 더 이상 신청할 수 없습니다.", HttpStatus.UNPROCESSABLE_ENTITY),
+
     // 502
     FAILURE_SENDING_EMAIL("이메일 전송에 실패하였습니다.", HttpStatus.BAD_GATEWAY),
     FAILURE_GETTING_PROFILE_IMG("프로필 이미지가 없습니다.", HttpStatus.BAD_GATEWAY)

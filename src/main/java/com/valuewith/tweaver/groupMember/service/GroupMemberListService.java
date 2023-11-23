@@ -69,12 +69,15 @@ public class GroupMemberListService {
         GroupMember groupMember = groupMemberRepository.findApprovedMemberByTripGroupIdAndMemberId(
             tripGroup.getTripGroupId(), member.getMemberId()
         );
-        log.info("😊" + groupMember.getGroupMemberId());
 
         // 채팅방 아웃 예시
         // chatRoomService.removeMemberFromChatRoom(member, groupMember.getChatRoom());
         groupMember.leaveApplication(ApprovedStatus.LEFT);
         groupMemberRepository.save(groupMember);
+
+        // 현재 멤버 수 감소
+        tripGroup.decrementCurrentMemberNumber();
+        tripGroupRepository.save(tripGroup);
     }
 
 
@@ -95,6 +98,11 @@ public class GroupMemberListService {
             .orElseThrow(() -> new EntityNotFoundException("등록된 그룹멤버 정보가 없습니다." + groupMemberId));
         groupMember.leaveApplication(ApprovedStatus.BANNED);
         groupMemberRepository.save(groupMember);
+
+        // 현재 멤버 수 감소
+        tripGroup.decrementCurrentMemberNumber();
+        tripGroupRepository.save(tripGroup);
+
         return groupMember.getMember();
     }
 }

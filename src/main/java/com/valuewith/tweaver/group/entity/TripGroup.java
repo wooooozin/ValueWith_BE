@@ -1,7 +1,9 @@
 package com.valuewith.tweaver.group.entity;
 
 import com.valuewith.tweaver.auditing.BaseEntity;
+import com.valuewith.tweaver.constants.ErrorCode;
 import com.valuewith.tweaver.constants.GroupStatus;
+import com.valuewith.tweaver.exception.CustomException;
 import com.valuewith.tweaver.group.dto.TripGroupRequestDto;
 import com.valuewith.tweaver.member.entity.Member;
 import java.time.LocalDate;
@@ -91,10 +93,10 @@ public class TripGroup extends BaseEntity {
      * 2.최대 인원이 현재 인원보다 크고, 마감 날짜가 현재 날짜와 같거나 늦다면 -> 모집상태로 변경
      */
     public GroupStatus setGroupStatus() {
-        if (this.currentMemberNumber.equals(this.maxMemberNumber)
+        if (this.currentMemberNumber == this.maxMemberNumber
             || LocalDate.now().isAfter(this.dueDate)) {
             return GroupStatus.CLOSE;
-        } else if(!this.currentMemberNumber.equals(this.maxMemberNumber)
+        } else if(this.currentMemberNumber < this.maxMemberNumber
             && !LocalDate.now().isAfter(this.dueDate)){
             return GroupStatus.OPEN;
         }
@@ -105,7 +107,6 @@ public class TripGroup extends BaseEntity {
         this.currentMemberNumber = this.currentMemberNumber + 1;
         this.status = setGroupStatus();
     }
-    
     public void decrementCurrentMemberNumber() {
         if (this.currentMemberNumber > 0) {
             this.currentMemberNumber = this.currentMemberNumber - 1;
@@ -114,5 +115,6 @@ public class TripGroup extends BaseEntity {
             throw new CustomException(ErrorCode.MEMBER_COUNT_CANNOT_BE_NEGATIVE);
         }
     }
+
 
 }
